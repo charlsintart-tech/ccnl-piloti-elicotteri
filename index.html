@@ -367,7 +367,7 @@
     .article-toolbar-title {
       flex: 1;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--primary);
       min-width: 0;
       white-space: nowrap;
@@ -994,7 +994,7 @@
       const next = articleIndex < allArticles.length - 1 ? allArticles[articleIndex + 1] : null;
 
       const main = document.getElementById('mainContent');
-      const toolbarTitle = article.number ? `Articolo ${article.number}` : article.title;
+      const toolbarTitle = article.number ? `<strong>Articolo ${article.number}</strong>` : `<strong>${article.title}</strong>`;
       main.innerHTML = `
         <div class="article-container fade-in">
           <div class="article-toolbar">
