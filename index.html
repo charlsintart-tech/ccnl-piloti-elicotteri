@@ -1052,6 +1052,28 @@
     .calc-row.total .calc-row-label,
     .calc-row.total .calc-row-value { color: white; }
 
+    .calc-input-custom {
+      width: 110px;
+      padding: 6px 10px;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      text-align: right;
+      background: var(--bg-main);
+      color: var(--text);
+      outline: none;
+    }
+    .calc-input-custom:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,58,95,0.15);
+    }
+    [data-theme="dark"] .calc-input-custom {
+      background: var(--bg-card);
+      border-color: var(--accent);
+    }
+
     /* Theme switcher */
     .theme-switcher {
       display: flex;
@@ -1524,10 +1546,13 @@
       const tredicesima = pagaBase + scattiValore + vacanza;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
 
-      // Tabella 2 - con aumenti 2024/2025
+      // Tabella 2 - con aumenti 2024/2025 (13a SENZA aumenti)
       const mensileLordo2 = mensileLordo + aumento;
-      const tredicesima2 = tredicesima + aumento;
-      const totaleAnnuo2 = (mensileLordo2 * 12) + tredicesima2 + integrAnno;
+      const totaleAnnuo2 = (mensileLordo2 * 12) + tredicesima + integrAnno;
+
+      // Leggi valore scatto personalizzato (se esiste)
+      const customInput = document.getElementById('calcScattoCustom');
+      const prevCustomVal = customInput ? customInput.value : String(scattiValore.toFixed(2));
 
       document.getElementById('calcResults').innerHTML =
         '<div class="calc-results">' +
@@ -1551,10 +1576,41 @@
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo2) + '</strong></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo2 * 12) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0</span><span class="calc-row-value">' + fmtE(tredicesima2) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (senza aumenti)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
           '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo2) + '</span></div>' +
+        '</div>' +
+        '<div class="calc-results" style="margin-top:24px">' +
+          '<div class="calc-results-header">Retribuzione con scatti reali \u2014 ' + grade.label + '</div>' +
+          '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (importo reale \u20ac)</span><span class="calc-row-value"><input type="number" id="calcScattoCustom" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
+          '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
+          '<div id="calcCustomTotals"></div>' +
         '</div>';
+      recalcCustom();
+    }
+
+    function recalcCustom() {
+      const gradeId = document.getElementById('calcGrade').value;
+      const grade = CALC_DATA.grades.find(g => g.id === gradeId);
+      const fmtE = v => new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v);
+      const customScatti = parseFloat(document.getElementById('calcScattoCustom').value) || 0;
+      const pagaBase = grade.pagaBase;
+      const vacanza = grade.vacanza;
+      const aumento = grade.aumento;
+      const voloMese = grade.volo60h;
+      const integrAnno = grade.integr200h;
+      const mensile3 = pagaBase + customScatti + vacanza + aumento + voloMese;
+      const tredicesima3 = pagaBase + customScatti + vacanza;
+      const totale3 = (mensile3 * 12) + tredicesima3 + integrAnno;
+      document.getElementById('calcCustomTotals').innerHTML =
+        '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensile3) + '</strong></span></div>' +
+        '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensile3 * 12) + '</span></div>' +
+        '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (senza aumenti)</span><span class="calc-row-value">' + fmtE(tredicesima3) + '</span></div>' +
+        '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
+        '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale3) + '</span></div>';
     }
 
     // ===== NOTES LIST =====
