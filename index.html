@@ -1808,7 +1808,8 @@
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo * 12) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. \u20ac10,33)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-          '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie1" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie1\').value=\'0\';recalcVarie()">×</button></span></span></div>' +
+          '<div id="calcTot1"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
           '<button onclick="shareTableText(\'calcTable1\')">&#128221; WhatsApp Testo</button>' +
@@ -1825,7 +1826,8 @@
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo2 * 12) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (senza aumenti)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-          '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo2) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie2" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie2\').value=\'0\';recalcVarie()">×</button></span></span></div>' +
+          '<div id="calcTot2"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
           '<button onclick="shareTableText(\'calcTable2\')">&#128221; WhatsApp Testo</button>' +
@@ -1845,6 +1847,20 @@
           '<button onclick="shareTableText(\'calcTable3\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable3\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
+        '<div class="calc-results" style="margin-top:24px" id="calcTable4">' +
+          '<div class="calc-results-header">Retribuzione con 13° modificata — ' + grade.label + '</div>' +
+          '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianità (importo reale €)</span><span class="calc-row-value">' + fmtE(parseFloat(prevCustomVal)) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
+          '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennità di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
+          '<div id="calcCustomTotals4"></div>' +
+        '</div>' +
+        '<div class="calc-table-actions">' +
+          '<button onclick="shareTableText(\'calcTable4\')">&#128221; WhatsApp Testo</button>' +
+          '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable4\')">&#128247; WhatsApp Immagine</button>' +
+        '</div>' +
         '<div class="calc-actions">' +
           '<button class="toolbar-btn" onclick="printCalc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>Stampa</span></button>' +
           '<button class="toolbar-btn" onclick="exportCalcPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Esporta PDF</span></button>' +
@@ -1855,28 +1871,72 @@
           '<button class="wa-img-btn" onclick="shareAllTablesImage()">&#128247; WhatsApp Immagine</button>' +
         '</div>';
       recalcCustom();
+      recalcVarie();
+    }
+
+    function recalcVarie() {
+      var gradeId = document.getElementById('calcGrade').value;
+      var scatti = parseInt(document.getElementById('calcScatti').value);
+      var grade = CALC_DATA.grades.find(function(g) { return g.id === gradeId; });
+      var fmtE = function(v) { return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v); };
+      var superminimo = 10.33;
+      var scattiValore = grade.scatto * scatti;
+      var voloMese = grade.volo60h;
+      var integrAnno = grade.integr200h;
+      var aumento = grade.aumento;
+      var varie1 = parseFloat((document.getElementById('calcVarie1') || {}).value) || 0;
+      var varie2 = parseFloat((document.getElementById('calcVarie2') || {}).value) || 0;
+      var mensileLordo = grade.pagaBase + scattiValore + superminimo + voloMese;
+      var tredicesima = grade.pagaBase + scattiValore + superminimo;
+      var totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno + varie1;
+      var el1 = document.getElementById('calcTot1');
+      if (el1) el1.innerHTML = '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo) + '</span></div>';
+      var mensileLordo2 = grade.pagaBase + scattiValore + superminimo + aumento + voloMese;
+      var totaleAnnuo2 = (mensileLordo2 * 12) + tredicesima + integrAnno + varie2;
+      var el2 = document.getElementById('calcTot2');
+      if (el2) el2.innerHTML = '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo2) + '</span></div>';
     }
 
     function recalcCustom() {
-      const gradeId = document.getElementById('calcGrade').value;
-      const grade = CALC_DATA.grades.find(g => g.id === gradeId);
-      const fmtE = v => new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v);
-      const superminimo = 10.33;
-      const customScatti = parseFloat(document.getElementById('calcScattoCustom').value) || 0;
-      const pagaBase = grade.pagaBase;
-      const vacanza = grade.vacanza;
-      const aumento = grade.aumento;
-      const voloMese = grade.volo60h;
-      const integrAnno = grade.integr200h;
-      const mensile3 = pagaBase + customScatti + vacanza + superminimo + aumento + voloMese;
-      const tredicesima3 = pagaBase + customScatti + superminimo;
-      const totale3 = (mensile3 * 12) + tredicesima3 + integrAnno;
+      var gradeId = document.getElementById('calcGrade').value;
+      var grade = CALC_DATA.grades.find(function(g) { return g.id === gradeId; });
+      var fmtE = function(v) { return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v); };
+      var superminimo = 10.33;
+      var customScatti = parseFloat(document.getElementById('calcScattoCustom').value) || 0;
+      var pagaBase = grade.pagaBase;
+      var vacanza = grade.vacanza;
+      var aumento = grade.aumento;
+      var voloMese = grade.volo60h;
+      var integrAnno = grade.integr200h;
+      var varie3 = parseFloat((document.getElementById('calcVarie3') || {}).value) || 0;
+      var mensile3 = pagaBase + customScatti + vacanza + superminimo + aumento + voloMese;
+      var tredicesima3 = pagaBase + customScatti + superminimo;
+      var totale3 = (mensile3 * 12) + tredicesima3 + integrAnno + varie3;
       document.getElementById('calcCustomTotals').innerHTML =
         '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensile3) + '</strong></span></div>' +
         '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensile3 * 12) + '</span></div>' +
         '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. \u20ac10,33)</span><span class="calc-row-value">' + fmtE(tredicesima3) + '</span></div>' +
         '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
+        '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="' + varie3 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
         '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale3) + '</span></div>';
+      // Tab 4 - 13\u00b0 modificata
+      var varie4 = parseFloat((document.getElementById('calcVarie4') || {}).value) || 0;
+      var mensile4 = pagaBase + customScatti + vacanza + superminimo + aumento + voloMese;
+      var tredicesima4 = pagaBase + customScatti + superminimo + voloMese + vacanza + aumento + integrAnno / 13;
+      var totale4 = (mensile4 * 12) + tredicesima4 + integrAnno + varie4;
+      var el4 = document.getElementById('calcCustomTotals4');
+      if (el4) {
+        // Update scatti display in Tab 4
+        var scattiRow = document.querySelector('#calcTable4 .calc-row:nth-child(3) .calc-row-value');
+        if (scattiRow) scattiRow.textContent = fmtE(customScatti);
+        el4.innerHTML =
+          '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensile4) + '</strong></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensile4 * 12) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. + volo + vacanza + aumenti + integr/13)</span><span class="calc-row-value">' + fmtE(tredicesima4) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="' + varie4 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
+          '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale4) + '</span></div>';
+      }
     }
 
     function getCalcText() {
@@ -1995,7 +2055,8 @@
       var text = 'CALCOLATORE RETRIBUTIVO CCNL\n\n';
       text += getTableText('calcTable1') + '\n';
       text += getTableText('calcTable2') + '\n';
-      text += getTableText('calcTable3');
+      text += getTableText('calcTable3') + '\n';
+      text += getTableText('calcTable4');
       window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     }
 
@@ -2140,6 +2201,7 @@
         ['\u00d7 12 mensilit\u00e0', m1A * 12, m1B * 12],
         ['13\u00aa mensilit\u00e0', t1A, t1B],
         ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Varie', 0, 0],
         ['Totale annuo lordo', a1A, a1B, false, true]
       ];
 
@@ -2158,6 +2220,7 @@
         ['\u00d7 12 mensilit\u00e0', m2A * 12, m2B * 12],
         ['13\u00aa mensilit\u00e0 (senza aumenti)', t1A, t1B],
         ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Varie', 0, 0],
         ['Totale annuo lordo', a2A, a2B, false, true]
       ];
 
@@ -2168,6 +2231,7 @@
       var html = buildCompTable('compTable1', 'Calcolo retribuzione da CCNL 2001', rows1, lblA, lblB, fmtE);
       html += buildCompTable('compTable2', 'Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025', rows2, lblA, lblB, fmtE);
       html += '<div id="compT3Wrap"></div>';
+      html += '<div id="compT4Wrap"></div>';
       document.getElementById('compResults').innerHTML = html;
       updateCompT3();
     }
@@ -2201,9 +2265,32 @@
         ['\u00d7 12 mensilit\u00e0', m3A * 12, m3B * 12],
         ['13\u00aa mensilit\u00e0', t3A, t3B],
         ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Varie', 0, 0],
         ['Totale annuo lordo', a3A, a3B, false, true]
       ];
       document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE);
+
+      // Tab 4 comparator - 13\u00b0 modificata
+      var t4A = gA.pagaBase + custA + sup + gA.volo60h + gA.vacanza + gA.aumento + gA.integr200h / 13;
+      var t4B = gB.pagaBase + custB + sup + gB.volo60h + gB.vacanza + gB.aumento + gB.integr200h / 13;
+      var a4A = (m3A * 12) + t4A + gA.integr200h;
+      var a4B = (m3B * 12) + t4B + gB.integr200h;
+      var rows4 = [
+        ['Paga base mensile', gA.pagaBase, gB.pagaBase],
+        ['Scatti reali', custA, custB],
+        ['Vacanza contrattuale', gA.vacanza, gB.vacanza],
+        ['Superminimo', sup, sup],
+        ['Aumenti 2024/2025', gA.aumento, gB.aumento],
+        ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
+        ['Totale mensile lordo', m3A, m3B, true],
+        ['\u00d7 12 mensilit\u00e0', m3A * 12, m3B * 12],
+        ['13\u00aa mensilit\u00e0 (modificata)', t4A, t4B],
+        ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Varie', 0, 0],
+        ['Totale annuo lordo', a4A, a4B, false, true]
+      ];
+      var el4 = document.getElementById('compT4Wrap');
+      if (el4) el4.innerHTML = buildCompTable('compTable4', 'Retribuzione con 13\u00b0 modificata', rows4, lblA, lblB, fmtE);
     }
 
     // ===== PDF VIEWER =====
@@ -2515,6 +2602,7 @@
     function handleHash() {
       const hash = window.location.hash.substring(1);
       if (hash === 'calculator') showCalculator();
+      else if (hash === 'comparator') showComparator();
       else if (hash && allArticles.find(a => a.id === hash)) showArticle(hash);
     }
     window.addEventListener('hashchange', handleHash);
