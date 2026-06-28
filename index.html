@@ -1143,6 +1143,33 @@
       border-color: var(--accent);
     }
 
+    .input-clear-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .input-clear-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .input-clear-btn:active {
+      background: var(--primary-light);
+      color: white;
+    }
+
     /* Theme switcher */
     .theme-switcher {
       display: flex;
@@ -1541,6 +1568,7 @@
       </div>`;
 
       // Comparator
+      html += `<div class="nav-divider"></div>`;
       html += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="showComparator()" data-id="comparator">COMPARATORE RETRIBUTIVO</div>
       </div>`;
@@ -1593,8 +1621,8 @@
       main.innerHTML = `
         <div class="article-container fade-in">
           <div class="welcome">
-            <div class="welcome-icon">CCNL</div>
-            <h1>CCNL Piloti di Elicottero</h1>
+            <div style="color:var(--accent);font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:8px;">Spampy2026</div>
+            <div class="calc-title" style="margin-bottom:16px;">CCNL Piloti di Elicottero</div>
             <p>Contratto Collettivo Nazionale di Lavoro per i Piloti dipendenti da Imprese Elicotteristiche esercenti il trasporto aereo non di linea e il lavoro aereo.</p>
             <p style="font-size:14px; color: var(--text-secondary);">Rinnovo del CCNL 25 giugno 1998 - Stipulato il 19 luglio 2001</p>
             <div class="conversion-note">
@@ -1806,7 +1834,7 @@
         '<div class="calc-results" style="margin-top:24px" id="calcTable3">' +
           '<div class="calc-results-header">Retribuzione con scatti reali \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (importo reale \u20ac)</span><span class="calc-row-value"><input type="number" id="calcScattoCustom" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (importo reale \u20ac)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcScattoCustom" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcScattoCustom\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
@@ -2027,7 +2055,10 @@
                 ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + ' (' + (i*2) + ' anni)</option>').join('')}
               </select>
               <label class="calc-label" style="margin-top:10px">Scatti reali A (\u20ac)</label>
-              <input type="number" class="calc-select" id="compCustomA" value="0" step="0.01" min="0" oninput="updateCompT3()">
+              <div class="input-clear-wrap" style="width:100%">
+                <input type="number" class="calc-select" id="compCustomA" value="0" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
+                <button class="input-clear-btn" onclick="document.getElementById('compCustomA').value='0';updateCompT3()">\u00d7</button>
+              </div>
             </div>
             <div class="compare-col">
               <label class="calc-label">Grado B</label>
@@ -2039,7 +2070,10 @@
                 ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + ' (' + (i*2) + ' anni)</option>').join('')}
               </select>
               <label class="calc-label" style="margin-top:10px">Scatti reali B (\u20ac)</label>
-              <input type="number" class="calc-select" id="compCustomB" value="0" step="0.01" min="0" oninput="updateCompT3()">
+              <div class="input-clear-wrap" style="width:100%">
+                <input type="number" class="calc-select" id="compCustomB" value="0" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
+                <button class="input-clear-btn" onclick="document.getElementById('compCustomB').value='0';updateCompT3()">\u00d7</button>
+              </div>
             </div>
           </div>
           <div id="compResults"></div>
