@@ -1466,13 +1466,13 @@
     // ===== CALCULATOR =====
     const CALC_DATA = {
       grades: [
-        { id: 'cs', label: 'Comandante Superiore', pagaBase: 1425.14, volo60h: 2235.60, integr200h: 4218.00, scatto: 197.58, vacanza: 150 },
-        { id: 'pc', label: 'Primo Comandante', pagaBase: 1339.61, volo60h: 2217.60, integr200h: 4156.00, scatto: 192.24, vacanza: 150 },
-        { id: 'cmd', label: 'Comandante', pagaBase: 1256.46, volo60h: 2197.80, integr200h: 4080.00, scatto: 186.88, vacanza: 150 },
-        { id: 'uf', label: '1\u00b0 Ufficiale', pagaBase: 1095.84, volo60h: 1630.80, integr200h: 3834.00, scatto: 149.42, vacanza: 100 },
-        { id: 'p1', label: 'Pilota di 1\u00b0', pagaBase: 1051.78, volo60h: 1426.20, integr200h: 3710.00, scatto: 137.30, vacanza: 100 },
-        { id: 'p2', label: 'Pilota di 2\u00b0', pagaBase: 1000.06, volo60h: 1134.60, integr200h: 3200.00, scatto: 119.29, vacanza: 100 },
-        { id: 'si', label: 'Salario di Ingresso', pagaBase: 1000.06, volo60h: 512.40, integr200h: 918.00, scatto: 81.80, vacanza: 100 }
+        { id: 'cs', label: 'Comandante Superiore', pagaBase: 1425.14, volo60h: 2235.60, integr200h: 4218.00, scatto: 197.58, vacanza: 150, aumento: 904 },
+        { id: 'pc', label: 'Primo Comandante', pagaBase: 1339.61, volo60h: 2217.60, integr200h: 4156.00, scatto: 192.24, vacanza: 150, aumento: 856 },
+        { id: 'cmd', label: 'Comandante', pagaBase: 1256.46, volo60h: 2197.80, integr200h: 4080.00, scatto: 186.88, vacanza: 150, aumento: 800 },
+        { id: 'uf', label: '1\u00b0 Ufficiale', pagaBase: 1095.84, volo60h: 1630.80, integr200h: 3834.00, scatto: 149.42, vacanza: 100, aumento: 696 },
+        { id: 'p1', label: 'Pilota di 1\u00b0', pagaBase: 1051.78, volo60h: 1426.20, integr200h: 3710.00, scatto: 137.30, vacanza: 100, aumento: 672 },
+        { id: 'p2', label: 'Pilota di 2\u00b0', pagaBase: 1000.06, volo60h: 1134.60, integr200h: 3200.00, scatto: 119.29, vacanza: 100, aumento: 640 },
+        { id: 'si', label: 'Salario di Ingresso', pagaBase: 1000.06, volo60h: 512.40, integr200h: 918.00, scatto: 81.80, vacanza: 100, aumento: 424 }
       ]
     };
 
@@ -1517,9 +1517,17 @@
       const vacanza = grade.vacanza;
       const voloMese = grade.volo60h;
       const integrAnno = grade.integr200h;
+      const aumento = grade.aumento;
+
+      // Tabella 1 - senza aumenti
       const mensileLordo = pagaBase + scattiValore + vacanza + voloMese;
       const tredicesima = pagaBase + scattiValore + vacanza;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
+
+      // Tabella 2 - con aumenti 2024/2025
+      const mensileLordo2 = mensileLordo + aumento;
+      const tredicesima2 = tredicesima + aumento;
+      const totaleAnnuo2 = (mensileLordo2 * 12) + tredicesima2 + integrAnno;
 
       document.getElementById('calcResults').innerHTML =
         '<div class="calc-results">' +
@@ -1533,6 +1541,19 @@
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + vacanza)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
           '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo) + '</span></div>' +
+        '</div>' +
+        '<div class="calc-results" style="margin-top:24px">' +
+          '<div class="calc-results-header">Con Aumenti 2024 / 2025 \u2014 ' + grade.label + '</div>' +
+          '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
+          '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo2) + '</strong></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo2 * 12) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0</span><span class="calc-row-value">' + fmtE(tredicesima2) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
+          '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo2) + '</span></div>' +
         '</div>';
     }
 
