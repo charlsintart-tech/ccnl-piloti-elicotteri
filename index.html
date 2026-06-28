@@ -1778,7 +1778,7 @@
       const vacanza = grade.vacanza;
       const voloMese = grade.volo60h;
       const integrAnno = grade.integr200h;
-      const notturno7 = parseFloat((voloMese / 60 * 0.16 * 6 * 7).toFixed(2));
+      const notturno7 = parseFloat(((voloMese + vacanza) / 60 * 0.16 * 6 * 7).toFixed(2));
       const aumento = grade.aumento;
 
       // Stile select attivo
@@ -2129,7 +2129,7 @@
               </div>
               <label class="calc-label" style="margin-top:10px">Volo notturno A (7 notti, \u20ac)</label>
               <div class="input-clear-wrap" style="width:100%">
-                <input type="number" class="calc-select" id="compNotturnoA" value="${(CALC_DATA.grades[0].volo60h / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
+                <input type="number" class="calc-select" id="compNotturnoA" value="${((CALC_DATA.grades[0].volo60h + CALC_DATA.grades[0].vacanza) / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
                 <button class="input-clear-btn" onclick="document.getElementById('compNotturnoA').value='0';updateCompT3()">\u00d7</button>
               </div>
             </div>
@@ -2149,7 +2149,7 @@
               </div>
               <label class="calc-label" style="margin-top:10px">Volo notturno B (7 notti, \u20ac)</label>
               <div class="input-clear-wrap" style="width:100%">
-                <input type="number" class="calc-select" id="compNotturnoB" value="${(CALC_DATA.grades[1].volo60h / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
+                <input type="number" class="calc-select" id="compNotturnoB" value="${((CALC_DATA.grades[1].volo60h + CALC_DATA.grades[1].vacanza) / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
                 <button class="input-clear-btn" onclick="document.getElementById('compNotturnoB').value='0';updateCompT3()">\u00d7</button>
               </div>
             </div>
@@ -2244,8 +2244,8 @@
       // Set custom scatti defaults
       document.getElementById('compCustomA').value = scValA.toFixed(2);
       document.getElementById('compCustomB').value = scValB.toFixed(2);
-      document.getElementById('compNotturnoA').value = (gA.volo60h / 60 * 0.16 * 6 * 7).toFixed(2);
-      document.getElementById('compNotturnoB').value = (gB.volo60h / 60 * 0.16 * 6 * 7).toFixed(2);
+      document.getElementById('compNotturnoA').value = ((gA.volo60h + gA.vacanza) / 60 * 0.16 * 6 * 7).toFixed(2);
+      document.getElementById('compNotturnoB').value = ((gB.volo60h + gB.vacanza) / 60 * 0.16 * 6 * 7).toFixed(2);
 
       var html = buildCompTable('compTable1', 'Calcolo retribuzione da CCNL 2001', rows1, lblA, lblB, fmtE);
       html += buildCompTable('compTable2', 'Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025', rows2, lblA, lblB, fmtE);
