@@ -1778,6 +1778,7 @@
       const vacanza = grade.vacanza;
       const voloMese = grade.volo60h;
       const integrAnno = grade.integr200h;
+      const notturno7 = parseFloat((voloMese / 60 * 0.16 * 6 * 7).toFixed(2));
       const aumento = grade.aumento;
 
       // Stile select attivo
@@ -1841,7 +1842,7 @@
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno3" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno3\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno3" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno3\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
           '<div id="calcCustomTotals"></div>' +
           '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
           '<div id="calcTot3"></div>' +
@@ -1858,7 +1859,7 @@
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennità di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno4" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno4\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno4" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno4\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
           '<div id="calcCustomTotals4"></div>' +
           '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
           '<div id="calcTot4"></div>' +
