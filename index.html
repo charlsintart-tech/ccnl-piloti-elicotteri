@@ -760,6 +760,21 @@
       font-size: 14px;
     }
 
+    /* Keyword badge */
+    .keyword-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--accent);
+      color: var(--primary-dark);
+      padding: 2px 7px;
+      border-radius: 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
     /* Theme switcher */
     .theme-switcher {
       display: flex;
@@ -892,6 +907,12 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input type="text" class="search-input" id="searchInput" placeholder="Cerca articolo..." oninput="filterArticles(this.value)">
+        </div>
+        <div class="search-wrapper" style="margin-top:8px">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h10M4 18h6"/>
+          </svg>
+          <input type="text" class="search-input" id="keywordInput" placeholder="Cerca per parola chiave..." oninput="searchByKeyword(this.value)">
         </div>
       </div>
       <nav class="sidebar-nav" id="sidebarNav"></nav>
@@ -1048,11 +1069,15 @@
       });
     }
 
-    // Filter articles in sidebar
+    // Filter articles in sidebar by title
     function filterArticles(query) {
+      document.getElementById('keywordInput').value = '';
       const q = query.toLowerCase().trim();
       const items = document.querySelectorAll('.nav-item[data-id]');
       const sections = document.querySelectorAll('.nav-section');
+
+      // Remove keyword badges
+      document.querySelectorAll('.keyword-badge').forEach(b => b.remove());
 
       if (!q) {
         items.forEach(item => item.style.display = '');
@@ -1067,6 +1092,57 @@
           const text = item.textContent.toLowerCase();
           const match = text.includes(q);
           item.style.display = match ? '' : 'none';
+          if (match) hasVisible = true;
+        });
+        const title = section.querySelector('.nav-section-title');
+        if (title) {
+          section.style.display = hasVisible ? '' : 'none';
+        }
+      });
+    }
+
+    // Search articles by keyword in content
+    function searchByKeyword(query) {
+      document.getElementById('searchInput').value = '';
+      const q = query.toLowerCase().trim();
+      const items = document.querySelectorAll('.nav-item[data-id]');
+      const sections = document.querySelectorAll('.nav-section');
+
+      // Remove old badges
+      document.querySelectorAll('.keyword-badge').forEach(b => b.remove());
+
+      if (!q) {
+        items.forEach(item => item.style.display = '');
+        sections.forEach(s => s.style.display = '');
+        return;
+      }
+
+      // Build a plain-text map from article content
+      const matchingIds = new Set();
+      allArticles.forEach(article => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = article.content;
+        const plain = (tmp.textContent || '').toLowerCase();
+        const titleText = article.title.toLowerCase();
+        if (plain.includes(q) || titleText.includes(q)) {
+          matchingIds.add(article.id);
+        }
+      });
+
+      sections.forEach(section => {
+        let hasVisible = false;
+        const sectionItems = section.querySelectorAll('.nav-item');
+        sectionItems.forEach(item => {
+          const id = item.dataset.id;
+          const match = matchingIds.has(id);
+          item.style.display = match ? '' : 'none';
+          // Add/remove keyword badge
+          if (match && id !== 'home') {
+            const badge = document.createElement('span');
+            badge.className = 'keyword-badge';
+            badge.textContent = 'trovato';
+            item.appendChild(badge);
+          }
           if (match) hasVisible = true;
         });
         const title = section.querySelector('.nav-section-title');
