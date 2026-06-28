@@ -218,6 +218,12 @@
       z-index: 1;
     }
 
+    .nav-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.15);
+      margin: 8px 16px;
+    }
+
     .nav-item {
       display: block;
       padding: 10px 16px 10px 24px;
@@ -998,10 +1004,17 @@
       padding: 32px 24px;
     }
     .calc-title {
-      font-size: 24px;
+      display: inline-block;
+      padding: 10px 24px;
+      background: var(--primary);
+      color: white;
+      font-size: 20px;
       font-weight: 700;
-      color: var(--primary);
+      border-radius: 8px;
       margin-bottom: 8px;
+      cursor: default;
+      border: none;
+      letter-spacing: 0.3px;
     }
     .calc-subtitle {
       font-size: 14px;
@@ -1148,9 +1161,9 @@
     }
 
     .theme-btn.active {
-      background: rgba(255,255,255,0.2);
+      background: var(--primary-light);
       color: white;
-      border-color: rgba(255,255,255,0.35);
+      border-color: var(--primary-light);
     }
 
     .theme-btn:hover:not(.active) {
@@ -1367,11 +1380,13 @@
       const favs = getFavorites();
 
       // Home
+      html += `<div class="nav-divider"></div>`;
       html += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="showHome()" data-id="home">HOME</div>
       </div>`;
 
       // Calculator
+      html += `<div class="nav-divider"></div>`;
       html += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator()" data-id="calculator">CALCOLATORE RETRIBUTIVO</div>
       </div>`;
@@ -1393,7 +1408,8 @@
       }
 
       // Regular sections
-      CCNL_DATA.sections.forEach(section => {
+      CCNL_DATA.sections.forEach((section, idx) => {
+        if (idx === 0) html += '<div class="nav-divider"></div>';
         html += `<div class="nav-section"><div class="nav-section-title">${section.title}</div>`;
         section.articles.forEach(article => {
           const starred = favs.includes(article.id);
@@ -1586,8 +1602,8 @@
       document.getElementById('calcGrade').classList.add('active');
       document.getElementById('calcScatti').classList.add('active');
 
-      // Tabella 1 - senza aumenti
-      const mensileLordo = pagaBase + scattiValore + vacanza + superminimo + voloMese;
+      // Tabella 1 - senza aumenti (senza vacanza)
+      const mensileLordo = pagaBase + scattiValore + superminimo + voloMese;
       const tredicesima = pagaBase + scattiValore + superminimo;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
 
@@ -1604,7 +1620,6 @@
           '<div class="calc-results-header">' + grade.label + ' - ' + scatti + ' scatt' + (scatti===1?'o':'i') + ' di anzianit\u00e0</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo) + '</strong></span></div>' +
