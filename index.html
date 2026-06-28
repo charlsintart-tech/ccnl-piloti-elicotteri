@@ -2127,6 +2127,11 @@
                 <input type="number" class="calc-select" id="compCustomA" value="0" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
                 <button class="input-clear-btn" onclick="document.getElementById('compCustomA').value='0';updateCompT3()">\u00d7</button>
               </div>
+              <label class="calc-label" style="margin-top:10px">Volo notturno A (7 notti, \u20ac)</label>
+              <div class="input-clear-wrap" style="width:100%">
+                <input type="number" class="calc-select" id="compNotturnoA" value="${(CALC_DATA.grades[0].volo60h / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
+                <button class="input-clear-btn" onclick="document.getElementById('compNotturnoA').value='0';updateCompT3()">\u00d7</button>
+              </div>
             </div>
             <div class="compare-col">
               <label class="calc-label">Grado B</label>
@@ -2141,6 +2146,11 @@
               <div class="input-clear-wrap" style="width:100%">
                 <input type="number" class="calc-select" id="compCustomB" value="0" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
                 <button class="input-clear-btn" onclick="document.getElementById('compCustomB').value='0';updateCompT3()">\u00d7</button>
+              </div>
+              <label class="calc-label" style="margin-top:10px">Volo notturno B (7 notti, \u20ac)</label>
+              <div class="input-clear-wrap" style="width:100%">
+                <input type="number" class="calc-select" id="compNotturnoB" value="${(CALC_DATA.grades[1].volo60h / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
+                <button class="input-clear-btn" onclick="document.getElementById('compNotturnoB').value='0';updateCompT3()">\u00d7</button>
               </div>
             </div>
           </div>
@@ -2234,6 +2244,8 @@
       // Set custom scatti defaults
       document.getElementById('compCustomA').value = scValA.toFixed(2);
       document.getElementById('compCustomB').value = scValB.toFixed(2);
+      document.getElementById('compNotturnoA').value = (gA.volo60h / 60 * 0.16 * 6 * 7).toFixed(2);
+      document.getElementById('compNotturnoB').value = (gB.volo60h / 60 * 0.16 * 6 * 7).toFixed(2);
 
       var html = buildCompTable('compTable1', 'Calcolo retribuzione da CCNL 2001', rows1, lblA, lblB, fmtE);
       html += buildCompTable('compTable2', 'Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025', rows2, lblA, lblB, fmtE);
@@ -2255,8 +2267,10 @@
       var lblA = gA.label + ' (' + sA + ' sc.)';
       var lblB = gB.label + ' (' + sB + ' sc.)';
 
-      var m3A = gA.pagaBase + custA + gA.vacanza + sup + gA.aumento + gA.volo60h;
-      var m3B = gB.pagaBase + custB + gB.vacanza + sup + gB.aumento + gB.volo60h;
+      var nottA = parseFloat(document.getElementById('compNotturnoA').value) || 0;
+      var nottB = parseFloat(document.getElementById('compNotturnoB').value) || 0;
+      var m3A = gA.pagaBase + custA + gA.vacanza + sup + gA.aumento + gA.volo60h + nottA;
+      var m3B = gB.pagaBase + custB + gB.vacanza + sup + gB.aumento + gB.volo60h + nottB;
       var t3A = gA.pagaBase + custA + sup;
       var t3B = gB.pagaBase + custB + sup;
       var a3A = (m3A * 12) + t3A + gA.integr200h;
@@ -2268,6 +2282,7 @@
         ['Superminimo', sup, sup],
         ['Aumenti 2024/2025', gA.aumento, gB.aumento],
         ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
+        ['Indennit\u00e0 di volo notturno (7 notti)', nottA, nottB],
         ['Totale mensile lordo', m3A, m3B, true],
         ['\u00d7 12 mensilit\u00e0', m3A * 12, m3B * 12],
         ['13\u00aa mensilit\u00e0', t3A, t3B],
@@ -2289,6 +2304,7 @@
         ['Superminimo', sup, sup],
         ['Aumenti 2024/2025', gA.aumento, gB.aumento],
         ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
+        ['Indennit\u00e0 di volo notturno (7 notti)', nottA, nottB],
         ['Totale mensile lordo', m3A, m3B, true],
         ['\u00d7 12 mensilit\u00e0', m3A * 12, m3B * 12],
         ['13\u00aa mensilit\u00e0 (modificata)', t4A, t4B],
