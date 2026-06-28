@@ -711,7 +711,7 @@
 
     /* Print */
     @media print {
-      .sidebar, .header, .article-nav, .menu-toggle, .sidebar-overlay, .article-toolbar {
+      .sidebar, .header, .article-nav, .menu-toggle, .sidebar-overlay, .article-toolbar, .article-notes {
         display: none !important;
       }
       .app-layout {
@@ -774,6 +774,206 @@
       text-transform: uppercase;
       letter-spacing: 0.3px;
     }
+
+    /* Keyword highlight in article body */
+    mark.kw-highlight {
+      background: #fef08a;
+      color: inherit;
+      padding: 1px 3px;
+      border-radius: 3px;
+    }
+    [data-theme="dark"] mark.kw-highlight {
+      background: #854d0e;
+      color: #fef9c3;
+    }
+
+    /* Favorites star */
+    .nav-item-fav {
+      float: right;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0 2px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .nav-item-fav:hover { color: var(--accent); }
+    .nav-item-fav.is-fav { color: var(--accent); }
+
+    /* Font size controls */
+    .font-size-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      margin-left: auto;
+    }
+    .font-size-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .font-size-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+    [data-theme="dark"] .font-size-btn {
+      background: var(--bg-card);
+      border-color: var(--border);
+    }
+
+    /* Notes section */
+    .article-notes {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .article-notes-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .article-notes-title svg {
+      width: 16px;
+      height: 16px;
+    }
+    .notes-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .notes-textarea:focus {
+      border-color: var(--primary);
+    }
+    .notes-textarea::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+    .notes-saved {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .notes-saved.visible { opacity: 1; }
+    [data-theme="dark"] .notes-textarea {
+      background: var(--bg-card);
+      border-color: var(--border);
+    }
+
+    /* Calculator */
+    .calc-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .calc-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .calc-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+    .calc-field {
+      margin-bottom: 20px;
+    }
+    .calc-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .calc-select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a6578' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    .calc-select:focus { border-color: var(--primary); }
+    [data-theme="dark"] .calc-select {
+      background-color: var(--bg-card);
+      border-color: var(--border);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    }
+    .calc-results {
+      margin-top: 28px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .calc-results-header {
+      background: var(--primary);
+      color: white;
+      padding: 14px 18px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .calc-row:last-child { border-bottom: none; }
+    .calc-row:nth-child(even) { background: rgba(0,0,0,0.02); }
+    [data-theme="dark"] .calc-row:nth-child(even) { background: rgba(255,255,255,0.03); }
+    .calc-row-label { color: var(--text-secondary); }
+    .calc-row-value { font-weight: 600; color: var(--text); }
+    .calc-row.total {
+      background: var(--primary) !important;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .calc-row.total .calc-row-label,
+    .calc-row.total .calc-row-value { color: white; }
 
     /* Theme switcher */
     .theme-switcher {
@@ -939,8 +1139,58 @@
   <script>
     let currentArticleId = null;
     let allArticles = [];
+    let currentKeyword = '';
+    let fontSize = parseInt(localStorage.getItem('ccnl-fontsize')) || 16;
 
-    // Flatten all articles for navigation
+    // ===== FAVORITES =====
+    function getFavorites() {
+      try { return JSON.parse(localStorage.getItem('ccnl-favorites')) || []; } catch { return []; }
+    }
+    function saveFavorites(favs) { localStorage.setItem('ccnl-favorites', JSON.stringify(favs)); }
+    function toggleFavorite(id, e) {
+      if (e) e.stopPropagation();
+      let favs = getFavorites();
+      if (favs.includes(id)) { favs = favs.filter(f => f !== id); } else { favs.push(id); }
+      saveFavorites(favs);
+      buildSidebar();
+      updateActiveNav();
+    }
+    function isFavorite(id) { return getFavorites().includes(id); }
+
+    // ===== FONT SIZE =====
+    function applyFontSize() {
+      const body = document.querySelector('.article-body');
+      if (body) body.style.fontSize = fontSize + 'px';
+    }
+    function changeFontSize(delta) {
+      fontSize = Math.max(12, Math.min(24, fontSize + delta));
+      localStorage.setItem('ccnl-fontsize', fontSize);
+      applyFontSize();
+    }
+
+    // ===== NOTES =====
+    function getNote(articleId) { return localStorage.getItem('ccnl-note-' + articleId) || ''; }
+    function saveNote(articleId, text) {
+      if (text.trim()) { localStorage.setItem('ccnl-note-' + articleId, text); }
+      else { localStorage.removeItem('ccnl-note-' + articleId); }
+      const saved = document.getElementById('notesSaved');
+      if (saved) { saved.classList.add('visible'); setTimeout(() => saved.classList.remove('visible'), 1500); }
+    }
+    let noteTimer = null;
+    function onNoteInput(articleId, el) {
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(() => saveNote(articleId, el.value), 600);
+    }
+
+    // ===== KEYWORD HIGHLIGHT =====
+    function highlightKeyword(html, keyword) {
+      if (!keyword) return html;
+      const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(?![^<]*>)(${escaped})`, 'gi');
+      return html.replace(regex, '<mark class="kw-highlight">$1</mark>');
+    }
+
+    // ===== FLATTEN ARTICLES =====
     function initArticles() {
       CCNL_DATA.sections.forEach(section => {
         section.articles.forEach(article => {
@@ -949,24 +1199,49 @@
       });
     }
 
-    // Build sidebar navigation
+    // ===== BUILD SIDEBAR =====
     function buildSidebar() {
       const nav = document.getElementById('sidebarNav');
       let html = '';
+      const favs = getFavorites();
 
-      // Home link
+      // Home
       html += `<div class="nav-section">
         <a class="nav-item" data-id="home" onclick="showHome()">
           <span class="nav-item-number">&#9751;</span> Pagina iniziale
         </a>
       </div>`;
 
+      // Calculator
+      html += `<div class="nav-section">
+        <a class="nav-item" data-id="calculator" onclick="showCalculator()">
+          <span class="nav-item-number">&#9998;</span> Calcolatore Retributivo
+        </a>
+      </div>`;
+
+      // Favorites section
+      if (favs.length > 0) {
+        html += `<div class="nav-section"><div class="nav-section-title">Preferiti</div>`;
+        favs.forEach(favId => {
+          const art = allArticles.find(a => a.id === favId);
+          if (art) {
+            html += `<a class="nav-item" data-id="${art.id}" onclick="showArticle('${art.id}')">
+              <button class="nav-item-fav is-fav" onclick="toggleFavorite('${art.id}', event)">&#9733;</button>
+              ${art.number ? `<span class="nav-item-number">Art. ${art.number}</span>` : ''}
+              ${art.title}
+            </a>`;
+          }
+        });
+        html += '</div>';
+      }
+
+      // Regular sections
       CCNL_DATA.sections.forEach(section => {
-        html += `<div class="nav-section">
-          <div class="nav-section-title">${section.title}</div>`;
+        html += `<div class="nav-section"><div class="nav-section-title">${section.title}</div>`;
         section.articles.forEach(article => {
-          const label = article.number ? `Art. ${article.number}` : article.title.substring(0, 12);
+          const starred = favs.includes(article.id);
           html += `<a class="nav-item" data-id="${article.id}" onclick="showArticle('${article.id}')">
+            <button class="nav-item-fav${starred ? ' is-fav' : ''}" onclick="toggleFavorite('${article.id}', event)">${starred ? '&#9733;' : '&#9734;'}</button>
             ${article.number ? `<span class="nav-item-number">Art. ${article.number}</span>` : ''}
             ${article.title}
           </a>`;
@@ -977,9 +1252,10 @@
       nav.innerHTML = html;
     }
 
-    // Show welcome/home page
+    // ===== HOME PAGE =====
     function showHome() {
       currentArticleId = null;
+      currentKeyword = '';
       updateActiveNav();
       const main = document.getElementById('mainContent');
       main.innerHTML = `
@@ -1002,7 +1278,7 @@
       closeSidebar();
     }
 
-    // Show specific article
+    // ===== SHOW ARTICLE =====
     function showArticle(articleId) {
       currentArticleId = articleId;
       const articleIndex = allArticles.findIndex(a => a.id === articleId);
@@ -1013,6 +1289,14 @@
 
       const prev = articleIndex > 0 ? allArticles[articleIndex - 1] : null;
       const next = articleIndex < allArticles.length - 1 ? allArticles[articleIndex + 1] : null;
+      const favIcon = isFavorite(articleId) ? '&#9733;' : '&#9734;';
+      const favClass = isFavorite(articleId) ? ' is-fav' : '';
+      const noteText = getNote(articleId).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+      let articleContent = article.content;
+      if (currentKeyword) {
+        articleContent = highlightKeyword(articleContent, currentKeyword);
+      }
 
       const main = document.getElementById('mainContent');
       const toolbarTitle = article.number ? `<strong>Articolo ${article.number}</strong>` : `<strong>${article.title}</strong>`;
@@ -1020,6 +1304,13 @@
         <div class="article-container fade-in">
           <div class="article-toolbar">
             <span class="article-toolbar-title">${toolbarTitle}</span>
+            <div class="font-size-controls">
+              <button class="font-size-btn" onclick="changeFontSize(-1)" title="Riduci testo">A-</button>
+              <button class="font-size-btn" onclick="changeFontSize(1)" title="Ingrandisci testo">A+</button>
+            </div>
+            <button class="toolbar-btn" onclick="toggleFavorite('${articleId}')" title="Preferito" style="font-size:16px">
+              <span class="${favClass ? 'is-fav' : ''}" id="favBtnIcon" style="color:${isFavorite(articleId) ? 'var(--accent)' : 'inherit'}">${favIcon}</span>
+            </button>
             <button class="toolbar-btn" onclick="printArticle()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               <span>Stampa</span>
@@ -1038,7 +1329,15 @@
             <h1 class="article-title">${article.title}</h1>
           </div>
           <div class="article-body">
-            ${article.content}
+            ${articleContent}
+          </div>
+          <div class="article-notes">
+            <div class="article-notes-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              Note personali
+            </div>
+            <textarea class="notes-textarea" placeholder="Scrivi le tue note su questo articolo..." oninput="onNoteInput('${articleId}', this)">${noteText}</textarea>
+            <div class="notes-saved" id="notesSaved">Nota salvata</div>
           </div>
           <div class="article-nav">
             ${prev ? `
@@ -1056,11 +1355,87 @@
           </div>
         </div>
       `;
+      applyFontSize();
       main.scrollTop = 0;
       closeSidebar();
     }
 
-    // Update active state in sidebar
+    // ===== CALCULATOR =====
+    const CALC_DATA = {
+      grades: [
+        { id: 'cs', label: 'Comandante Superiore', minimo: 2759461, contingenza: 1037000, voloH: 72147, integrH: 40840 },
+        { id: 'pc', label: 'Primo Comandante', minimo: 2593846, contingenza: 1024000, voloH: 71574, integrH: 40240 },
+        { id: 'cmd', label: 'Comandante', minimo: 2432846, contingenza: 1015000, voloH: 70933, integrH: 39515 },
+        { id: 'uf', label: '1\u00b0 Ufficiale', minimo: 2121846, contingenza: 1005000, voloH: 52632, integrH: 37125 },
+        { id: 'p1', label: 'Pilota di 1\u00b0', minimo: 2036538, contingenza: 996000, voloH: 46018, integrH: 35925 },
+        { id: 'p2', label: 'Pilota di 2\u00b0', minimo: 1936384, contingenza: 970000, voloH: 36624, integrH: 30975 },
+        { id: 'si', label: 'Salario di Ingresso', minimo: 1936384, contingenza: 970000, voloH: 16543, integrH: 8890 }
+      ]
+    };
+
+    function showCalculator() {
+      currentArticleId = 'calculator';
+      currentKeyword = '';
+      updateActiveNav();
+      const main = document.getElementById('mainContent');
+      main.innerHTML = `
+        <div class="calc-container fade-in">
+          <div class="calc-title">Calcolatore Retributivo</div>
+          <div class="calc-subtitle">Calcola la retribuzione annua in base al grado e all'anzianit\u00e0 - Valori CCNL 2001 convertiti in Euro</div>
+          <div class="calc-field">
+            <label class="calc-label">Grado</label>
+            <select class="calc-select" id="calcGrade" onchange="calculateSalary()">
+              ${CALC_DATA.grades.map(g => `<option value="${g.id}">${g.label}</option>`).join('')}
+            </select>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">Scatti di anzianit\u00e0 (biennali, 5% ciascuno)</label>
+            <select class="calc-select" id="calcScatti" onchange="calculateSalary()">
+              ${Array.from({length:11}, (_,i) => `<option value="${i}">${i} scatt${i===1?'o':'i'} (${i*2} anni)</option>`).join('')}
+            </select>
+          </div>
+          <div id="calcResults"></div>
+        </div>
+      `;
+      calculateSalary();
+      main.scrollTop = 0;
+      closeSidebar();
+    }
+
+    function calculateSalary() {
+      const gradeId = document.getElementById('calcGrade').value;
+      const scatti = parseInt(document.getElementById('calcScatti').value);
+      const grade = CALC_DATA.grades.find(g => g.id === gradeId);
+      const R = 1936.27;
+      const fmtE = v => new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v);
+
+      const minimo = grade.minimo / R;
+      const contingenza = grade.contingenza / R;
+      const stipendioBase = minimo;
+      const scattiPerc = scatti * 0.05;
+      const scattiValore = stipendioBase * scattiPerc;
+      const voloMese = (grade.voloH / R) * 60;
+      const integrAnno = (grade.integrH / R) * 200;
+      const mensileLordo = stipendioBase + scattiValore + voloMese;
+      const tredicesima = stipendioBase + scattiValore;
+      const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
+
+      document.getElementById('calcResults').innerHTML = `
+        <div class="calc-results">
+          <div class="calc-results-header">${grade.label} - ${scatti} scatt${scatti===1?'o':'i'} di anzianit\u00e0</div>
+          <div class="calc-row"><span class="calc-row-label">Stipendio minimo mensile</span><span class="calc-row-value">${fmtE(stipendioBase)}</span></div>
+          <div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (+${(scattiPerc*100).toFixed(0)}%)</span><span class="calc-row-value">${fmtE(scattiValore)}</span></div>
+          <div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">${fmtE(voloMese)}</span></div>
+          <div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>${fmtE(mensileLordo)}</strong></span></div>
+          <div class="calc-row"><span class="calc-row-label">x 12 mensilit\u00e0</span><span class="calc-row-value">${fmtE(mensileLordo * 12)}</span></div>
+          <div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0</span><span class="calc-row-value">${fmtE(tredicesima)}</span></div>
+          <div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">${fmtE(integrAnno)}</span></div>
+          <div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">${fmtE(totaleAnnuo)}</span></div>
+        </div>
+      `;
+    }
+
+    // ===== ACTIVE NAV =====
     function updateActiveNav() {
       document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.toggle('active',
@@ -1069,14 +1444,13 @@
       });
     }
 
-    // Filter articles in sidebar by title
+    // ===== SEARCH BY TITLE =====
     function filterArticles(query) {
       document.getElementById('keywordInput').value = '';
+      currentKeyword = '';
       const q = query.toLowerCase().trim();
       const items = document.querySelectorAll('.nav-item[data-id]');
       const sections = document.querySelectorAll('.nav-section');
-
-      // Remove keyword badges
       document.querySelectorAll('.keyword-badge').forEach(b => b.remove());
 
       if (!q) {
@@ -1095,38 +1469,33 @@
           if (match) hasVisible = true;
         });
         const title = section.querySelector('.nav-section-title');
-        if (title) {
-          section.style.display = hasVisible ? '' : 'none';
-        }
+        if (title) section.style.display = hasVisible ? '' : 'none';
       });
     }
 
-    // Search articles by keyword in content
+    // ===== SEARCH BY KEYWORD =====
     function searchByKeyword(query) {
       document.getElementById('searchInput').value = '';
       const q = query.toLowerCase().trim();
+      currentKeyword = q;
       const items = document.querySelectorAll('.nav-item[data-id]');
       const sections = document.querySelectorAll('.nav-section');
-
-      // Remove old badges
       document.querySelectorAll('.keyword-badge').forEach(b => b.remove());
 
       if (!q) {
+        currentKeyword = '';
         items.forEach(item => item.style.display = '');
         sections.forEach(s => s.style.display = '');
         return;
       }
 
-      // Build a plain-text map from article content
       const matchingIds = new Set();
       allArticles.forEach(article => {
         const tmp = document.createElement('div');
         tmp.innerHTML = article.content;
         const plain = (tmp.textContent || '').toLowerCase();
         const titleText = article.title.toLowerCase();
-        if (plain.includes(q) || titleText.includes(q)) {
-          matchingIds.add(article.id);
-        }
+        if (plain.includes(q) || titleText.includes(q)) matchingIds.add(article.id);
       });
 
       sections.forEach(section => {
@@ -1136,8 +1505,7 @@
           const id = item.dataset.id;
           const match = matchingIds.has(id);
           item.style.display = match ? '' : 'none';
-          // Add/remove keyword badge
-          if (match && id !== 'home') {
+          if (match && id !== 'home' && id !== 'calculator') {
             const badge = document.createElement('span');
             badge.className = 'keyword-badge';
             badge.textContent = 'trovato';
@@ -1146,13 +1514,11 @@
           if (match) hasVisible = true;
         });
         const title = section.querySelector('.nav-section-title');
-        if (title) {
-          section.style.display = hasVisible ? '' : 'none';
-        }
+        if (title) section.style.display = hasVisible ? '' : 'none';
       });
     }
 
-    // Print current article
+    // ===== PRINT =====
     function printArticle() {
       const article = allArticles.find(a => a.id === currentArticleId);
       if (!article) return;
@@ -1179,7 +1545,7 @@
       setTimeout(() => { printWin.print(); }, 300);
     }
 
-    // Share via WhatsApp
+    // ===== WHATSAPP =====
     function shareWhatsApp() {
       const article = allArticles.find(a => a.id === currentArticleId);
       if (!article) return;
@@ -1188,14 +1554,11 @@
       const plainText = bodyEl ? bodyEl.innerText : '';
       const maxLen = 3000;
       let text = `${title}\n_CCNL Piloti di Elicottero_\n\n${plainText}`;
-      if (text.length > maxLen) {
-        text = text.substring(0, maxLen) + '\n\n[...continua]';
-      }
-      const url = 'https://wa.me/?text=' + encodeURIComponent(text);
-      window.open(url, '_blank');
+      if (text.length > maxLen) text = text.substring(0, maxLen) + '\n\n[...continua]';
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     }
 
-    // Share via Mail
+    // ===== MAIL =====
     function shareMail() {
       const article = allArticles.find(a => a.id === currentArticleId);
       if (!article) return;
@@ -1208,25 +1571,19 @@
       window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     }
 
-    // Sidebar toggle for mobile
+    // ===== SIDEBAR TOGGLE =====
     function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('open');
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
     }
-
     function closeSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      sidebar.classList.remove('open');
-      overlay.classList.remove('open');
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
     }
 
-    // Keyboard navigation
+    // ===== KEYBOARD NAV =====
     document.addEventListener('keydown', (e) => {
-      if (e.target.tagName === 'INPUT') return;
-
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         e.preventDefault();
         const idx = allArticles.findIndex(a => a.id === currentArticleId);
@@ -1241,76 +1598,49 @@
       }
     });
 
-    // Handle swipe on mobile
+    // ===== SWIPE =====
     let touchStartX = 0;
-    document.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
     document.addEventListener('touchend', (e) => {
       const deltaX = e.changedTouches[0].clientX - touchStartX;
       if (Math.abs(deltaX) > 80) {
-        if (deltaX > 0 && touchStartX < 30) {
-          toggleSidebar();
-        } else if (deltaX < 0) {
-          closeSidebar();
-        }
+        if (deltaX > 0 && touchStartX < 30) toggleSidebar();
+        else if (deltaX < 0) closeSidebar();
       }
     }, { passive: true });
 
-    // Theme management
+    // ===== THEME =====
     const systemDarkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
     function applyTheme(resolved) {
       document.documentElement.setAttribute('data-theme', resolved);
       const metaTheme = document.querySelector('meta[name="theme-color"]');
       if (metaTheme) metaTheme.content = resolved === 'dark' ? '#0a1020' : '#1e3a5f';
     }
-
     function setTheme(choice) {
       localStorage.setItem('ccnl-theme', choice);
-      document.querySelectorAll('.theme-btn').forEach(b =>
-        b.classList.toggle('active', b.dataset.themeChoice === choice)
-      );
-      if (choice === 'system') {
-        applyTheme(systemDarkQuery.matches ? 'dark' : 'light');
-      } else {
-        applyTheme(choice);
-      }
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.themeChoice === choice));
+      applyTheme(choice === 'system' ? (systemDarkQuery.matches ? 'dark' : 'light') : choice);
     }
-
-    function initTheme() {
-      const saved = localStorage.getItem('ccnl-theme') || 'system';
-      setTheme(saved);
-    }
-
+    function initTheme() { setTheme(localStorage.getItem('ccnl-theme') || 'system'); }
     systemDarkQuery.addEventListener('change', () => {
-      if ((localStorage.getItem('ccnl-theme') || 'system') === 'system') {
-        applyTheme(systemDarkQuery.matches ? 'dark' : 'light');
-      }
+      if ((localStorage.getItem('ccnl-theme') || 'system') === 'system') applyTheme(systemDarkQuery.matches ? 'dark' : 'light');
     });
-
     initTheme();
 
-    // Init
+    // ===== INIT =====
     initArticles();
     buildSidebar();
     showHome();
 
-    // Handle hash navigation
     function handleHash() {
       const hash = window.location.hash.substring(1);
-      if (hash && allArticles.find(a => a.id === hash)) {
-        showArticle(hash);
-      }
+      if (hash === 'calculator') showCalculator();
+      else if (hash && allArticles.find(a => a.id === hash)) showArticle(hash);
     }
     window.addEventListener('hashchange', handleHash);
     if (window.location.hash) handleHash();
 
-    // Register Service Worker for offline support
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    }
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
   </script>
 </body>
 </html>
