@@ -1466,13 +1466,13 @@
     // ===== CALCULATOR =====
     const CALC_DATA = {
       grades: [
-        { id: 'cs', label: 'Comandante Superiore', minimo: 2759461, contingenza: 1037000, voloH: 72147, integrH: 40840 },
-        { id: 'pc', label: 'Primo Comandante', minimo: 2593846, contingenza: 1024000, voloH: 71574, integrH: 40240 },
-        { id: 'cmd', label: 'Comandante', minimo: 2432846, contingenza: 1015000, voloH: 70933, integrH: 39515 },
-        { id: 'uf', label: '1\u00b0 Ufficiale', minimo: 2121846, contingenza: 1005000, voloH: 52632, integrH: 37125 },
-        { id: 'p1', label: 'Pilota di 1\u00b0', minimo: 2036538, contingenza: 996000, voloH: 46018, integrH: 35925 },
-        { id: 'p2', label: 'Pilota di 2\u00b0', minimo: 1936384, contingenza: 970000, voloH: 36624, integrH: 30975 },
-        { id: 'si', label: 'Salario di Ingresso', minimo: 1936384, contingenza: 970000, voloH: 16543, integrH: 8890 }
+        { id: 'cs', label: 'Comandante Superiore', pagaBase: 1425.14, volo60h: 2235.60, integr200h: 4218.00, scatto: 197.58 },
+        { id: 'pc', label: 'Primo Comandante', pagaBase: 1339.61, volo60h: 2217.60, integr200h: 4156.00, scatto: 192.24 },
+        { id: 'cmd', label: 'Comandante', pagaBase: 1256.46, volo60h: 2197.80, integr200h: 4080.00, scatto: 186.88 },
+        { id: 'uf', label: '1\u00b0 Ufficiale', pagaBase: 1095.84, volo60h: 1630.80, integr200h: 3834.00, scatto: 149.42 },
+        { id: 'p1', label: 'Pilota di 1\u00b0', pagaBase: 1051.78, volo60h: 1426.20, integr200h: 3710.00, scatto: 137.30 },
+        { id: 'p2', label: 'Pilota di 2\u00b0', pagaBase: 1000.06, volo60h: 1134.60, integr200h: 3200.00, scatto: 119.29 },
+        { id: 'si', label: 'Salario di Ingresso', pagaBase: 1000.06, volo60h: 512.40, integr200h: 918.00, scatto: 81.80 }
       ]
     };
 
@@ -1484,17 +1484,17 @@
       main.innerHTML = `
         <div class="calc-container fade-in">
           <div class="calc-title">Calcolatore Retributivo</div>
-          <div class="calc-subtitle">Calcola la retribuzione annua in base al grado e all'anzianit\u00e0 - Valori CCNL 2001 convertiti in Euro</div>
+          <div class="calc-subtitle">Calcola la retribuzione annua in base al grado e all'anzianit\u00e0 - Valori CCNL convertiti in Euro</div>
           <div class="calc-field">
             <label class="calc-label">Grado</label>
             <select class="calc-select" id="calcGrade" onchange="calculateSalary()">
-              ${CALC_DATA.grades.map(g => `<option value="${g.id}">${g.label}</option>`).join('')}
+              ${CALC_DATA.grades.map(g => '<option value="' + g.id + '">' + g.label + '</option>').join('')}
             </select>
           </div>
           <div class="calc-field">
-            <label class="calc-label">Scatti di anzianit\u00e0 (biennali, 5% ciascuno)</label>
+            <label class="calc-label">Scatti di anzianit\u00e0 (biennali)</label>
             <select class="calc-select" id="calcScatti" onchange="calculateSalary()">
-              ${Array.from({length:11}, (_,i) => `<option value="${i}">${i} scatt${i===1?'o':'i'} (${i*2} anni)</option>`).join('')}
+              ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + ' (' + (i*2) + ' anni)</option>').join('')}
             </select>
           </div>
           <div id="calcResults"></div>
@@ -1509,34 +1509,29 @@
       const gradeId = document.getElementById('calcGrade').value;
       const scatti = parseInt(document.getElementById('calcScatti').value);
       const grade = CALC_DATA.grades.find(g => g.id === gradeId);
-      const R = 1936.27;
       const fmtE = v => new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v);
 
-      const minimoComplessivo = grade.minimo / R;
-      const contingenza = grade.contingenza / R;
-      const minimoTabellare = minimoComplessivo - contingenza;
-      const scattiPerc = scatti * 0.05;
-      const scattiValore = minimoTabellare * scattiPerc;
-      const voloMese = (grade.voloH / R) * 60;
-      const integrAnno = (grade.integrH / R) * 200;
-      const mensileLordo = minimoTabellare + scattiValore + voloMese;
-      const tredicesima = minimoTabellare + scattiValore;
+      const pagaBase = grade.pagaBase;
+      const scattoUnit = grade.scatto;
+      const scattiValore = scattoUnit * scatti;
+      const voloMese = grade.volo60h;
+      const integrAnno = grade.integr200h;
+      const mensileLordo = pagaBase + scattiValore + voloMese;
+      const tredicesima = pagaBase + scattiValore;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
 
-      document.getElementById('calcResults').innerHTML = `
-        <div class="calc-results">
-          <div class="calc-results-header">${grade.label} - ${scatti} scatt${scatti===1?'o':'i'} di anzianit\u00e0</div>
-          <div class="calc-row"><span class="calc-row-label">Minimo tabellare mensile</span><span class="calc-row-value">${fmtE(minimoTabellare)}</span></div>
-          <div class="calc-row" style="opacity:0.6"><span class="calc-row-label">Ind. contingenza (non pi\u00f9 applicata)</span><span class="calc-row-value" style="text-decoration:line-through">${fmtE(contingenza)}</span></div>
-          <div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (+${(scattiPerc*100).toFixed(0)}% su minimo tab.)</span><span class="calc-row-value">${fmtE(scattiValore)}</span></div>
-          <div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">${fmtE(voloMese)}</span></div>
-          <div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>${fmtE(mensileLordo)}</strong></span></div>
-          <div class="calc-row"><span class="calc-row-label">x 12 mensilit\u00e0</span><span class="calc-row-value">${fmtE(mensileLordo * 12)}</span></div>
-          <div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0</span><span class="calc-row-value">${fmtE(tredicesima)}</span></div>
-          <div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">${fmtE(integrAnno)}</span></div>
-          <div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">${fmtE(totaleAnnuo)}</span></div>
-        </div>
-      `;
+      document.getElementById('calcResults').innerHTML =
+        '<div class="calc-results">' +
+          '<div class="calc-results-header">' + grade.label + ' - ' + scatti + ' scatt' + (scatti===1?'o':'i') + ' di anzianit\u00e0</div>' +
+          '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo) + '</strong></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo * 12) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
+          '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo) + '</span></div>' +
+        '</div>';
     }
 
     // ===== NOTES LIST =====
