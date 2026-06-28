@@ -1221,6 +1221,73 @@
       color: #25D366;
     }
 
+    /* Confronto gradi */
+    .calc-compare-section {
+      margin-top: 32px;
+      border-top: 2px solid var(--border);
+      padding-top: 24px;
+    }
+    .calc-compare-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .calc-compare-btn:active {
+      opacity: 0.8;
+    }
+    .compare-selectors {
+      display: flex;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .compare-col {
+      flex: 1;
+    }
+    .compare-header-row {
+      display: flex;
+      padding: 10px 8px;
+      background: var(--primary-light);
+      color: white;
+      border-radius: 8px 8px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+    .compare-h-label { flex: 2; }
+    .compare-h-val { flex: 1.5; text-align: right; }
+    .compare-row {
+      display: flex;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      align-items: center;
+    }
+    .compare-row.total {
+      font-weight: 700;
+      background: rgba(37,99,235,0.05);
+      border-top: 2px solid var(--primary);
+    }
+    .compare-row.compare-bold { font-weight: 600; }
+    .compare-label { flex: 2; }
+    .compare-val { flex: 1.5; text-align: right; font-variant-numeric: tabular-nums; }
+    .compare-diff-pos { color: #22c55e; font-weight: 600; }
+    .compare-diff-neg { color: #ef4444; font-weight: 600; }
+    @media (max-width: 480px) {
+      .compare-selectors { flex-direction: column; }
+      .compare-row, .compare-header-row { font-size: 11px; padding: 8px 4px; }
+      .compare-h-label, .compare-label { flex: 1.5; }
+      .compare-h-val, .compare-val { flex: 1; }
+    }
+
     .theme-btn {
       flex: 1;
       padding: 7px 0;
@@ -1658,6 +1725,34 @@
             </select>
           </div>
           <div id="calcResults"></div>
+          <div class="calc-compare-section">
+            <button class="calc-compare-btn" onclick="toggleCompare()">&#9878; Confronta Gradi</button>
+            <div id="compareSection" style="display:none">
+              <div class="compare-selectors">
+                <div class="compare-col">
+                  <label class="calc-label">Grado A</label>
+                  <select class="calc-select" id="compareGradeA" onchange="updateCompare()">
+                    ${CALC_DATA.grades.map(g => '<option value="' + g.id + '">' + g.label + '</option>').join('')}
+                  </select>
+                  <label class="calc-label" style="margin-top:10px">Scatti A</label>
+                  <select class="calc-select" id="compareScattiA" onchange="updateCompare()">
+                    ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + '</option>').join('')}
+                  </select>
+                </div>
+                <div class="compare-col">
+                  <label class="calc-label">Grado B</label>
+                  <select class="calc-select" id="compareGradeB" onchange="updateCompare()">
+                    ${CALC_DATA.grades.map((g,idx) => '<option value="' + g.id + '"' + (idx===1?' selected':'') + '>' + g.label + '</option>').join('')}
+                  </select>
+                  <label class="calc-label" style="margin-top:10px">Scatti B</label>
+                  <select class="calc-select" id="compareScattiB" onchange="updateCompare()">
+                    ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + '</option>').join('')}
+                  </select>
+                </div>
+              </div>
+              <div id="compareResults"></div>
+            </div>
+          </div>
         </div>
       `;
       calculateSalary();
@@ -1932,6 +2027,79 @@
       var grade = document.getElementById('calcGrade');
       var label = grade.options[grade.selectedIndex].text;
       window.location.href = 'mailto:?subject=' + encodeURIComponent('Calcolo Retributivo - ' + label) + '&body=' + encodeURIComponent(text);
+    }
+
+    // ===== CONFRONTO GRADI =====
+    function toggleCompare() {
+      var section = document.getElementById('compareSection');
+      var btn = document.querySelector('.calc-compare-btn');
+      if (section.style.display === 'none') {
+        section.style.display = 'block';
+        btn.innerHTML = '&#10005; Chiudi Confronto';
+        updateCompare();
+      } else {
+        section.style.display = 'none';
+        btn.innerHTML = '&#9878; Confronta Gradi';
+      }
+    }
+
+    function updateCompare() {
+      var gA = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compareGradeA').value; });
+      var gB = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compareGradeB').value; });
+      var sA = parseInt(document.getElementById('compareScattiA').value);
+      var sB = parseInt(document.getElementById('compareScattiB').value);
+      var fmtE = function(v) { return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v); };
+      var sup = 10.33;
+
+      var scValA = gA.scatto * sA, scValB = gB.scatto * sB;
+      var mensA = gA.pagaBase + scValA + sup + gA.aumento + gA.volo60h;
+      var mensB = gB.pagaBase + scValB + sup + gB.aumento + gB.volo60h;
+      var tredA = gA.pagaBase + scValA + sup;
+      var tredB = gB.pagaBase + scValB + sup;
+      var annA = (mensA * 12) + tredA + gA.integr200h;
+      var annB = (mensB * 12) + tredB + gB.integr200h;
+
+      var rows = [
+        ['Paga base mensile', gA.pagaBase, gB.pagaBase],
+        ['Scatti anzianit\u00e0', scValA, scValB],
+        ['Superminimo', sup, sup],
+        ['Aumenti 2024/2025', gA.aumento, gB.aumento],
+        ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
+        ['Totale mensile lordo', mensA, mensB, true],
+        ['13\u00aa mensilit\u00e0', tredA, tredB],
+        ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Totale annuo lordo', annA, annB, false, true]
+      ];
+
+      var lblA = gA.label + ' (' + sA + ' sc.)';
+      var lblB = gB.label + ' (' + sB + ' sc.)';
+      var h = '<div class="calc-results" id="compareTable">' +
+        '<div class="calc-results-header">Confronto: ' + gA.label + ' vs ' + gB.label + '</div>' +
+        '<div class="compare-header-row">' +
+          '<span class="compare-h-label">Voce</span>' +
+          '<span class="compare-h-val">' + lblA + '</span>' +
+          '<span class="compare-h-val">' + lblB + '</span>' +
+          '<span class="compare-h-val">Diff.</span>' +
+        '</div>';
+
+      rows.forEach(function(r) {
+        var diff = r[2] - r[1];
+        var dc = diff > 0 ? 'compare-diff-pos' : (diff < 0 ? 'compare-diff-neg' : '');
+        var ds = diff > 0 ? '+' + fmtE(diff) : (diff < 0 ? fmtE(diff) : '\u2014');
+        var cls = r[4] ? ' total' : (r[3] ? ' compare-bold' : '');
+        h += '<div class="compare-row' + cls + '">' +
+          '<span class="compare-label">' + (r[3] || r[4] ? '<strong>' + r[0] + '</strong>' : r[0]) + '</span>' +
+          '<span class="compare-val">' + fmtE(r[1]) + '</span>' +
+          '<span class="compare-val">' + fmtE(r[2]) + '</span>' +
+          '<span class="compare-val ' + dc + '">' + ds + '</span>' +
+        '</div>';
+      });
+      h += '</div>' +
+        '<div class="calc-table-actions">' +
+          '<button onclick="shareTableText(\'compareTable\')">&#128221; WhatsApp Testo</button>' +
+          '<button class="wa-img-btn" onclick="shareTableImage(\'compareTable\')">&#128247; WhatsApp Immagine</button>' +
+        '</div>';
+      document.getElementById('compareResults').innerHTML = h;
     }
 
     // ===== PDF VIEWER =====
