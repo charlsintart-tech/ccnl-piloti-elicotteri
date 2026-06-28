@@ -1013,6 +1013,25 @@
       background-position: right 14px center;
     }
     .calc-select:focus { border-color: var(--primary); }
+    .calc-select.active {
+      background-color: var(--primary) !important;
+      color: white !important;
+      font-weight: 600;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+    }
+    .calc-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .calc-actions .toolbar-btn {
+      flex: 1;
+      min-width: 100px;
+      justify-content: center;
+    }
     [data-theme="dark"] .calc-select {
       background-color: var(--bg-card);
       border-color: var(--border);
@@ -1532,6 +1551,7 @@
       const scatti = parseInt(document.getElementById('calcScatti').value);
       const grade = CALC_DATA.grades.find(g => g.id === gradeId);
       const fmtE = v => new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v);
+      const superminimo = 10.33;
 
       const pagaBase = grade.pagaBase;
       const scattoUnit = grade.scatto;
@@ -1541,12 +1561,16 @@
       const integrAnno = grade.integr200h;
       const aumento = grade.aumento;
 
+      // Stile select attivo
+      document.getElementById('calcGrade').classList.add('active');
+      document.getElementById('calcScatti').classList.add('active');
+
       // Tabella 1 - senza aumenti
       const mensileLordo = pagaBase + scattiValore + vacanza + voloMese;
-      const tredicesima = pagaBase + scattiValore + vacanza;
+      const tredicesima = pagaBase + scattiValore + superminimo;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
 
-      // Tabella 2 - con aumenti 2024/2025 (13a SENZA aumenti)
+      // Tabella 2 - con aumenti 2024/2025 (13a senza aumenti)
       const mensileLordo2 = mensileLordo + aumento;
       const totaleAnnuo2 = (mensileLordo2 * 12) + tredicesima + integrAnno;
 
@@ -1555,7 +1579,7 @@
       const prevCustomVal = customInput ? customInput.value : String(scattiValore.toFixed(2));
 
       document.getElementById('calcResults').innerHTML =
-        '<div class="calc-results">' +
+        '<div class="calc-results" id="calcTable1">' +
           '<div class="calc-results-header">' + grade.label + ' - ' + scatti + ' scatt' + (scatti===1?'o':'i') + ' di anzianit\u00e0</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
@@ -1563,11 +1587,11 @@
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo) + '</strong></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo * 12) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + vacanza)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. \u20ac10,33)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
           '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo) + '</span></div>' +
         '</div>' +
-        '<div class="calc-results" style="margin-top:24px">' +
+        '<div class="calc-results" style="margin-top:24px" id="calcTable2">' +
           '<div class="calc-results-header">Con Aumenti 2024 / 2025 \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
@@ -1580,7 +1604,7 @@
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
           '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo2) + '</span></div>' +
         '</div>' +
-        '<div class="calc-results" style="margin-top:24px">' +
+        '<div class="calc-results" style="margin-top:24px" id="calcTable3">' +
           '<div class="calc-results-header">Retribuzione con scatti reali \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (importo reale \u20ac)</span><span class="calc-row-value"><input type="number" id="calcScattoCustom" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"></span></div>' +
@@ -1588,6 +1612,12 @@
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div id="calcCustomTotals"></div>' +
+        '</div>' +
+        '<div class="calc-actions">' +
+          '<button class="toolbar-btn" onclick="printCalc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>Stampa</span></button>' +
+          '<button class="toolbar-btn" onclick="exportCalcPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Esporta PDF</span></button>' +
+          '<button class="toolbar-btn whatsapp" onclick="shareCalcWhatsApp()"><svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg><span>WhatsApp</span></button>' +
+          '<button class="toolbar-btn mail" onclick="shareCalcMail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span>Mail</span></button>' +
         '</div>';
       recalcCustom();
     }
@@ -1596,6 +1626,7 @@
       const gradeId = document.getElementById('calcGrade').value;
       const grade = CALC_DATA.grades.find(g => g.id === gradeId);
       const fmtE = v => new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v);
+      const superminimo = 10.33;
       const customScatti = parseFloat(document.getElementById('calcScattoCustom').value) || 0;
       const pagaBase = grade.pagaBase;
       const vacanza = grade.vacanza;
@@ -1603,14 +1634,62 @@
       const voloMese = grade.volo60h;
       const integrAnno = grade.integr200h;
       const mensile3 = pagaBase + customScatti + vacanza + aumento + voloMese;
-      const tredicesima3 = pagaBase + customScatti + vacanza;
+      const tredicesima3 = pagaBase + customScatti + superminimo;
       const totale3 = (mensile3 * 12) + tredicesima3 + integrAnno;
       document.getElementById('calcCustomTotals').innerHTML =
         '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensile3) + '</strong></span></div>' +
         '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensile3 * 12) + '</span></div>' +
-        '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (senza aumenti)</span><span class="calc-row-value">' + fmtE(tredicesima3) + '</span></div>' +
+        '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. \u20ac10,33)</span><span class="calc-row-value">' + fmtE(tredicesima3) + '</span></div>' +
         '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
         '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale3) + '</span></div>';
+    }
+
+    function getCalcText() {
+      var el = document.getElementById('calcResults');
+      if (!el) return '';
+      var rows = el.querySelectorAll('.calc-results');
+      var text = 'CALCOLATORE RETRIBUTIVO CCNL\n\n';
+      rows.forEach(function(table) {
+        var header = table.querySelector('.calc-results-header');
+        if (header) text += header.textContent + '\n' + ''.padStart(40,'\u2500') + '\n';
+        table.querySelectorAll('.calc-row').forEach(function(r) {
+          var lbl = r.querySelector('.calc-row-label');
+          var val = r.querySelector('.calc-row-value');
+          if (lbl && val && !val.querySelector('input')) text += lbl.textContent + ': ' + val.textContent + '\n';
+        });
+        text += '\n';
+      });
+      return text;
+    }
+
+    function printCalc() {
+      var content = document.getElementById('calcResults').cloneNode(true);
+      content.querySelectorAll('.calc-actions').forEach(function(a) { a.remove(); });
+      content.querySelectorAll('input').forEach(function(inp) {
+        var span = document.createElement('strong');
+        span.textContent = '\u20ac ' + parseFloat(inp.value || 0).toFixed(2);
+        inp.parentNode.replaceChild(span, inp);
+      });
+      var w = window.open('','','width=800,height=600');
+      w.document.write('<html><head><title>Calcolatore Retributivo</title><style>body{font-family:-apple-system,sans-serif;padding:20px;font-size:14px}.calc-results{border:1px solid #ccc;border-radius:8px;overflow:hidden;margin-bottom:20px}.calc-results-header{background:#1e3a5f;color:white;padding:12px 16px;font-weight:600}.calc-row{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #eee}.calc-row.total{background:#1e3a5f;color:white;font-weight:700}</style></head><body>');
+      w.document.write(content.innerHTML);
+      w.document.write('</body></html>');
+      w.document.close();
+      w.print();
+    }
+
+    function exportCalcPDF() { printCalc(); }
+
+    function shareCalcWhatsApp() {
+      var text = getCalcText();
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    function shareCalcMail() {
+      var text = getCalcText();
+      var grade = document.getElementById('calcGrade');
+      var label = grade.options[grade.selectedIndex].text;
+      window.location.href = 'mailto:?subject=' + encodeURIComponent('Calcolo Retributivo - ' + label) + '&body=' + encodeURIComponent(text);
     }
 
     // ===== NOTES LIST =====
