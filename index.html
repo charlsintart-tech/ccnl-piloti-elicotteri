@@ -626,6 +626,94 @@
       font-size: 14px;
     }
 
+    /* Theme switcher */
+    .theme-switcher {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px 0;
+      background: var(--primary-dark);
+    }
+
+    .theme-btn {
+      flex: 1;
+      padding: 7px 0;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .theme-btn:first-child {
+      border-radius: 8px 0 0 8px;
+    }
+
+    .theme-btn:last-child {
+      border-radius: 0 8px 8px 0;
+    }
+
+    .theme-btn.active {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    .theme-btn:hover:not(.active) {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Dark theme */
+    [data-theme="dark"] {
+      --bg: #121820;
+      --bg-card: #1a2332;
+      --text: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --border: #2d3a4a;
+      --primary-dark: #0a1020;
+    }
+
+    [data-theme="dark"] .article-body strong {
+      color: #93b5e0;
+    }
+
+    [data-theme="dark"] .salary-table tbody tr:nth-child(even) {
+      background: #1e2d3d;
+    }
+
+    [data-theme="dark"] .salary-table tbody tr:hover {
+      background: #243447;
+    }
+
+    [data-theme="dark"] .conversion-note {
+      background: #2a2210;
+      border-color: #5c4a10;
+    }
+
+    [data-theme="dark"] .conversion-note-title {
+      color: #e8a838;
+    }
+
+    [data-theme="dark"] .conversion-note-text {
+      color: #c4a86a;
+    }
+
+    [data-theme="dark"] .article-nav-btn {
+      background: var(--bg-card);
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] .article-nav-btn:hover {
+      border-color: var(--primary-light);
+    }
+
+    [data-theme="dark"] .welcome-stat {
+      background: var(--bg-card);
+      border-color: var(--border);
+    }
+
     /* Fade in animation */
     .fade-in {
       animation: fadeIn 0.3s ease-out;
@@ -658,6 +746,11 @@
   <div class="app-layout">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
+      <div class="theme-switcher">
+        <button class="theme-btn" data-theme-choice="light" onclick="setTheme('light')">Giorno</button>
+        <button class="theme-btn" data-theme-choice="dark" onclick="setTheme('dark')">Notte</button>
+        <button class="theme-btn active" data-theme-choice="system" onclick="setTheme('system')">Sistema</button>
+      </div>
       <div class="search-container">
         <div class="search-wrapper">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -728,23 +821,9 @@
         <div class="article-container fade-in">
           <div class="welcome">
             <div class="welcome-icon">CCNL</div>
-            <h1>CCNL Piloti Elicotteri</h1>
+            <h1>CCNL Piloti di Elicottero</h1>
             <p>Contratto Collettivo Nazionale di Lavoro per i Piloti dipendenti da Imprese Elicotteristiche esercenti il trasporto aereo non di linea e il lavoro aereo.</p>
             <p style="font-size:14px; color: var(--text-secondary);">Rinnovo del CCNL 25 giugno 1998 - Stipulato il 19 luglio 2001</p>
-            <div class="welcome-stats">
-              <div class="welcome-stat">
-                <div class="welcome-stat-number">59</div>
-                <div class="welcome-stat-label">Articoli</div>
-              </div>
-              <div class="welcome-stat">
-                <div class="welcome-stat-number">6</div>
-                <div class="welcome-stat-label">Sezioni</div>
-              </div>
-              <div class="welcome-stat">
-                <div class="welcome-stat-number">2</div>
-                <div class="welcome-stat-label">Allegati</div>
-              </div>
-            </div>
             <div class="conversion-note">
               <div class="conversion-note-title">Conversione Lire / Euro</div>
               <div class="conversion-note-text">
@@ -886,6 +965,40 @@
         }
       }
     }, { passive: true });
+
+    // Theme management
+    const systemDarkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function applyTheme(resolved) {
+      document.documentElement.setAttribute('data-theme', resolved);
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) metaTheme.content = resolved === 'dark' ? '#0a1020' : '#1e3a5f';
+    }
+
+    function setTheme(choice) {
+      localStorage.setItem('ccnl-theme', choice);
+      document.querySelectorAll('.theme-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.themeChoice === choice)
+      );
+      if (choice === 'system') {
+        applyTheme(systemDarkQuery.matches ? 'dark' : 'light');
+      } else {
+        applyTheme(choice);
+      }
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem('ccnl-theme') || 'system';
+      setTheme(saved);
+    }
+
+    systemDarkQuery.addEventListener('change', () => {
+      if ((localStorage.getItem('ccnl-theme') || 'system') === 'system') {
+        applyTheme(systemDarkQuery.matches ? 'dark' : 'light');
+      }
+    });
+
+    initTheme();
 
     // Init
     initArticles();
