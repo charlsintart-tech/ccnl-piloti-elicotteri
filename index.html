@@ -1404,6 +1404,16 @@
         <div class="article-container fade-in">
           <div class="article-toolbar">
             <span class="article-toolbar-title">${toolbarTitle}</span>
+            <button class="toolbar-btn fav-btn${favClass}" id="favBtn" onclick="toggleFavoriteArticle('${articleId}')">
+              <span class="fav-star" id="favBtnIcon">${favIcon}</span>
+              <span>Preferito</span>
+            </button>
+            <div class="font-size-controls">
+              <button class="font-size-btn" onclick="changeFontSize(-1)" title="Riduci testo">A-</button>
+              <button class="font-size-btn" onclick="changeFontSize(1)" title="Ingrandisci testo">A+</button>
+            </div>
+          </div>
+          <div class="article-toolbar article-toolbar-secondary">
             <button class="toolbar-btn" onclick="printArticle()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               <span>Stampa</span>
@@ -1416,16 +1426,6 @@
             <button class="toolbar-btn mail" onclick="shareMail()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               <span>Mail</span>
-            </button>
-          </div>
-          <div class="article-toolbar article-toolbar-secondary">
-            <div class="font-size-controls">
-              <button class="font-size-btn" onclick="changeFontSize(-1)" title="Riduci testo">A-</button>
-              <button class="font-size-btn" onclick="changeFontSize(1)" title="Ingrandisci testo">A+</button>
-            </div>
-            <button class="toolbar-btn fav-btn${favClass}" id="favBtn" onclick="toggleFavoriteArticle('${articleId}')">
-              <span class="fav-star" id="favBtnIcon">${favIcon}</span>
-              <span>Preferito</span>
             </button>
           </div>
           <div class="article-header">
@@ -1466,13 +1466,13 @@
     // ===== CALCULATOR =====
     const CALC_DATA = {
       grades: [
-        { id: 'cs', label: 'Comandante Superiore', pagaBase: 1425.14, volo60h: 2235.60, integr200h: 4218.00, scatto: 197.58 },
-        { id: 'pc', label: 'Primo Comandante', pagaBase: 1339.61, volo60h: 2217.60, integr200h: 4156.00, scatto: 192.24 },
-        { id: 'cmd', label: 'Comandante', pagaBase: 1256.46, volo60h: 2197.80, integr200h: 4080.00, scatto: 186.88 },
-        { id: 'uf', label: '1\u00b0 Ufficiale', pagaBase: 1095.84, volo60h: 1630.80, integr200h: 3834.00, scatto: 149.42 },
-        { id: 'p1', label: 'Pilota di 1\u00b0', pagaBase: 1051.78, volo60h: 1426.20, integr200h: 3710.00, scatto: 137.30 },
-        { id: 'p2', label: 'Pilota di 2\u00b0', pagaBase: 1000.06, volo60h: 1134.60, integr200h: 3200.00, scatto: 119.29 },
-        { id: 'si', label: 'Salario di Ingresso', pagaBase: 1000.06, volo60h: 512.40, integr200h: 918.00, scatto: 81.80 }
+        { id: 'cs', label: 'Comandante Superiore', pagaBase: 1425.14, volo60h: 2235.60, integr200h: 4218.00, scatto: 197.58, vacanza: 150 },
+        { id: 'pc', label: 'Primo Comandante', pagaBase: 1339.61, volo60h: 2217.60, integr200h: 4156.00, scatto: 192.24, vacanza: 150 },
+        { id: 'cmd', label: 'Comandante', pagaBase: 1256.46, volo60h: 2197.80, integr200h: 4080.00, scatto: 186.88, vacanza: 150 },
+        { id: 'uf', label: '1\u00b0 Ufficiale', pagaBase: 1095.84, volo60h: 1630.80, integr200h: 3834.00, scatto: 149.42, vacanza: 100 },
+        { id: 'p1', label: 'Pilota di 1\u00b0', pagaBase: 1051.78, volo60h: 1426.20, integr200h: 3710.00, scatto: 137.30, vacanza: 100 },
+        { id: 'p2', label: 'Pilota di 2\u00b0', pagaBase: 1000.06, volo60h: 1134.60, integr200h: 3200.00, scatto: 119.29, vacanza: 100 },
+        { id: 'si', label: 'Salario di Ingresso', pagaBase: 1000.06, volo60h: 512.40, integr200h: 918.00, scatto: 81.80, vacanza: 100 }
       ]
     };
 
@@ -1514,10 +1514,11 @@
       const pagaBase = grade.pagaBase;
       const scattoUnit = grade.scatto;
       const scattiValore = scattoUnit * scatti;
+      const vacanza = grade.vacanza;
       const voloMese = grade.volo60h;
       const integrAnno = grade.integr200h;
-      const mensileLordo = pagaBase + scattiValore + voloMese;
-      const tredicesima = pagaBase + scattiValore;
+      const mensileLordo = pagaBase + scattiValore + vacanza + voloMese;
+      const tredicesima = pagaBase + scattiValore + vacanza;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
 
       document.getElementById('calcResults').innerHTML =
@@ -1525,10 +1526,11 @@
           '<div class="calc-results-header">' + grade.label + ' - ' + scatti + ' scatt' + (scatti===1?'o':'i') + ' di anzianit\u00e0</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo) + '</strong></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo * 12) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + vacanza)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
           '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totaleAnnuo) + '</span></div>' +
         '</div>';
