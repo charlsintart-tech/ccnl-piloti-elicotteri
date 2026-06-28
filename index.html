@@ -141,6 +141,31 @@
       position: relative;
     }
 
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: all 0.2s;
+    }
+    .search-clear:hover {
+      background: rgba(255,255,255,0.35);
+      color: white;
+    }
+
     .search-icon {
       position: absolute;
       left: 12px;
@@ -1226,12 +1251,14 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input type="text" class="search-input" id="searchInput" placeholder="Cerca articolo..." oninput="filterArticles(this.value)">
+          <button class="search-clear" onclick="document.getElementById('searchInput').value='';filterArticles('')" title="Cancella">&times;</button>
         </div>
         <div class="search-wrapper" style="margin-top:8px">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M4 6h16M4 12h10M4 18h6"/>
           </svg>
           <input type="text" class="search-input" id="keywordInput" placeholder="Cerca per parola chiave..." oninput="searchByKeyword(this.value)">
+          <button class="search-clear" onclick="document.getElementById('keywordInput').value='';searchByKeyword('')" title="Cancella">&times;</button>
         </div>
       </div>
       <nav class="sidebar-nav" id="sidebarNav"></nav>
@@ -1341,16 +1368,12 @@
 
       // Home
       html += `<div class="nav-section">
-        <a class="nav-item" data-id="home" onclick="showHome()">
-          <span class="nav-item-number">&#9751;</span> Pagina iniziale
-        </a>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showHome()" data-id="home">HOME</div>
       </div>`;
 
       // Calculator
       html += `<div class="nav-section">
-        <a class="nav-item" data-id="calculator" onclick="showCalculator()">
-          <span class="nav-item-number">&#9998;</span> Calcolatore Retributivo
-        </a>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator()" data-id="calculator">CALCOLATORE RETRIBUTIVO</div>
       </div>`;
 
       // Favorites section
@@ -1385,9 +1408,7 @@
 
       // Notes list
       html += `<div class="nav-section">
-        <a class="nav-item" data-id="notes-list" onclick="showNotesList()">
-          <span class="nav-item-number">&#9998;</span> Elenco Note
-        </a>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showNotesList()" data-id="notes-list">ELENCO NOTE</div>
       </div>`;
 
       nav.innerHTML = html;
@@ -1566,12 +1587,12 @@
       document.getElementById('calcScatti').classList.add('active');
 
       // Tabella 1 - senza aumenti
-      const mensileLordo = pagaBase + scattiValore + vacanza + voloMese;
+      const mensileLordo = pagaBase + scattiValore + vacanza + superminimo + voloMese;
       const tredicesima = pagaBase + scattiValore + superminimo;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
 
-      // Tabella 2 - con aumenti 2024/2025 (13a senza aumenti)
-      const mensileLordo2 = mensileLordo + aumento;
+      // Tabella 2 - con aumenti 2024/2025 (13a senza aumenti, senza vacanza)
+      const mensileLordo2 = pagaBase + scattiValore + superminimo + aumento + voloMese;
       const totaleAnnuo2 = (mensileLordo2 * 12) + tredicesima + integrAnno;
 
       // Leggi valore scatto personalizzato (se esiste)
@@ -1584,6 +1605,7 @@
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo) + '</strong></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo * 12) + '</span></div>' +
@@ -1595,7 +1617,7 @@
           '<div class="calc-results-header">Con Aumenti 2024 / 2025 \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (' + scatti + ' \u00d7 ' + fmtE(scattoUnit) + ')</span><span class="calc-row-value">' + fmtE(scattiValore) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensileLordo2) + '</strong></span></div>' +
@@ -1609,6 +1631,7 @@
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (importo reale \u20ac)</span><span class="calc-row-value"><input type="number" id="calcScattoCustom" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div id="calcCustomTotals"></div>' +
@@ -1633,7 +1656,7 @@
       const aumento = grade.aumento;
       const voloMese = grade.volo60h;
       const integrAnno = grade.integr200h;
-      const mensile3 = pagaBase + customScatti + vacanza + aumento + voloMese;
+      const mensile3 = pagaBase + customScatti + vacanza + superminimo + aumento + voloMese;
       const tredicesima3 = pagaBase + customScatti + superminimo;
       const totale3 = (mensile3 * 12) + tredicesima3 + integrAnno;
       document.getElementById('calcCustomTotals').innerHTML =
