@@ -1540,6 +1540,11 @@
         <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator()" data-id="calculator">CALCOLATORE RETRIBUTIVO</div>
       </div>`;
 
+      // Comparator
+      html += `<div class="nav-section">
+        <div class="nav-section-title" style="cursor:pointer" onclick="showComparator()" data-id="comparator">COMPARATORE RETRIBUTIVO</div>
+      </div>`;
+
       // Favorites section
       if (favs.length > 0) {
         html += `<div class="nav-section"><div class="nav-section-title">Preferiti</div>`;
@@ -1725,34 +1730,6 @@
             </select>
           </div>
           <div id="calcResults"></div>
-          <div class="calc-compare-section">
-            <button class="calc-compare-btn" onclick="toggleCompare()">&#9878; Confronta Gradi</button>
-            <div id="compareSection" style="display:none">
-              <div class="compare-selectors">
-                <div class="compare-col">
-                  <label class="calc-label">Grado A</label>
-                  <select class="calc-select" id="compareGradeA" onchange="updateCompare()">
-                    ${CALC_DATA.grades.map(g => '<option value="' + g.id + '">' + g.label + '</option>').join('')}
-                  </select>
-                  <label class="calc-label" style="margin-top:10px">Scatti A</label>
-                  <select class="calc-select" id="compareScattiA" onchange="updateCompare()">
-                    ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + '</option>').join('')}
-                  </select>
-                </div>
-                <div class="compare-col">
-                  <label class="calc-label">Grado B</label>
-                  <select class="calc-select" id="compareGradeB" onchange="updateCompare()">
-                    ${CALC_DATA.grades.map((g,idx) => '<option value="' + g.id + '"' + (idx===1?' selected':'') + '>' + g.label + '</option>').join('')}
-                  </select>
-                  <label class="calc-label" style="margin-top:10px">Scatti B</label>
-                  <select class="calc-select" id="compareScattiB" onchange="updateCompare()">
-                    ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + '</option>').join('')}
-                  </select>
-                </div>
-              </div>
-              <div id="compareResults"></div>
-            </div>
-          </div>
         </div>
       `;
       calculateSalary();
@@ -2029,59 +2006,59 @@
       window.location.href = 'mailto:?subject=' + encodeURIComponent('Calcolo Retributivo - ' + label) + '&body=' + encodeURIComponent(text);
     }
 
-    // ===== CONFRONTO GRADI =====
-    function toggleCompare() {
-      var section = document.getElementById('compareSection');
-      var btn = document.querySelector('.calc-compare-btn');
-      if (section.style.display === 'none') {
-        section.style.display = 'block';
-        btn.innerHTML = '&#10005; Chiudi Confronto';
-        updateCompare();
-      } else {
-        section.style.display = 'none';
-        btn.innerHTML = '&#9878; Confronta Gradi';
-      }
+    // ===== COMPARATORE RETRIBUTIVO =====
+    function showComparator() {
+      currentArticleId = 'comparator';
+      currentKeyword = '';
+      updateActiveNav();
+      var main = document.getElementById('mainContent');
+      main.innerHTML = `
+        <div class="calc-container fade-in">
+          <div class="calc-title">Comparatore Retributivo</div>
+          <div class="calc-subtitle">Confronta la retribuzione tra due gradi</div>
+          <div class="compare-selectors">
+            <div class="compare-col">
+              <label class="calc-label">Grado A</label>
+              <select class="calc-select" id="compGradeA" onchange="updateComparator()">
+                ${CALC_DATA.grades.map(g => '<option value="' + g.id + '">' + g.label + '</option>').join('')}
+              </select>
+              <label class="calc-label" style="margin-top:10px">Scatti A</label>
+              <select class="calc-select" id="compScattiA" onchange="updateComparator()">
+                ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + ' (' + (i*2) + ' anni)</option>').join('')}
+              </select>
+              <label class="calc-label" style="margin-top:10px">Scatti reali A (\u20ac)</label>
+              <input type="number" class="calc-select" id="compCustomA" value="0" step="0.01" min="0" oninput="updateCompT3()">
+            </div>
+            <div class="compare-col">
+              <label class="calc-label">Grado B</label>
+              <select class="calc-select" id="compGradeB" onchange="updateComparator()">
+                ${CALC_DATA.grades.map((g,idx) => '<option value="' + g.id + '"' + (idx===1?' selected':'') + '>' + g.label + '</option>').join('')}
+              </select>
+              <label class="calc-label" style="margin-top:10px">Scatti B</label>
+              <select class="calc-select" id="compScattiB" onchange="updateComparator()">
+                ${Array.from({length:11}, (_,i) => '<option value="' + i + '">' + i + ' scatt' + (i===1?'o':'i') + ' (' + (i*2) + ' anni)</option>').join('')}
+              </select>
+              <label class="calc-label" style="margin-top:10px">Scatti reali B (\u20ac)</label>
+              <input type="number" class="calc-select" id="compCustomB" value="0" step="0.01" min="0" oninput="updateCompT3()">
+            </div>
+          </div>
+          <div id="compResults"></div>
+        </div>
+      `;
+      updateComparator();
+      main.scrollTop = 0;
+      closeSidebar();
     }
 
-    function updateCompare() {
-      var gA = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compareGradeA').value; });
-      var gB = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compareGradeB').value; });
-      var sA = parseInt(document.getElementById('compareScattiA').value);
-      var sB = parseInt(document.getElementById('compareScattiB').value);
-      var fmtE = function(v) { return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v); };
-      var sup = 10.33;
-
-      var scValA = gA.scatto * sA, scValB = gB.scatto * sB;
-      var mensA = gA.pagaBase + scValA + sup + gA.aumento + gA.volo60h;
-      var mensB = gB.pagaBase + scValB + sup + gB.aumento + gB.volo60h;
-      var tredA = gA.pagaBase + scValA + sup;
-      var tredB = gB.pagaBase + scValB + sup;
-      var annA = (mensA * 12) + tredA + gA.integr200h;
-      var annB = (mensB * 12) + tredB + gB.integr200h;
-
-      var rows = [
-        ['Paga base mensile', gA.pagaBase, gB.pagaBase],
-        ['Scatti anzianit\u00e0', scValA, scValB],
-        ['Superminimo', sup, sup],
-        ['Aumenti 2024/2025', gA.aumento, gB.aumento],
-        ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
-        ['Totale mensile lordo', mensA, mensB, true],
-        ['13\u00aa mensilit\u00e0', tredA, tredB],
-        ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
-        ['Totale annuo lordo', annA, annB, false, true]
-      ];
-
-      var lblA = gA.label + ' (' + sA + ' sc.)';
-      var lblB = gB.label + ' (' + sB + ' sc.)';
-      var h = '<div class="calc-results" id="compareTable">' +
-        '<div class="calc-results-header">Confronto: ' + gA.label + ' vs ' + gB.label + '</div>' +
+    function buildCompTable(id, title, rows, lblA, lblB, fmtE) {
+      var h = '<div class="calc-results" id="' + id + '">' +
+        '<div class="calc-results-header">' + title + '</div>' +
         '<div class="compare-header-row">' +
           '<span class="compare-h-label">Voce</span>' +
           '<span class="compare-h-val">' + lblA + '</span>' +
           '<span class="compare-h-val">' + lblB + '</span>' +
           '<span class="compare-h-val">Diff.</span>' +
         '</div>';
-
       rows.forEach(function(r) {
         var diff = r[2] - r[1];
         var dc = diff > 0 ? 'compare-diff-pos' : (diff < 0 ? 'compare-diff-neg' : '');
@@ -2096,10 +2073,103 @@
       });
       h += '</div>' +
         '<div class="calc-table-actions">' +
-          '<button onclick="shareTableText(\'compareTable\')">&#128221; WhatsApp Testo</button>' +
-          '<button class="wa-img-btn" onclick="shareTableImage(\'compareTable\')">&#128247; WhatsApp Immagine</button>' +
+          '<button onclick="shareTableText(\'' + id + '\')">&#128221; WhatsApp Testo</button>' +
+          '<button class="wa-img-btn" onclick="shareTableImage(\'' + id + '\')">&#128247; WhatsApp Immagine</button>' +
         '</div>';
-      document.getElementById('compareResults').innerHTML = h;
+      return h;
+    }
+
+    function updateComparator() {
+      var gA = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compGradeA').value; });
+      var gB = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compGradeB').value; });
+      var sA = parseInt(document.getElementById('compScattiA').value);
+      var sB = parseInt(document.getElementById('compScattiB').value);
+      var fmtE = function(v) { return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v); };
+      var sup = 10.33;
+      var scValA = gA.scatto * sA, scValB = gB.scatto * sB;
+      var lblA = gA.label + ' (' + sA + ' sc.)';
+      var lblB = gB.label + ' (' + sB + ' sc.)';
+
+      // Tab 1: CCNL 2001 (senza aumenti, senza vacanza)
+      var m1A = gA.pagaBase + scValA + sup + gA.volo60h;
+      var m1B = gB.pagaBase + scValB + sup + gB.volo60h;
+      var t1A = gA.pagaBase + scValA + sup;
+      var t1B = gB.pagaBase + scValB + sup;
+      var a1A = (m1A * 12) + t1A + gA.integr200h;
+      var a1B = (m1B * 12) + t1B + gB.integr200h;
+      var rows1 = [
+        ['Paga base mensile', gA.pagaBase, gB.pagaBase],
+        ['Scatti anzianit\u00e0', scValA, scValB],
+        ['Superminimo', sup, sup],
+        ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
+        ['Totale mensile lordo', m1A, m1B, true],
+        ['\u00d7 12 mensilit\u00e0', m1A * 12, m1B * 12],
+        ['13\u00aa mensilit\u00e0', t1A, t1B],
+        ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Totale annuo lordo', a1A, a1B, false, true]
+      ];
+
+      // Tab 2: CCNL 2001 + Aumenti 2024/2025 (senza vacanza, 13a senza aumenti)
+      var m2A = gA.pagaBase + scValA + sup + gA.aumento + gA.volo60h;
+      var m2B = gB.pagaBase + scValB + sup + gB.aumento + gB.volo60h;
+      var a2A = (m2A * 12) + t1A + gA.integr200h;
+      var a2B = (m2B * 12) + t1B + gB.integr200h;
+      var rows2 = [
+        ['Paga base mensile', gA.pagaBase, gB.pagaBase],
+        ['Scatti anzianit\u00e0', scValA, scValB],
+        ['Superminimo', sup, sup],
+        ['Aumenti 2024/2025', gA.aumento, gB.aumento],
+        ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
+        ['Totale mensile lordo', m2A, m2B, true],
+        ['\u00d7 12 mensilit\u00e0', m2A * 12, m2B * 12],
+        ['13\u00aa mensilit\u00e0 (senza aumenti)', t1A, t1B],
+        ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Totale annuo lordo', a2A, a2B, false, true]
+      ];
+
+      // Set custom scatti defaults
+      document.getElementById('compCustomA').value = scValA.toFixed(2);
+      document.getElementById('compCustomB').value = scValB.toFixed(2);
+
+      var html = buildCompTable('compTable1', 'Calcolo retribuzione da CCNL 2001', rows1, lblA, lblB, fmtE);
+      html += buildCompTable('compTable2', 'Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025', rows2, lblA, lblB, fmtE);
+      html += '<div id="compT3Wrap"></div>';
+      document.getElementById('compResults').innerHTML = html;
+      updateCompT3();
+    }
+
+    function updateCompT3() {
+      var gA = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compGradeA').value; });
+      var gB = CALC_DATA.grades.find(function(g) { return g.id === document.getElementById('compGradeB').value; });
+      var sA = parseInt(document.getElementById('compScattiA').value);
+      var sB = parseInt(document.getElementById('compScattiB').value);
+      var fmtE = function(v) { return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v); };
+      var sup = 10.33;
+      var custA = parseFloat(document.getElementById('compCustomA').value) || 0;
+      var custB = parseFloat(document.getElementById('compCustomB').value) || 0;
+      var lblA = gA.label + ' (' + sA + ' sc.)';
+      var lblB = gB.label + ' (' + sB + ' sc.)';
+
+      var m3A = gA.pagaBase + custA + gA.vacanza + sup + gA.aumento + gA.volo60h;
+      var m3B = gB.pagaBase + custB + gB.vacanza + sup + gB.aumento + gB.volo60h;
+      var t3A = gA.pagaBase + custA + sup;
+      var t3B = gB.pagaBase + custB + sup;
+      var a3A = (m3A * 12) + t3A + gA.integr200h;
+      var a3B = (m3B * 12) + t3B + gB.integr200h;
+      var rows3 = [
+        ['Paga base mensile', gA.pagaBase, gB.pagaBase],
+        ['Scatti reali', custA, custB],
+        ['Vacanza contrattuale', gA.vacanza, gB.vacanza],
+        ['Superminimo', sup, sup],
+        ['Aumenti 2024/2025', gA.aumento, gB.aumento],
+        ['Indennit\u00e0 di volo (60h/mese)', gA.volo60h, gB.volo60h],
+        ['Totale mensile lordo', m3A, m3B, true],
+        ['\u00d7 12 mensilit\u00e0', m3A * 12, m3B * 12],
+        ['13\u00aa mensilit\u00e0', t3A, t3B],
+        ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
+        ['Totale annuo lordo', a3A, a3B, false, true]
+      ];
+      document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE);
     }
 
     // ===== PDF VIEWER =====
