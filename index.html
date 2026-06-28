@@ -1850,7 +1850,7 @@
         '<div class="calc-results" style="margin-top:24px" id="calcTable4">' +
           '<div class="calc-results-header">Retribuzione con 13° modificata — ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Scatti anzianità (importo reale €)</span><span class="calc-row-value">' + fmtE(parseFloat(prevCustomVal)) + '</span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianità (importo reale €)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcScattoCustom4" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcScattoCustom4\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
@@ -1920,15 +1920,13 @@
         '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="' + varie3 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
         '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale3) + '</span></div>';
       // Tab 4 - 13\u00b0 modificata
+      var customScatti4 = parseFloat((document.getElementById('calcScattoCustom4') || {}).value) || 0;
       var varie4 = parseFloat((document.getElementById('calcVarie4') || {}).value) || 0;
-      var mensile4 = pagaBase + customScatti + vacanza + superminimo + aumento + voloMese;
-      var tredicesima4 = pagaBase + customScatti + superminimo + voloMese + vacanza + aumento + integrAnno / 13;
+      var mensile4 = pagaBase + customScatti4 + vacanza + superminimo + aumento + voloMese;
+      var tredicesima4 = pagaBase + customScatti4 + superminimo + voloMese + vacanza + aumento + integrAnno / 13;
       var totale4 = (mensile4 * 12) + tredicesima4 + integrAnno + varie4;
       var el4 = document.getElementById('calcCustomTotals4');
       if (el4) {
-        // Update scatti display in Tab 4
-        var scattiRow = document.querySelector('#calcTable4 .calc-row:nth-child(3) .calc-row-value');
-        if (scattiRow) scattiRow.textContent = fmtE(customScatti);
         el4.innerHTML =
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensile4) + '</strong></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensile4 * 12) + '</span></div>' +
@@ -2358,7 +2356,16 @@
       });
     }
     function sharePdfMail() {
-      window.location.href = 'mailto:?subject=' + encodeURIComponent('CCNL Piloti di Elicottero') + '&body=' + encodeURIComponent('CCNL Piloti di Elicottero - Rinnovo del 19 luglio 2001');
+      fetch('CCNL.pdf').then(function(r) { return r.blob(); }).then(function(blob) {
+        var file = new File([blob], 'CCNL_Piloti_Elicottero.pdf', {type: 'application/pdf'});
+        if (navigator.share && navigator.canShare && navigator.canShare({files: [file]})) {
+          navigator.share({files: [file], title: 'CCNL Piloti di Elicottero', text: 'CCNL Piloti di Elicottero - Rinnovo del 19 luglio 2001'}).catch(function() {});
+        } else {
+          window.location.href = 'mailto:?subject=' + encodeURIComponent('CCNL Piloti di Elicottero') + '&body=' + encodeURIComponent('CCNL Piloti di Elicottero - Rinnovo del 19 luglio 2001');
+        }
+      }).catch(function() {
+        window.location.href = 'mailto:?subject=' + encodeURIComponent('CCNL Piloti di Elicottero') + '&body=' + encodeURIComponent('CCNL Piloti di Elicottero - Rinnovo del 19 luglio 2001');
+      });
     }
 
     // ===== NOTES LIST =====
