@@ -365,14 +365,20 @@
     }
 
     .article-toolbar-title {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--primary);
-      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: default;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-family: inherit;
     }
 
     .toolbar-btn {
@@ -414,6 +420,11 @@
     [data-theme="dark"] .toolbar-btn {
       background: var(--bg-card);
       border-color: var(--border);
+    }
+
+    [data-theme="dark"] .article-toolbar-title {
+      background: var(--primary-light);
+      border-color: var(--primary-light);
     }
 
     [data-theme="dark"] .toolbar-btn:hover {
@@ -889,15 +900,20 @@
       border-color: var(--border);
     }
 
-    /* Theme label */
+    /* Theme label button */
     .theme-label {
-      text-align: center;
+      flex: none;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px 0 0 8px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.5);
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: rgba(255,255,255,0.5);
-      padding-bottom: 8px;
+      letter-spacing: 0.8px;
+      cursor: default;
+      white-space: nowrap;
     }
 
     /* Toolbar secondary row */
@@ -1057,8 +1073,8 @@
       font-family: inherit;
     }
 
-    .theme-btn:first-child {
-      border-radius: 8px 0 0 8px;
+    .theme-btn:first-of-type {
+      border-radius: 0;
     }
 
     .theme-btn:last-child {
