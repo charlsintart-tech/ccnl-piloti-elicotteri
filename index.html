@@ -1204,11 +1204,12 @@
       color: white;
     }
     .calc-table-actions .wa-img-btn {
-      background: #25D366;
-      color: white;
+      background: white;
+      color: #25D366;
     }
     .calc-table-actions .wa-img-btn:active {
-      background: #128C7E;
+      background: #25D366;
+      color: white;
     }
     [data-theme="dark"] .calc-table-actions button {
       background: var(--bg-card);
@@ -1216,8 +1217,8 @@
       color: #25D366;
     }
     [data-theme="dark"] .calc-table-actions .wa-img-btn {
-      background: #25D366;
-      color: white;
+      background: var(--bg-card);
+      color: #25D366;
     }
 
     .theme-btn {
@@ -1748,6 +1749,10 @@
           '<button class="toolbar-btn" onclick="printCalc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>Stampa</span></button>' +
           '<button class="toolbar-btn" onclick="exportCalcPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Esporta PDF</span></button>' +
           '<button class="toolbar-btn mail" onclick="shareCalcMail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span>Mail</span></button>' +
+        '</div>' +
+        '<div class="calc-table-actions" style="margin-top:12px">' +
+          '<button onclick="shareAllTablesText()">&#128221; WhatsApp Testo</button>' +
+          '<button class="wa-img-btn" onclick="shareAllTablesImage()">&#128247; WhatsApp Immagine</button>' +
         '</div>';
       recalcCustom();
     }
@@ -1884,6 +1889,42 @@
           }
         }, 'image/png');
       }).catch(function() { shareTableText(tableId); });
+    }
+
+    function shareAllTablesText() {
+      var text = 'CALCOLATORE RETRIBUTIVO CCNL\n\n';
+      text += getTableText('calcTable1') + '\n';
+      text += getTableText('calcTable2') + '\n';
+      text += getTableText('calcTable3');
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    function shareAllTablesImage() {
+      var el = document.getElementById('calcResults');
+      if (!el || typeof html2canvas === 'undefined') { shareAllTablesText(); return; }
+      var btns = el.querySelectorAll('.calc-table-actions, .calc-actions');
+      btns.forEach(function(b) { b.style.display = 'none'; });
+      html2canvas(el, {
+        backgroundColor: '#f5f7fa',
+        scale: 2,
+        onclone: function(doc) { doc.documentElement.removeAttribute('data-theme'); }
+      }).then(function(canvas) {
+        btns.forEach(function(b) { b.style.display = ''; });
+        canvas.toBlob(function(blob) {
+          var file = new File([blob], 'calcolatore-completo.png', {type: 'image/png'});
+          if (navigator.share && navigator.canShare && navigator.canShare({files: [file]})) {
+            navigator.share({files: [file], title: 'Calcolatore Retributivo CCNL'}).catch(function() {});
+          } else {
+            var u = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = u; a.download = 'calcolatore-completo.png'; a.click();
+            URL.revokeObjectURL(u);
+          }
+        }, 'image/png');
+      }).catch(function() {
+        btns.forEach(function(b) { b.style.display = ''; });
+        shareAllTablesText();
+      });
     }
 
     function shareCalcMail() {
