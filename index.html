@@ -889,6 +889,67 @@
       border-color: var(--border);
     }
 
+    /* Theme label */
+    .theme-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.5);
+      padding-bottom: 8px;
+    }
+
+    /* Toolbar secondary row */
+    .article-toolbar-secondary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    /* Favorite button states */
+    .fav-btn .fav-star {
+      font-size: 18px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .fav-btn.is-fav .fav-star {
+      color: var(--accent);
+    }
+
+    /* Notes list page */
+    .note-list-item {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--bg-card);
+    }
+    .note-list-item:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(30,58,95,0.1);
+    }
+    .note-list-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .note-list-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .no-notes {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
     /* Calculator */
     .calc-container {
       max-width: 600px;
@@ -1096,6 +1157,7 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="theme-switcher">
+        <div class="theme-label">Luminosità App</div>
         <button class="theme-btn" data-theme-choice="light" onclick="setTheme('light')">Giorno</button>
         <button class="theme-btn" data-theme-choice="dark" onclick="setTheme('dark')">Notte</button>
         <button class="theme-btn active" data-theme-choice="system" onclick="setTheme('system')">Sistema</button>
@@ -1155,6 +1217,18 @@
       buildSidebar();
       updateActiveNav();
     }
+    function toggleFavoriteArticle(id) {
+      let favs = getFavorites();
+      if (favs.includes(id)) { favs = favs.filter(f => f !== id); } else { favs.push(id); }
+      saveFavorites(favs);
+      const isNowFav = favs.includes(id);
+      const icon = document.getElementById('favBtnIcon');
+      const btn = document.getElementById('favBtn');
+      if (icon) icon.innerHTML = isNowFav ? '&#9733;' : '&#9734;';
+      if (btn) btn.classList.toggle('is-fav', isNowFav);
+      buildSidebar();
+      updateActiveNav();
+    }
     function isFavorite(id) { return getFavorites().includes(id); }
 
     // ===== FONT SIZE =====
@@ -1184,10 +1258,13 @@
 
     // ===== KEYWORD HIGHLIGHT =====
     function highlightKeyword(html, keyword) {
-      if (!keyword) return html;
+      if (!keyword || keyword.length < 2) return html;
       const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`(?![^<]*>)(${escaped})`, 'gi');
-      return html.replace(regex, '<mark class="kw-highlight">$1</mark>');
+      const parts = html.split(/(<[^>]*>)/);
+      return parts.map(part => {
+        if (part.startsWith('<')) return part;
+        return part.replace(new RegExp('(' + escaped + ')', 'gi'), '<mark class="kw-highlight">$1</mark>');
+      }).join('');
     }
 
     // ===== FLATTEN ARTICLES =====
@@ -1249,6 +1326,13 @@
         html += '</div>';
       });
 
+      // Notes list
+      html += `<div class="nav-section">
+        <a class="nav-item" data-id="notes-list" onclick="showNotesList()">
+          <span class="nav-item-number">&#9998;</span> Elenco Note
+        </a>
+      </div>`;
+
       nav.innerHTML = html;
     }
 
@@ -1304,13 +1388,6 @@
         <div class="article-container fade-in">
           <div class="article-toolbar">
             <span class="article-toolbar-title">${toolbarTitle}</span>
-            <div class="font-size-controls">
-              <button class="font-size-btn" onclick="changeFontSize(-1)" title="Riduci testo">A-</button>
-              <button class="font-size-btn" onclick="changeFontSize(1)" title="Ingrandisci testo">A+</button>
-            </div>
-            <button class="toolbar-btn" onclick="toggleFavorite('${articleId}')" title="Preferito" style="font-size:16px">
-              <span class="${favClass ? 'is-fav' : ''}" id="favBtnIcon" style="color:${isFavorite(articleId) ? 'var(--accent)' : 'inherit'}">${favIcon}</span>
-            </button>
             <button class="toolbar-btn" onclick="printArticle()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
               <span>Stampa</span>
@@ -1323,6 +1400,16 @@
             <button class="toolbar-btn mail" onclick="shareMail()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               <span>Mail</span>
+            </button>
+          </div>
+          <div class="article-toolbar article-toolbar-secondary">
+            <div class="font-size-controls">
+              <button class="font-size-btn" onclick="changeFontSize(-1)" title="Riduci testo">A-</button>
+              <button class="font-size-btn" onclick="changeFontSize(1)" title="Ingrandisci testo">A+</button>
+            </div>
+            <button class="toolbar-btn fav-btn${favClass}" id="favBtn" onclick="toggleFavoriteArticle('${articleId}')">
+              <span class="fav-star" id="favBtnIcon">${favIcon}</span>
+              <span>Preferito</span>
             </button>
           </div>
           <div class="article-header">
@@ -1409,22 +1496,23 @@
       const R = 1936.27;
       const fmtE = v => new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v);
 
-      const minimo = grade.minimo / R;
+      const minimoComplessivo = grade.minimo / R;
       const contingenza = grade.contingenza / R;
-      const stipendioBase = minimo;
+      const minimoTabellare = minimoComplessivo - contingenza;
       const scattiPerc = scatti * 0.05;
-      const scattiValore = stipendioBase * scattiPerc;
+      const scattiValore = minimoTabellare * scattiPerc;
       const voloMese = (grade.voloH / R) * 60;
       const integrAnno = (grade.integrH / R) * 200;
-      const mensileLordo = stipendioBase + scattiValore + voloMese;
-      const tredicesima = stipendioBase + scattiValore;
+      const mensileLordo = minimoTabellare + scattiValore + voloMese;
+      const tredicesima = minimoTabellare + scattiValore;
       const totaleAnnuo = (mensileLordo * 12) + tredicesima + integrAnno;
 
       document.getElementById('calcResults').innerHTML = `
         <div class="calc-results">
           <div class="calc-results-header">${grade.label} - ${scatti} scatt${scatti===1?'o':'i'} di anzianit\u00e0</div>
-          <div class="calc-row"><span class="calc-row-label">Stipendio minimo mensile</span><span class="calc-row-value">${fmtE(stipendioBase)}</span></div>
-          <div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (+${(scattiPerc*100).toFixed(0)}%)</span><span class="calc-row-value">${fmtE(scattiValore)}</span></div>
+          <div class="calc-row"><span class="calc-row-label">Minimo tabellare mensile</span><span class="calc-row-value">${fmtE(minimoTabellare)}</span></div>
+          <div class="calc-row" style="opacity:0.6"><span class="calc-row-label">Ind. contingenza (non pi\u00f9 applicata)</span><span class="calc-row-value" style="text-decoration:line-through">${fmtE(contingenza)}</span></div>
+          <div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (+${(scattiPerc*100).toFixed(0)}% su minimo tab.)</span><span class="calc-row-value">${fmtE(scattiValore)}</span></div>
           <div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">${fmtE(voloMese)}</span></div>
           <div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>${fmtE(mensileLordo)}</strong></span></div>
           <div class="calc-row"><span class="calc-row-label">x 12 mensilit\u00e0</span><span class="calc-row-value">${fmtE(mensileLordo * 12)}</span></div>
@@ -1433,6 +1521,36 @@
           <div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">${fmtE(totaleAnnuo)}</span></div>
         </div>
       `;
+    }
+
+    // ===== NOTES LIST =====
+    function showNotesList() {
+      currentArticleId = 'notes-list';
+      currentKeyword = '';
+      updateActiveNav();
+      const main = document.getElementById('mainContent');
+      let notesHtml = '';
+      let hasNotes = false;
+      allArticles.forEach(article => {
+        const note = getNote(article.id);
+        if (note) {
+          hasNotes = true;
+          const title = article.number ? 'Articolo ' + article.number + ' - ' + article.title : article.title;
+          const safeNote = note.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+          notesHtml += '<div class="note-list-item" onclick="showArticle(\'' + article.id + '\')">' +
+            '<div class="note-list-title">' + title + '</div>' +
+            '<div class="note-list-content">' + safeNote + '</div></div>';
+        }
+      });
+      if (!hasNotes) {
+        notesHtml = '<div class="no-notes">Nessuna nota salvata.<br>Puoi aggiungere note alla fine di ogni articolo.</div>';
+      }
+      main.innerHTML = '<div class="article-container fade-in">' +
+        '<div class="article-header"><span class="article-number">NOTE</span>' +
+        '<h1 class="article-title">Elenco Note</h1></div>' +
+        '<div class="notes-list-body">' + notesHtml + '</div></div>';
+      main.scrollTop = 0;
+      closeSidebar();
     }
 
     // ===== ACTIVE NAV =====
@@ -1474,41 +1592,52 @@
     }
 
     // ===== SEARCH BY KEYWORD =====
+    function normalizeText(text) {
+      return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
     function searchByKeyword(query) {
       document.getElementById('searchInput').value = '';
-      const q = query.toLowerCase().trim();
+      const q = query.trim();
+      const qNorm = normalizeText(q);
       currentKeyword = q;
       const items = document.querySelectorAll('.nav-item[data-id]');
       const sections = document.querySelectorAll('.nav-section');
       document.querySelectorAll('.keyword-badge').forEach(b => b.remove());
 
-      if (!q) {
+      if (!qNorm || qNorm.length < 2) {
         currentKeyword = '';
         items.forEach(item => item.style.display = '');
         sections.forEach(s => s.style.display = '');
         return;
       }
 
-      const matchingIds = new Set();
+      const matchingIds = new Map();
       allArticles.forEach(article => {
         const tmp = document.createElement('div');
         tmp.innerHTML = article.content;
-        const plain = (tmp.textContent || '').toLowerCase();
-        const titleText = article.title.toLowerCase();
-        if (plain.includes(q) || titleText.includes(q)) matchingIds.add(article.id);
+        const plain = normalizeText(tmp.textContent || '');
+        const titleNorm = normalizeText(article.title);
+        let count = 0;
+        let idx = plain.indexOf(qNorm);
+        while (idx !== -1) { count++; idx = plain.indexOf(qNorm, idx + 1); }
+        if (titleNorm.includes(qNorm)) count++;
+        if (count > 0) matchingIds.set(article.id, count);
       });
 
+      const specialIds = new Set(['home', 'calculator', 'notes-list']);
       sections.forEach(section => {
         let hasVisible = false;
         const sectionItems = section.querySelectorAll('.nav-item');
         sectionItems.forEach(item => {
           const id = item.dataset.id;
-          const match = matchingIds.has(id);
+          if (specialIds.has(id)) { item.style.display = ''; hasVisible = true; return; }
+          const count = matchingIds.get(id);
+          const match = count > 0;
           item.style.display = match ? '' : 'none';
-          if (match && id !== 'home' && id !== 'calculator') {
+          if (match) {
             const badge = document.createElement('span');
             badge.className = 'keyword-badge';
-            badge.textContent = 'trovato';
+            badge.textContent = count + (count === 1 ? ' risultato' : ' risultati');
             item.appendChild(badge);
           }
           if (match) hasVisible = true;

@@ -296,7 +296,7 @@ const CCNL_DATA = {
         {
           id: "art-17",
           number: "17",
-          title: "Indennità di contingenza",
+          title: "Indennità di contingenza (non più applicata per legge)",
           content: `<ol>
 <li>L'indennità di contingenza in vigore alla firma del presente CCNL riguardante ciascuna qualifica e grado è quella di cui alla tabella al comma 2.</li>
 <li>Tabella:
