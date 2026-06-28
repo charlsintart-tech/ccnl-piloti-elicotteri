@@ -1842,6 +1842,8 @@
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div id="calcCustomTotals"></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
+          '<div id="calcTot3"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
           '<button onclick="shareTableText(\'calcTable3\')">&#128221; WhatsApp Testo</button>' +
@@ -1856,6 +1858,8 @@
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennità di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div id="calcCustomTotals4"></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
+          '<div id="calcTot4"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
           '<button onclick="shareTableText(\'calcTable4\')">&#128221; WhatsApp Testo</button>' +
@@ -1916,9 +1920,9 @@
         '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensile3) + '</strong></span></div>' +
         '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensile3 * 12) + '</span></div>' +
         '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. \u20ac10,33)</span><span class="calc-row-value">' + fmtE(tredicesima3) + '</span></div>' +
-        '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-        '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="' + varie3 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
-        '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale3) + '</span></div>';
+        '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>';
+      var elTot3 = document.getElementById('calcTot3');
+      if (elTot3) elTot3.innerHTML = '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale3) + '</span></div>';
       // Tab 4 - 13\u00b0 modificata
       var customScatti4 = parseFloat((document.getElementById('calcScattoCustom4') || {}).value) || 0;
       var varie4 = parseFloat((document.getElementById('calcVarie4') || {}).value) || 0;
@@ -1931,9 +1935,9 @@
           '<div class="calc-row"><span class="calc-row-label"><strong>Totale mensile lordo</strong></span><span class="calc-row-value"><strong>' + fmtE(mensile4) + '</strong></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensile4 * 12) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. + volo + vacanza + aumenti + integr/13)</span><span class="calc-row-value">' + fmtE(tredicesima4) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="' + varie4 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
-          '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale4) + '</span></div>';
+          '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>';
+        var elTot4 = document.getElementById('calcTot4');
+        if (elTot4) elTot4.innerHTML = '<div class="calc-row total"><span class="calc-row-label">Totale annuo lordo</span><span class="calc-row-value">' + fmtE(totale4) + '</span></div>';
       }
     }
 
