@@ -197,6 +197,7 @@
 
     .sidebar-fixed {
       flex-shrink: 0;
+      background: var(--primary);
       border-bottom: 1px solid rgba(255,255,255,0.15);
     }
     .sidebar-nav {
@@ -1066,7 +1067,8 @@
     .calc-select {
       width: 100%;
       padding: 12px 14px;
-      border: 1px solid var(--border);
+      border: 2px solid #c4a67a;
+      background-color: #fdf6e3;
       border-radius: 10px;
       background: var(--bg-card);
       color: var(--text);
@@ -1101,8 +1103,8 @@
       justify-content: center;
     }
     [data-theme="dark"] .calc-select {
-      background-color: var(--bg-card);
-      border-color: var(--border);
+      background-color: #2a3a4f;
+      border-color: #c4a67a;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     }
     .calc-results {
@@ -1930,12 +1932,12 @@
         '<div class="calc-results" style="margin-top:24px" id="calcTable3">' +
           '<div class="calc-results-header">Retribuzione con scatti reali \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (importo reale \u20ac)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcScattoCustom" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcScattoCustom\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianit\u00e0 (importo reale \u20ac)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcScattoCustom" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcScattoCustom\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno3" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno3\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno3" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno3\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcCustomTotals"></div>' +
           '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcTot3"></div>' +
@@ -1953,7 +1955,7 @@
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennità di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno4" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno4\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno4" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno4\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcCustomTotals4"></div>' +
           '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcTot4"></div>' +
@@ -2266,12 +2268,12 @@
               <label class="calc-label" style="margin-top:10px">Scatti reali A (\u20ac)</label>
               <div class="input-clear-wrap" style="width:100%">
                 <input type="number" class="calc-select" id="compCustomA" value="0" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
-                <button class="input-clear-btn" onclick="document.getElementById('compCustomA').value='0';updateCompT3()">\u00d7</button>
+                <button class="input-clear-btn" onclick="document.getElementById('compCustomA').value='0';updateCompT3()">&#128465;</button>
               </div>
               <label class="calc-label" style="margin-top:10px">Volo notturno A (7 notti, \u20ac)</label>
               <div class="input-clear-wrap" style="width:100%">
                 <input type="number" class="calc-select" id="compNotturnoA" value="${((CALC_DATA.grades[0].volo60h + CALC_DATA.grades[0].vacanza) / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
-                <button class="input-clear-btn" onclick="document.getElementById('compNotturnoA').value='0';updateCompT3()">\u00d7</button>
+                <button class="input-clear-btn" onclick="document.getElementById('compNotturnoA').value='0';updateCompT3()">&#128465;</button>
               </div>
             </div>
             <div class="compare-col">
@@ -2286,12 +2288,12 @@
               <label class="calc-label" style="margin-top:10px">Scatti reali B (\u20ac)</label>
               <div class="input-clear-wrap" style="width:100%">
                 <input type="number" class="calc-select" id="compCustomB" value="0" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
-                <button class="input-clear-btn" onclick="document.getElementById('compCustomB').value='0';updateCompT3()">\u00d7</button>
+                <button class="input-clear-btn" onclick="document.getElementById('compCustomB').value='0';updateCompT3()">&#128465;</button>
               </div>
               <label class="calc-label" style="margin-top:10px">Volo notturno B (7 notti, \u20ac)</label>
               <div class="input-clear-wrap" style="width:100%">
                 <input type="number" class="calc-select" id="compNotturnoB" value="${((CALC_DATA.grades[1].volo60h + CALC_DATA.grades[1].vacanza) / 60 * 0.16 * 6 * 7).toFixed(2)}" step="0.01" min="0" oninput="updateCompT3()" style="flex:1">
-                <button class="input-clear-btn" onclick="document.getElementById('compNotturnoB').value='0';updateCompT3()">\u00d7</button>
+                <button class="input-clear-btn" onclick="document.getElementById('compNotturnoB').value='0';updateCompT3()">&#128465;</button>
               </div>
             </div>
           </div>
@@ -2834,8 +2836,10 @@
       }
 
       var html = '<div class="article-container fade-in"><div class="calc-container">' +
-        '<div class="calc-title">Tabelle Contrattuali</div>' +
-        '<div class="calc-subtitle">Tabelle retributive dal CCNL Piloti di Elicottero - Valori convertiti in Euro</div>';
+        '<div class="article-sticky-header" style="margin-bottom:8px">' +
+        '<div class="article-toolbar-title" style="font-size:16px;padding:10px 18px;width:100%;text-align:center;box-sizing:border-box"><strong>Tabelle Contrattuali</strong></div>' +
+        '<div class="calc-subtitle" style="margin-top:8px">Tabelle retributive dal CCNL Piloti di Elicottero - Valori convertiti in Euro</div>' +
+        '</div>';
 
       html += makeTable('tblStipendi', 'Stipendi minimi contrattuali', ['Grado', 'Stipendio Minimo'], function(g) {
         return [fmtE(g.pagaBase)];
