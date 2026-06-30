@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" id="viewportMeta">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CCNL Piloti">
@@ -108,6 +108,48 @@
     .header-text {
       flex: 1;
       min-width: 0;
+    }
+
+    .zoom-toggle-wrap {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+    .zoom-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      cursor: pointer;
+    }
+    .zoom-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .zoom-slider {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #e74c3c;
+      border-radius: 24px;
+      transition: background 0.3s;
+    }
+    .zoom-slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    .zoom-switch input:checked + .zoom-slider {
+      background: #27ae60;
+    }
+    .zoom-switch input:checked + .zoom-slider::before {
+      transform: translateX(20px);
     }
 
     /* Search */
@@ -1482,6 +1524,12 @@
       <div class="header-text">
         <div class="header-title">CCNL Piloti Elicotteri</div>
         <div class="header-subtitle">Rinnovo del 19 luglio 2001</div>
+      </div>
+      <div class="zoom-toggle-wrap">
+        <label class="zoom-switch" title="Abilita/Disabilita zoom">
+          <input type="checkbox" id="zoomToggle" onchange="toggleZoom(this.checked)">
+          <span class="zoom-slider"></span>
+        </label>
       </div>
     </div>
   </header>
@@ -3136,6 +3184,25 @@
     initArticles();
     buildSidebar();
     showHome();
+
+    // ===== ZOOM TOGGLE =====
+    function toggleZoom(enabled) {
+      var meta = document.getElementById('viewportMeta');
+      if (enabled) {
+        meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
+      } else {
+        meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+      }
+      localStorage.setItem('ccnl_zoom', enabled ? '1' : '0');
+    }
+    // Restore zoom setting
+    (function() {
+      var saved = localStorage.getItem('ccnl_zoom');
+      if (saved === '1') {
+        document.getElementById('zoomToggle').checked = true;
+        toggleZoom(true);
+      }
+    })();
 
     // ===== RICERCA AVANZATA =====
     function advancedSearch(query) {
