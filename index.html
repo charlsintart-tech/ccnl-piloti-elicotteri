@@ -2036,18 +2036,22 @@
 
     function printCalc() {
       var content = document.getElementById('calcResults').cloneNode(true);
-      content.querySelectorAll('.calc-actions').forEach(function(a) { a.remove(); });
+      content.querySelectorAll('.calc-actions, .calc-table-actions').forEach(function(a) { a.remove(); });
       content.querySelectorAll('input').forEach(function(inp) {
         var span = document.createElement('strong');
         span.textContent = '\u20ac ' + parseFloat(inp.value || 0).toFixed(2);
         inp.parentNode.replaceChild(span, inp);
       });
-      var w = window.open('','','width=800,height=600');
-      w.document.write('<html><head><title>Calcolatore Retributivo</title><style>body{font-family:-apple-system,sans-serif;padding:20px;font-size:14px}.calc-results{border:1px solid #ccc;border-radius:8px;overflow:hidden;margin-bottom:20px}.calc-results-header{background:#1e3a5f;color:white;padding:12px 16px;font-weight:600}.calc-row{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #eee}.calc-row.total{background:#1e3a5f;color:white;font-weight:700}</style></head><body>');
-      w.document.write(content.innerHTML);
-      w.document.write('</body></html>');
-      w.document.close();
-      w.print();
+      var iframe = document.createElement('iframe');
+      iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:none;';
+      document.body.appendChild(iframe);
+      var doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write('<html><head><title>Calcolatore Retributivo</title><style>body{font-family:-apple-system,sans-serif;padding:20px;font-size:14px}.calc-results{border:1px solid #ccc;border-radius:8px;overflow:hidden;margin-bottom:20px}.calc-results-header{padding:12px 16px;font-weight:600;color:white}.calc-row{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #eee}.calc-row.total{font-weight:700}@media print{body{padding:0}}</style></head><body>');
+      doc.write(content.innerHTML);
+      doc.write('</body></html>');
+      doc.close();
+      setTimeout(function() { iframe.contentWindow.focus(); iframe.contentWindow.print(); setTimeout(function() { document.body.removeChild(iframe); }, 2000); }, 500);
     }
 
     function exportCalcPDF() { printCalc(); }
@@ -2452,7 +2456,7 @@
       var html = '<div class="article-container fade-in"><div class="calc-container">' +
         '<div class="calc-title">SIM. SALVATE Calcolatore retributivo</div>' +
         '<div class="calc-subtitle">Simulazioni salvate dal Calcolatore Retributivo</div>' +
-        '<div style="text-align:center;margin:12px 0"><button style="background:#e67e22;border:2px solid #e67e22;color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.95em" onclick="showCalculator()">Torna a Calcolatore</button></div>';
+        '<div style="text-align:center;margin:12px 0"><button style="background:#e67e22;border:2px solid #e67e22;color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.95em" onclick="showCalculator()">TORNA AL CALCOLATORE</button></div>';
       if (saved.length === 0) {
         html += '<p style="text-align:center;color:var(--text-secondary);padding:32px 0">Nessuna simulazione salvata</p>';
       } else {
@@ -2486,7 +2490,7 @@
       var html = '<div class="article-container fade-in"><div class="calc-container">' +
         '<div class="calc-title">SIM. SALVATE Comparatore retributivo</div>' +
         '<div class="calc-subtitle">Simulazioni salvate dal Comparatore Retributivo</div>' +
-        '<div style="text-align:center;margin:12px 0"><button style="background:#e67e22;border:2px solid #e67e22;color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.95em" onclick="showComparator()">Torna a Comparatore</button></div>';
+        '<div style="text-align:center;margin:12px 0"><button style="background:#e67e22;border:2px solid #e67e22;color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.95em" onclick="showComparator()">TORNA AL COMPARATORE</button></div>';
       if (saved.length === 0) {
         html += '<p style="text-align:center;color:var(--text-secondary);padding:32px 0">Nessuna simulazione salvata</p>';
       } else {
@@ -2528,12 +2532,18 @@
     function printSavedSim(id) {
       var el = document.getElementById(id);
       if (!el) return;
-      var w = window.open('','','width=800,height=600');
-      w.document.write('<html><head><title>Simulazione</title><style>body{font-family:-apple-system,sans-serif;padding:20px;font-size:14px}.calc-results{border:1px solid #ccc;border-radius:8px;overflow:hidden;margin-bottom:20px}.calc-results-header{background:#1e3a5f;color:white;padding:12px 16px;font-weight:600}.calc-row{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #eee}.calc-row.total{background:#1e3a5f;color:white;font-weight:700}.compare-header-row{display:flex;background:#1e3a5f;color:white;padding:8px}.compare-header-row span{flex:1;text-align:center;font-weight:600}.compare-row{display:flex;padding:8px 12px;border-bottom:1px solid #eee}.compare-row span{flex:1;text-align:center}.compare-row.total{font-weight:700}</style></head><body>');
-      w.document.write(el.innerHTML);
-      w.document.write('</body></html>');
-      w.document.close();
-      w.print();
+      var clone = el.cloneNode(true);
+      clone.querySelectorAll('.calc-table-actions, button').forEach(function(b) { b.remove(); });
+      var iframe = document.createElement('iframe');
+      iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:none;';
+      document.body.appendChild(iframe);
+      var doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write('<html><head><title>Simulazione</title><style>body{font-family:-apple-system,sans-serif;padding:20px;font-size:14px}.calc-results{border:1px solid #ccc;border-radius:8px;overflow:hidden;margin-bottom:20px}.calc-results-header{padding:12px 16px;font-weight:600;color:white}.calc-row{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #eee}.calc-row.total{font-weight:700}.compare-header-row,.compare-row{display:flex;padding:8px 12px;border-bottom:1px solid #eee}.compare-row span{flex:1;text-align:center}.compare-row.total{font-weight:700}@media print{body{padding:0}}</style></head><body>');
+      doc.write(clone.innerHTML);
+      doc.write('</body></html>');
+      doc.close();
+      setTimeout(function() { iframe.contentWindow.focus(); iframe.contentWindow.print(); setTimeout(function() { document.body.removeChild(iframe); }, 2000); }, 500);
     }
 
     function shareSimText(id) {
