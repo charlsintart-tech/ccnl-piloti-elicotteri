@@ -113,7 +113,15 @@
     .zoom-toggle-wrap {
       flex-shrink: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
+      gap: 2px;
+    }
+    .zoom-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 1px;
     }
     .zoom-switch {
       position: relative;
@@ -247,7 +255,7 @@
     /* Sidebar */
     .sidebar {
       width: var(--sidebar-width);
-      background: var(--primary);
+      background: var(--primary-dark);
       overflow-y: auto;
       flex-shrink: 0;
       display: flex;
@@ -257,7 +265,7 @@
 
     .sidebar-fixed {
       flex-shrink: 0;
-      background: var(--primary);
+      background: var(--primary-dark);
       border-bottom: 1px solid rgba(255,255,255,0.15);
     }
     .sidebar-nav {
@@ -279,7 +287,7 @@
       color: var(--accent);
       position: sticky;
       top: 0;
-      background: var(--primary);
+      background: var(--primary-dark);
       z-index: 1;
     }
 
@@ -1544,6 +1552,7 @@
         <div class="header-subtitle">Rinnovo del 19 luglio 2001</div>
       </div>
       <div class="zoom-toggle-wrap">
+        <span class="zoom-label">ZOOM</span>
         <label class="zoom-switch" title="Abilita/Disabilita zoom">
           <input type="checkbox" id="zoomToggle" onchange="toggleZoom(this.checked)">
           <span class="zoom-slider"></span>
@@ -3204,12 +3213,19 @@
     showHome();
 
     // ===== ZOOM TOGGLE =====
+    var zoomBlocker = null;
     function toggleZoom(enabled) {
       var meta = document.getElementById('viewportMeta');
       if (enabled) {
         meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
+        document.documentElement.style.touchAction = '';
+        if (zoomBlocker) { document.removeEventListener('touchmove', zoomBlocker); zoomBlocker = null; }
       } else {
         meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+        document.documentElement.style.touchAction = 'pan-x pan-y';
+        if (zoomBlocker) document.removeEventListener('touchmove', zoomBlocker);
+        zoomBlocker = function(e) { if (e.touches.length > 1) e.preventDefault(); };
+        document.addEventListener('touchmove', zoomBlocker, { passive: false });
       }
       localStorage.setItem('ccnl_zoom', enabled ? '1' : '0');
     }
@@ -3219,6 +3235,8 @@
       if (saved === '1') {
         document.getElementById('zoomToggle').checked = true;
         toggleZoom(true);
+      } else {
+        toggleZoom(false);
       }
     })();
 
