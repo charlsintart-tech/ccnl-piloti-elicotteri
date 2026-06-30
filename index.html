@@ -1997,7 +1997,7 @@
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo * 12) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. \u20ac10,33)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie1" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie1\').value=\'0\';recalcVarie()">&#128465;</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Diarie / Indennit\u00e0 di disagio / Rimborsi</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie1" class="calc-input-custom" value="20000" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie1\').value=\'20000\';recalcVarie()">&#128465;</button></span></span></div>' +
           '<div id="calcTot1"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -2016,7 +2016,7 @@
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo2 * 12) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (senza aumenti)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie2" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie2\').value=\'0\';recalcVarie()">&#128465;</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Diarie / Indennit\u00e0 di disagio / Rimborsi</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie2" class="calc-input-custom" value="20000" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie2\').value=\'20000\';recalcVarie()">&#128465;</button></span></span></div>' +
           '<div id="calcTot2"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -2034,7 +2034,7 @@
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno3" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno3\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcCustomTotals"></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Diarie / Indennit\u00e0 di disagio / Rimborsi</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="20000" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'20000\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcTot3"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -2052,7 +2052,7 @@
           '<div class="calc-row"><span class="calc-row-label">Indennità di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno4" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno4\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcCustomTotals4"></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Diarie / Indennit\u00e0 di disagio / Rimborsi</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="20000" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'20000\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcTot4"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -2458,7 +2458,7 @@
         ['\u00d7 12 mensilit\u00e0', m1A * 12, m1B * 12],
         ['13\u00aa mensilit\u00e0', t1A, t1B],
         ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
-        ['Varie', 0, 0],
+        ['Diarie / Indennit\u00e0 di disagio / Rimborsi', 20000, 20000],
         ['Totale annuo lordo', a1A, a1B, false, true]
       ];
 
@@ -2477,7 +2477,7 @@
         ['\u00d7 12 mensilit\u00e0', m2A * 12, m2B * 12],
         ['13\u00aa mensilit\u00e0 (senza aumenti)', t1A, t1B],
         ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
-        ['Varie', 0, 0],
+        ['Diarie / Indennit\u00e0 di disagio / Rimborsi', 20000, 20000],
         ['Totale annuo lordo', a2A, a2B, false, true]
       ];
 
@@ -2529,7 +2529,7 @@
         ['\u00d7 12 mensilit\u00e0', m3A * 12, m3B * 12],
         ['13\u00aa mensilit\u00e0', t3A, t3B],
         ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
-        ['Varie', 0, 0],
+        ['Diarie / Indennit\u00e0 di disagio / Rimborsi', 20000, 20000],
         ['Totale annuo lordo', a3A, a3B, false, true]
       ];
       document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable3\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedComp()">&#128196; SIM. SALVATE</button></div>';
@@ -2551,7 +2551,7 @@
         ['\u00d7 12 mensilit\u00e0', m3A * 12, m3B * 12],
         ['13\u00aa mensilit\u00e0 (modificata)', t4A, t4B],
         ['Ind. volo integrativa (200h/anno)', gA.integr200h, gB.integr200h],
-        ['Varie', 0, 0],
+        ['Diarie / Indennit\u00e0 di disagio / Rimborsi', 20000, 20000],
         ['Totale annuo lordo', a4A, a4B, false, true]
       ];
       var el4 = document.getElementById('compT4Wrap');
