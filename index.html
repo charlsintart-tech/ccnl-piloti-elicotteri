@@ -1494,14 +1494,14 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input type="text" class="search-input" id="searchInput" placeholder="Cerca articolo..." oninput="filterArticles(this.value)">
-          <button class="search-clear" onclick="document.getElementById('searchInput').value='';filterArticles('')" title="Cancella">&times;</button>
+          <button class="search-clear" onclick="document.getElementById('searchInput').value='';filterArticles('')" title="Cancella">&#128465;</button>
         </div>
         <div class="search-wrapper" style="margin-top:8px">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M4 6h16M4 12h10M4 18h6"/>
           </svg>
           <input type="text" class="search-input" id="keywordInput" placeholder="Cerca per parola chiave..." oninput="searchByKeyword(this.value)">
-          <button class="search-clear" onclick="document.getElementById('keywordInput').value='';searchByKeyword('')" title="Cancella">&times;</button>
+          <button class="search-clear" onclick="document.getElementById('keywordInput').value='';searchByKeyword('')" title="Cancella">&#128465;</button>
         </div>
       </div>
       <div id="sidebarFixed" class="sidebar-fixed"></div>
@@ -1616,19 +1616,19 @@
       // Home (fixed)
       fixedHtml += `<div class="nav-divider"></div>`;
       fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showHome()" data-id="home">HOME</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showHome()" data-id="home">&#127968; HOME</div>
       </div>`;
 
       // Calculator (fixed)
       fixedHtml += `<div class="nav-divider"></div>`;
       fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator()" data-id="calculator">CALCOLATORE RETRIBUTIVO</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO</div>
       </div>`;
 
       // Comparator (fixed)
       fixedHtml += `<div class="nav-divider"></div>`;
       fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showComparator()" data-id="comparator">COMPARATORE RETRIBUTIVO</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showComparator()" data-id="comparator">&#129518; COMPARATORE RETRIBUTIVO</div>
       </div>`;
       fixedDiv.innerHTML = fixedHtml;
 
@@ -1651,7 +1651,7 @@
       // Regular sections
       CCNL_DATA.sections.forEach((section, idx) => {
         if (idx === 0) html += '<div class="nav-divider"></div>';
-        html += `<div class="nav-section"><div class="nav-section-title">${section.title}</div>`;
+        var sectionEmoji = section.title === "Allegati" ? "&#128204; " : ""; html += `<div class="nav-section"><div class="nav-section-title">${sectionEmoji}${section.title}</div>`;
         section.articles.forEach(article => {
           const starred = favs.includes(article.id);
           html += `<a class="nav-item" data-id="${article.id}" onclick="showArticle('${article.id}')">
@@ -1670,7 +1670,7 @@
 
       // Notes list
       html += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showNotesList()" data-id="notes-list">ELENCO NOTE</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showNotesList()" data-id="notes-list">&#9997;&#65039; ELENCO NOTE</div>
       </div>`;
 
       html += `<div class="nav-section">
@@ -1900,7 +1900,7 @@
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo * 12) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (paga base + scatti + superm. \u20ac10,33)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie1" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie1\').value=\'0\';recalcVarie()">×</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie1" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie1\').value=\'0\';recalcVarie()">&#128465;</button></span></span></div>' +
           '<div id="calcTot1"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -1919,7 +1919,7 @@
           '<div class="calc-row"><span class="calc-row-label">\u00d7 12 mensilit\u00e0</span><span class="calc-row-value">' + fmtE(mensileLordo2 * 12) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">13\u00aa mensilit\u00e0 (senza aumenti)</span><span class="calc-row-value">' + fmtE(tredicesima) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Ind. volo integrativa (200h/anno)</span><span class="calc-row-value">' + fmtE(integrAnno) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie2" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie2\').value=\'0\';recalcVarie()">×</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie2" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcVarie()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie2\').value=\'0\';recalcVarie()">&#128465;</button></span></span></div>' +
           '<div id="calcTot2"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -1937,7 +1937,7 @@
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno3" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno3\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
           '<div id="calcCustomTotals"></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie3" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie3\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcTot3"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -1948,14 +1948,14 @@
         '<div class="calc-results" style="margin-top:24px" id="calcTable4">' +
           '<div class="calc-results-header">Retribuzione con 13° modificata — ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Scatti anzianità (importo reale €)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcScattoCustom4" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcScattoCustom4\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Scatti anzianità (importo reale €)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcScattoCustom4" class="calc-input-custom" value="' + prevCustomVal + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcScattoCustom4\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Vacanza contrattuale</span><span class="calc-row-value">' + fmtE(vacanza) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Superminimo</span><span class="calc-row-value">' + fmtE(superminimo) + '</span></div>' +
           '<div class="calc-row" style="color:var(--accent);font-weight:600"><span class="calc-row-label">Aumenti 2024 / 2025</span><span class="calc-row-value">' + fmtE(aumento) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennità di volo (60h/mese)</span><span class="calc-row-value">' + fmtE(voloMese) + '</span></div>' +
           '<div class="calc-row"><span class="calc-row-label">Indennit\u00e0 di volo notturno (7 notti)</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcNotturno4" class="calc-input-custom" value="' + notturno7 + '" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcNotturno4\').value=\'0\';recalcCustom()">\u00d7</button></span></span></div>' +
           '<div id="calcCustomTotals4"></div>' +
-          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">×</button></span></span></div>' +
+          '<div class="calc-row"><span class="calc-row-label">Varie</span><span class="calc-row-value"><span class="input-clear-wrap"><input type="number" id="calcVarie4" class="calc-input-custom" value="0" step="0.01" min="0" oninput="recalcCustom()"><button class="input-clear-btn" onclick="document.getElementById(\'calcVarie4\').value=\'0\';recalcCustom()">&#128465;</button></span></span></div>' +
           '<div id="calcTot4"></div>' +
         '</div>' +
         '<div class="calc-table-actions">' +
@@ -2882,7 +2882,9 @@
           hasNotes = true;
           const title = article.number ? 'Articolo ' + article.number + ' - ' + article.title : article.title;
           const safeNote = note.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-          notesHtml += '<div class="note-list-item" onclick="showArticle(\'' + article.id + '\')">' +
+          var noteIdx = notesHtml.split('note-list-item').length - 1;
+          var noteColor = noteIdx % 2 === 0 ? '#d5f5d5' : '#a8e6a8';
+          notesHtml += '<div class="note-list-item" style="background:' + noteColor + ';border-color:' + noteColor + '" onclick="showArticle(\'' + article.id + '\')">' +
             '<div class="note-list-title">' + title + '</div>' +
             '<div class="note-list-content">' + safeNote + '</div></div>';
         }
@@ -2891,8 +2893,7 @@
         notesHtml = '<div class="no-notes">Nessuna nota salvata.<br>Puoi aggiungere note alla fine di ogni articolo.</div>';
       }
       main.innerHTML = '<div class="article-container fade-in">' +
-        '<div class="article-header"><span class="article-number">NOTE</span>' +
-        '<h1 class="article-title">Elenco Note</h1></div>' +
+        '<div class="article-header"><div class="article-toolbar-title" style="font-size:16px;padding:10px 18px;width:100%;text-align:center;box-sizing:border-box"><strong>Elenco Note</strong></div></div>' +
         '<div class="notes-list-body">' + notesHtml + '</div></div>';
       main.scrollTop = 0;
       closeSidebar();
