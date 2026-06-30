@@ -148,11 +148,11 @@
       transform: translateY(-50%);
       width: 22px;
       height: 22px;
-      border-radius: 50%;
+      border-radius: 0;
       border: none;
-      background: rgba(255,255,255,0.2);
+      background: transparent;
       color: rgba(255,255,255,0.7);
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1;
       cursor: pointer;
       display: flex;
@@ -162,7 +162,7 @@
       transition: all 0.2s;
     }
     .search-clear:hover {
-      background: rgba(255,255,255,0.35);
+      background: transparent;
       color: white;
     }
 
@@ -1208,11 +1208,11 @@
       justify-content: center;
       width: 22px;
       height: 22px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
+      border-radius: 0;
+      border: none;
+      background: transparent;
       color: var(--text-secondary);
-      font-size: 13px;
+      font-size: 16px;
       cursor: pointer;
       padding: 0;
       font-family: inherit;
@@ -1665,7 +1665,7 @@
 
       // Tabelle contrattuali
       html += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showTabelleContrattuali()" data-id="tabelle-contrattuali">TABELLE CONTRATTUALI</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showTabelleContrattuali()" data-id="tabelle-contrattuali">&#128202; TABELLE CONTRATTUALI</div>
       </div>`;
 
       // Notes list
