@@ -1671,6 +1671,7 @@
           <div class="welcome">
             <div style="color:var(--accent);font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:8px;">Spampy2026</div>
             <div class="calc-title" style="margin-bottom:16px;">CCNL Piloti di Elicottero</div>
+            <div class="calc-title" style="margin-bottom:8px;font-size:15px;background:var(--primary);color:white;">Stipulato il 19 Luglio 2001</div>
             <div class="calc-title" style="margin-bottom:8px;font-size:15px;background:#c0392b;color:white;">Scaduto il 31 Dicembre 2004</div>
             <div class="calc-title" style="margin-bottom:16px;font-size:14px;background:#c0392b;color:white;" id="expiryCounter"></div>
             <p>Contratto Collettivo Nazionale di Lavoro per i Piloti dipendenti da Imprese Elicotteristiche esercenti il trasporto aereo non di linea e il lavoro aereo.</p>
@@ -2317,9 +2318,9 @@
       document.getElementById('compNotturnoB').value = ((gB.volo60h + gB.vacanza) / 60 * 0.16 * 6 * 7).toFixed(2);
 
       var html = buildCompTable('compTable1', 'Calcolo retribuzione da CCNL 2001', rows1, lblA, lblB, fmtE);
-      html += '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable1\') save-sim-btn">&#128190; Salva</button></div>';
+      html += '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable1\')">&#128190; Salva</button></div>';
       html += buildCompTable('compTable2', 'Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025', rows2, lblA, lblB, fmtE);
-      html += '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable2\') save-sim-btn">&#128190; Salva</button></div>';
+      html += '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable2\')">&#128190; Salva</button></div>';
       html += '<div id="compT3Wrap"></div>';
       html += '<div id="compT4Wrap"></div>';
       document.getElementById('compResults').innerHTML = html;
@@ -2361,7 +2362,7 @@
         ['Varie', 0, 0],
         ['Totale annuo lordo', a3A, a3B, false, true]
       ];
-      document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable3\') save-sim-btn">&#128190; Salva</button></div>';
+      document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable3\')">&#128190; Salva</button></div>';
 
       // Tab 4 comparator - 13\u00b0 modificata
       var t4A = gA.pagaBase + custA + sup + gA.volo60h + gA.vacanza + gA.aumento + gA.integr200h / 13;
@@ -2384,7 +2385,7 @@
         ['Totale annuo lordo', a4A, a4B, false, true]
       ];
       var el4 = document.getElementById('compT4Wrap');
-      if (el4) el4.innerHTML = buildCompTable('compTable4', 'Retribuzione con 13\u00b0 modificata', rows4, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable4\') save-sim-btn">&#128190; Salva</button></div>';
+      if (el4) el4.innerHTML = buildCompTable('compTable4', 'Retribuzione con 13\u00b0 modificata', rows4, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable4\')">&#128190; Salva</button></div>';
     }
 
     // ===== SAVED SIMULATIONS =====
@@ -2570,7 +2571,28 @@
         var spans = r.querySelectorAll('span');
         if (spans.length >= 2) text += spans[0].textContent + ': ' + spans[1].textContent + (spans[2] ? ' | ' + spans[2].textContent : '') + '\n';
       });
-      window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+      el.querySelectorAll('tr').forEach(function(r) {
+        var tds = r.querySelectorAll('td, th');
+        if (tds.length >= 2) {
+          var row = [];
+          tds.forEach(function(td) { row.push(td.textContent.trim()); });
+          text += row.join(' | ') + '\n';
+        }
+      });
+      if (typeof html2canvas !== 'undefined') {
+        html2canvas(el, { backgroundColor: '#fff', scale: 2 }).then(function(canvas) {
+          canvas.toBlob(function(blob) {
+            var file = new File([blob], 'tabella.png', { type: 'image/png' });
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+              navigator.share({ files: [file], title: subject, text: subject }).catch(function(){});
+            } else {
+              window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+            }
+          });
+        });
+      } else {
+        window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+      }
     }
 
     function pdfSim(id) { printSavedSim(id); }
