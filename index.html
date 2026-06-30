@@ -1116,6 +1116,10 @@
     #compTable3 .compare-header-row { background: #5a9a6e; }
     #compTable4 .compare-row.total { background: rgba(230,126,34,0.08); border-top-color: #e67e22; }
     #compTable3 .compare-row.total { background: rgba(90,154,110,0.08); border-top-color: #5a9a6e; }
+    .save-sim-btn { background: #f1c40f !important; color: #333 !important; border: 2px solid #f1c40f !important; font-weight: 600; }
+    .save-sim-btn:hover { background: #d4ac0d !important; }
+    .saved-sim-actions { display:flex; flex-wrap:wrap; gap:6px; padding:10px 12px; }
+    .saved-sim-actions button { padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer; background:white; font-weight:500; }
     #calcTable1, #compTable1 {
       border: 2px solid #d4b896;
     }
@@ -1636,16 +1640,21 @@
         html += '</div>';
       });
 
+      // Tabelle contrattuali
+      html += `<div class="nav-section">
+        <div class="nav-section-title" style="cursor:pointer" onclick="showTabelleContrattuali()" data-id="tabelle-contrattuali">TABELLE CONTRATTUALI</div>
+      </div>`;
+
       // Notes list
       html += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="showNotesList()" data-id="notes-list">ELENCO NOTE</div>
       </div>`;
 
       html += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showSavedCalc()" data-id="saved-calc">SIM. SALVATE calc. retr.</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showSavedCalc()" data-id="saved-calc">SIM. SALVATE Calcolatore retributivo</div>
       </div>`;
       html += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showSavedComp()" data-id="saved-comp">SIM. SALVATE comp. retr.</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showSavedComp()" data-id="saved-comp">SIM. SALVATE Comparatore retributivo</div>
       </div>`;
 
       nav.innerHTML = html;
@@ -1872,7 +1881,7 @@
           '<button onclick="shareTableText(\'calcTable1\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable1\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable1\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable1\') save-sim-btn">&#128190; Salva</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable2">' +
           '<div class="calc-results-header">Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025 \u2014 ' + grade.label + ' - ' + scatti + ' scatt' + (scatti===1?'o':'i') + ' di anzianit\u00e0</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1891,7 +1900,7 @@
           '<button onclick="shareTableText(\'calcTable2\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable2\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable2\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable2\') save-sim-btn">&#128190; Salva</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable3">' +
           '<div class="calc-results-header">Retribuzione con scatti reali \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1909,7 +1918,7 @@
           '<button onclick="shareTableText(\'calcTable3\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable3\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable3\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable3\') save-sim-btn">&#128190; Salva</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable4">' +
           '<div class="calc-results-header">Retribuzione con 13° modificata — ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1927,7 +1936,7 @@
           '<button onclick="shareTableText(\'calcTable4\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable4\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable4\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable4\') save-sim-btn">&#128190; Salva</button></div>' +
         '<div class="calc-actions">' +
           '<button class="toolbar-btn" onclick="printCalc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>Stampa</span></button>' +
           '<button class="toolbar-btn" onclick="exportCalcPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Esporta PDF</span></button>' +
@@ -2308,9 +2317,9 @@
       document.getElementById('compNotturnoB').value = ((gB.volo60h + gB.vacanza) / 60 * 0.16 * 6 * 7).toFixed(2);
 
       var html = buildCompTable('compTable1', 'Calcolo retribuzione da CCNL 2001', rows1, lblA, lblB, fmtE);
-      html += '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable1\')">&#128190; Salva</button></div>';
+      html += '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable1\') save-sim-btn">&#128190; Salva</button></div>';
       html += buildCompTable('compTable2', 'Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025', rows2, lblA, lblB, fmtE);
-      html += '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable2\')">&#128190; Salva</button></div>';
+      html += '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable2\') save-sim-btn">&#128190; Salva</button></div>';
       html += '<div id="compT3Wrap"></div>';
       html += '<div id="compT4Wrap"></div>';
       document.getElementById('compResults').innerHTML = html;
@@ -2352,7 +2361,7 @@
         ['Varie', 0, 0],
         ['Totale annuo lordo', a3A, a3B, false, true]
       ];
-      document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable3\')">&#128190; Salva</button></div>';
+      document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable3\') save-sim-btn">&#128190; Salva</button></div>';
 
       // Tab 4 comparator - 13\u00b0 modificata
       var t4A = gA.pagaBase + custA + sup + gA.volo60h + gA.vacanza + gA.aumento + gA.integr200h / 13;
@@ -2375,7 +2384,7 @@
         ['Totale annuo lordo', a4A, a4B, false, true]
       ];
       var el4 = document.getElementById('compT4Wrap');
-      if (el4) el4.innerHTML = buildCompTable('compTable4', 'Retribuzione con 13\u00b0 modificata', rows4, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable4\')">&#128190; Salva</button></div>';
+      if (el4) el4.innerHTML = buildCompTable('compTable4', 'Retribuzione con 13\u00b0 modificata', rows4, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCompSim(\'compTable4\') save-sim-btn">&#128190; Salva</button></div>';
     }
 
     // ===== SAVED SIMULATIONS =====
@@ -2440,17 +2449,24 @@
       var main = document.getElementById('mainContent');
       var saved = JSON.parse(localStorage.getItem('ccnl_saved_calc') || '[]');
       var html = '<div class="article-container fade-in"><div class="calc-container">' +
-        '<div class="calc-title">SIM. SALVATE calc. retr.</div>' +
+        '<div class="calc-title">SIM. SALVATE Calcolatore retributivo</div>' +
         '<div class="calc-subtitle">Simulazioni salvate dal Calcolatore Retributivo</div>';
       if (saved.length === 0) {
         html += '<p style="text-align:center;color:var(--text-secondary);padding:32px 0">Nessuna simulazione salvata</p>';
       } else {
         saved.forEach(function(s) {
-          html += '<div class="calc-results" style="margin-top:16px">' +
+          html += '<div class="calc-results" style="margin-top:16px" id="savedCalc_' + s.id + '">' +
             '<div class="calc-results-header" style="display:flex;justify-content:space-between;align-items:center">' +
               '<span>' + s.label + '</span>' +
               '<button onclick="deleteSavedCalc(' + s.id + ')" style="background:none;border:none;color:white;font-size:18px;cursor:pointer;padding:0 4px" title="Elimina">\u2715</button>' +
-            '</div>' + s.html + '</div>';
+            '</div>' + s.html + '</div>' +
+            '<div class="saved-sim-actions">' +
+              '<button style="border:2px solid #f1c40f" onclick="printSavedSim(\'savedCalc_' + s.id + '\')">\ud83d\udda8 Stampa</button>' +
+              '<button style="border:2px solid #5a9a6e" onclick="shareSimText(\'savedCalc_' + s.id + '\')">\ud83d\udce9 WhatsApp Testo</button>' +
+              '<button style="border:2px solid #5a9a6e" onclick="shareSimImage(\'savedCalc_' + s.id + '\')">\ud83d\udcf7 WhatsApp Immagine</button>' +
+              '<button style="border:2px solid #1e3a5f" onclick="mailSim(\'savedCalc_' + s.id + '\')">\u2709 Mail</button>' +
+              '<button style="border:2px solid #e67e22" onclick="pdfSim(\'savedCalc_' + s.id + '\')">\ud83d\udcc4 Esporta PDF</button>' +
+            '</div>';
         });
       }
       html += '</div></div>';
@@ -2466,17 +2482,24 @@
       var main = document.getElementById('mainContent');
       var saved = JSON.parse(localStorage.getItem('ccnl_saved_comp') || '[]');
       var html = '<div class="article-container fade-in"><div class="calc-container">' +
-        '<div class="calc-title">SIM. SALVATE comp. retr.</div>' +
+        '<div class="calc-title">SIM. SALVATE Comparatore retributivo</div>' +
         '<div class="calc-subtitle">Simulazioni salvate dal Comparatore Retributivo</div>';
       if (saved.length === 0) {
         html += '<p style="text-align:center;color:var(--text-secondary);padding:32px 0">Nessuna simulazione salvata</p>';
       } else {
         saved.forEach(function(s) {
-          html += '<div class="calc-results" style="margin-top:16px">' +
+          html += '<div class="calc-results" style="margin-top:16px" id="savedComp_' + s.id + '">' +
             '<div class="calc-results-header" style="display:flex;justify-content:space-between;align-items:center">' +
               '<span>' + s.label + '</span>' +
               '<button onclick="deleteSavedComp(' + s.id + ')" style="background:none;border:none;color:white;font-size:18px;cursor:pointer;padding:0 4px" title="Elimina">\u2715</button>' +
-            '</div>' + s.html + '</div>';
+            '</div>' + s.html + '</div>' +
+            '<div class="saved-sim-actions">' +
+              '<button style="border:2px solid #f1c40f" onclick="printSavedSim(\'savedComp_' + s.id + '\')">\ud83d\udda8 Stampa</button>' +
+              '<button style="border:2px solid #5a9a6e" onclick="shareSimText(\'savedComp_' + s.id + '\')">\ud83d\udce9 WhatsApp Testo</button>' +
+              '<button style="border:2px solid #5a9a6e" onclick="shareSimImage(\'savedComp_' + s.id + '\')">\ud83d\udcf7 WhatsApp Immagine</button>' +
+              '<button style="border:2px solid #1e3a5f" onclick="mailSim(\'savedComp_' + s.id + '\')">\u2709 Mail</button>' +
+              '<button style="border:2px solid #e67e22" onclick="pdfSim(\'savedComp_' + s.id + '\')">\ud83d\udcc4 Esporta PDF</button>' +
+            '</div>';
         });
       }
       html += '</div></div>';
@@ -2498,6 +2521,59 @@
       localStorage.setItem('ccnl_saved_comp', JSON.stringify(saved));
       showSavedComp();
     }
+
+    function printSavedSim(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var w = window.open('','','width=800,height=600');
+      w.document.write('<html><head><title>Simulazione</title><style>body{font-family:-apple-system,sans-serif;padding:20px;font-size:14px}.calc-results{border:1px solid #ccc;border-radius:8px;overflow:hidden;margin-bottom:20px}.calc-results-header{background:#1e3a5f;color:white;padding:12px 16px;font-weight:600}.calc-row{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #eee}.calc-row.total{background:#1e3a5f;color:white;font-weight:700}.compare-header-row{display:flex;background:#1e3a5f;color:white;padding:8px}.compare-header-row span{flex:1;text-align:center;font-weight:600}.compare-row{display:flex;padding:8px 12px;border-bottom:1px solid #eee}.compare-row span{flex:1;text-align:center}.compare-row.total{font-weight:700}</style></head><body>');
+      w.document.write(el.innerHTML);
+      w.document.write('</body></html>');
+      w.document.close();
+      w.print();
+    }
+
+    function shareSimText(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var text = '';
+      var header = el.querySelector('.calc-results-header');
+      if (header) text += header.textContent.replace('\u2715','').trim() + '\n' + ''.padStart(40,'\u2500') + '\n';
+      el.querySelectorAll('.calc-row, .compare-row').forEach(function(r) {
+        var spans = r.querySelectorAll('span');
+        if (spans.length >= 2) text += spans[0].textContent + ': ' + spans[1].textContent + (spans[2] ? ' | ' + spans[2].textContent : '') + '\n';
+      });
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    function shareSimImage(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (typeof html2canvas === 'undefined') { shareSimText(id); return; }
+      html2canvas(el, { backgroundColor: '#fff', scale: 2 }).then(function(canvas) {
+        canvas.toBlob(function(blob) {
+          var file = new File([blob], 'simulazione.png', { type: 'image/png' });
+          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: 'Simulazione CCNL' }).catch(function(){});
+          } else { shareSimText(id); }
+        });
+      });
+    }
+
+    function mailSim(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var header = el.querySelector('.calc-results-header');
+      var subject = header ? header.textContent.replace('\u2715','').trim() : 'Simulazione CCNL';
+      var text = '';
+      el.querySelectorAll('.calc-row, .compare-row').forEach(function(r) {
+        var spans = r.querySelectorAll('span');
+        if (spans.length >= 2) text += spans[0].textContent + ': ' + spans[1].textContent + (spans[2] ? ' | ' + spans[2].textContent : '') + '\n';
+      });
+      window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+    }
+
+    function pdfSim(id) { printSavedSim(id); }
 
     // ===== PDF VIEWER =====
     function showPdfViewer() {
@@ -2574,6 +2650,76 @@
       }).catch(function() {
         window.location.href = 'mailto:?subject=' + encodeURIComponent('CCNL Piloti di Elicottero') + '&body=' + encodeURIComponent('CCNL Piloti di Elicottero - Rinnovo del 19 luglio 2001');
       });
+    }
+
+    // ===== TABELLE CONTRATTUALI =====
+    function showTabelleContrattuali() {
+      currentArticleId = 'tabelle-contrattuali';
+      currentKeyword = '';
+      updateActiveNav();
+      var main = document.getElementById('mainContent');
+      var fmtE = function(v) { return new Intl.NumberFormat('it-IT', { style:'currency', currency:'EUR' }).format(v); };
+      var grades = CALC_DATA.grades;
+      var sup = 10.33;
+
+      function makeTable(id, title, headers, rowsFn) {
+        var h = '<div class="calc-results" style="margin-top:20px" id="' + id + '">' +
+          '<div class="calc-results-header">' + title + '</div>' +
+          '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px">' +
+          '<thead><tr>';
+        headers.forEach(function(hd) { h += '<th style="padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--bg-secondary)">' + hd + '</th>'; });
+        h += '</tr></thead><tbody>';
+        grades.forEach(function(g, i) {
+          var vals = rowsFn(g);
+          h += '<tr style="border-bottom:1px solid var(--border)">';
+          h += '<td style="padding:10px 12px;font-weight:600">' + g.label + '</td>';
+          vals.forEach(function(v) { h += '<td style="padding:10px 12px;text-align:right">' + v + '</td>'; });
+          h += '</tr>';
+        });
+        h += '</tbody></table></div></div>';
+        h += '<div class="saved-sim-actions">' +
+          '<button style="border:2px solid #f1c40f" onclick="printSavedSim(\'' + id + '\')">\ud83d\udda8 Stampa</button>' +
+          '<button style="border:2px solid #5a9a6e" onclick="shareSimText(\'' + id + '\')">\ud83d\udce9 WhatsApp Testo</button>' +
+          '<button style="border:2px solid #5a9a6e" onclick="shareSimImage(\'' + id + '\')">\ud83d\udcf7 WhatsApp Immagine</button>' +
+          '<button style="border:2px solid #1e3a5f" onclick="mailSim(\'' + id + '\')">\u2709 Mail</button>' +
+          '<button style="border:2px solid #e67e22" onclick="pdfSim(\'' + id + '\')">\ud83d\udcc4 Esporta PDF</button>' +
+          '</div>';
+        return h;
+      }
+
+      var html = '<div class="article-container fade-in"><div class="calc-container">' +
+        '<div class="calc-title">Tabelle Contrattuali</div>' +
+        '<div class="calc-subtitle">Tabelle retributive dal CCNL Piloti di Elicottero - Valori convertiti in Euro</div>';
+
+      html += makeTable('tblStipendi', 'Stipendi minimi contrattuali', ['Grado', 'Stipendio Minimo'], function(g) {
+        return [fmtE(g.pagaBase)];
+      });
+
+      var contingenza = { cs: 535.53, pc: 528.82, cmd: 524.17, uf: 519.01, p1: 514.36, p2: 500.93, si: 500.93 };
+      html += makeTable('tblContingenza', 'Indennit\u00e0 di contingenza (non pi\u00f9 applicata per legge)', ['Grado', 'Importo mensile'], function(g) {
+        return [fmtE(contingenza[g.id])];
+      });
+
+      html += makeTable('tblVolo', 'Indennit\u00e0 di volo (60 ore/mese)', ['Grado', 'Aliquota oraria', 'Importo mensile (60h)'], function(g) {
+        return [fmtE(g.volo60h / 60), fmtE(g.volo60h)];
+      });
+
+      html += makeTable('tblIntegrativa', 'Indennit\u00e0 integrativa di volo (200 ore/anno)', ['Grado', 'Aliquota oraria', 'Importo annuo (200h)'], function(g) {
+        return [fmtE(g.integr200h / 200), fmtE(g.integr200h)];
+      });
+
+      html += makeTable('tblNotturno', 'Indennit\u00e0 di volo notturno', ['Grado', '16% aliquota oraria', 'Per notte (6h min)', 'Per 7 notti'], function(g) {
+        var oraria = (g.volo60h + g.vacanza) / 60;
+        var pctOraria = oraria * 0.16;
+        var perNotte = pctOraria * 6;
+        var per7 = perNotte * 7;
+        return [fmtE(pctOraria), fmtE(perNotte), fmtE(per7)];
+      });
+
+      html += '</div></div>';
+      main.innerHTML = html;
+      main.scrollTop = 0;
+      closeSidebar();
     }
 
     // ===== NOTES LIST =====
@@ -2818,6 +2964,7 @@
       const hash = window.location.hash.substring(1);
       if (hash === 'calculator') showCalculator();
       else if (hash === 'comparator') showComparator();
+      else if (hash === 'tabelle-contrattuali') showTabelleContrattuali();
       else if (hash === 'saved-calc') showSavedCalc();
       else if (hash === 'saved-comp') showSavedComp();
       else if (hash && allArticles.find(a => a.id === hash)) showArticle(hash);
