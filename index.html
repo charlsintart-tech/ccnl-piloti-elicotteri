@@ -1116,8 +1116,8 @@
     #compTable3 .compare-header-row { background: #5a9a6e; }
     #compTable4 .compare-row.total { background: rgba(230,126,34,0.08); border-top-color: #e67e22; }
     #compTable3 .compare-row.total { background: rgba(90,154,110,0.08); border-top-color: #5a9a6e; }
-    .save-sim-btn { background: #f1c40f !important; color: #333 !important; border: 2px solid #f1c40f !important; font-weight: 600; }
-    .save-sim-btn:hover { background: #d4ac0d !important; }
+    .save-sim-btn { background: transparent !important; color: inherit !important; border: 2px solid #f1c40f !important; font-weight: 600; }
+    .save-sim-btn:hover { background: rgba(241,196,15,0.15) !important; }
     .saved-sim-actions { display:flex; flex-wrap:wrap; gap:6px; padding:10px 12px; }
     .saved-sim-actions button { padding:6px 10px; border-radius:6px; font-size:12px; cursor:pointer; background:white; font-weight:500; }
     #calcTable1, #compTable1 {
@@ -1882,7 +1882,7 @@
           '<button onclick="shareTableText(\'calcTable1\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable1\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable1\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable1\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedCalc()">&#128196; SIM. SALVATE</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable2">' +
           '<div class="calc-results-header">Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025 \u2014 ' + grade.label + ' - ' + scatti + ' scatt' + (scatti===1?'o':'i') + ' di anzianit\u00e0</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1901,7 +1901,7 @@
           '<button onclick="shareTableText(\'calcTable2\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable2\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable2\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable2\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedCalc()">&#128196; SIM. SALVATE</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable3">' +
           '<div class="calc-results-header">Retribuzione con scatti reali \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1919,7 +1919,7 @@
           '<button onclick="shareTableText(\'calcTable3\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable3\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable3\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable3\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedCalc()">&#128196; SIM. SALVATE</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable4">' +
           '<div class="calc-results-header">Retribuzione con 13° modificata — ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1937,7 +1937,7 @@
           '<button onclick="shareTableText(\'calcTable4\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable4\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable4\')">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable4\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedCalc()">&#128196; SIM. SALVATE</button></div>' +
         '<div class="calc-actions">' +
           '<button class="toolbar-btn" onclick="printCalc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>Stampa</span></button>' +
           '<button class="toolbar-btn" onclick="exportCalcPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Esporta PDF</span></button>' +
@@ -2318,9 +2318,9 @@
       document.getElementById('compNotturnoB').value = ((gB.volo60h + gB.vacanza) / 60 * 0.16 * 6 * 7).toFixed(2);
 
       var html = buildCompTable('compTable1', 'Calcolo retribuzione da CCNL 2001', rows1, lblA, lblB, fmtE);
-      html += '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable1\')">&#128190; Salva</button></div>';
+      html += '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable1\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedComp()">&#128196; SIM. SALVATE</button></div>';
       html += buildCompTable('compTable2', 'Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025', rows2, lblA, lblB, fmtE);
-      html += '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable2\')">&#128190; Salva</button></div>';
+      html += '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable2\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedComp()">&#128196; SIM. SALVATE</button></div>';
       html += '<div id="compT3Wrap"></div>';
       html += '<div id="compT4Wrap"></div>';
       document.getElementById('compResults').innerHTML = html;
@@ -2362,7 +2362,7 @@
         ['Varie', 0, 0],
         ['Totale annuo lordo', a3A, a3B, false, true]
       ];
-      document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable3\')">&#128190; Salva</button></div>';
+      document.getElementById('compT3Wrap').innerHTML = buildCompTable('compTable3', 'Retribuzione con scatti reali', rows3, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable3\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedComp()">&#128196; SIM. SALVATE</button></div>';
 
       // Tab 4 comparator - 13\u00b0 modificata
       var t4A = gA.pagaBase + custA + sup + gA.volo60h + gA.vacanza + gA.aumento + gA.integr200h / 13;
@@ -2385,7 +2385,7 @@
         ['Totale annuo lordo', a4A, a4B, false, true]
       ];
       var el4 = document.getElementById('compT4Wrap');
-      if (el4) el4.innerHTML = buildCompTable('compTable4', 'Retribuzione con 13\u00b0 modificata', rows4, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable4\')">&#128190; Salva</button></div>';
+      if (el4) el4.innerHTML = buildCompTable('compTable4', 'Retribuzione con 13\u00b0 modificata', rows4, lblA, lblB, fmtE) + '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCompSim(\'compTable4\')">&#128190; Salva</button> <button class="save-sim-btn" onclick="showSavedComp()">&#128196; SIM. SALVATE</button></div>';
     }
 
     // ===== SAVED SIMULATIONS =====
