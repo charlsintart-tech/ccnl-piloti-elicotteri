@@ -1675,7 +1675,7 @@
             <div class="calc-title" style="margin-bottom:8px;font-size:15px;background:#c0392b;color:white;">Scaduto il 31 Dicembre 2004</div>
             <div class="calc-title" style="margin-bottom:16px;font-size:14px;background:#c0392b;color:white;" id="expiryCounter"></div>
             <p>Contratto Collettivo Nazionale di Lavoro per i Piloti dipendenti da Imprese Elicotteristiche esercenti il trasporto aereo non di linea e il lavoro aereo.</p>
-            <p style="font-size:14px; color: var(--text-secondary);">Rinnovo del CCNL 25 giugno 1998 - Stipulato il 19 luglio 2001</p>
+            <p style="font-size:14px; color: var(--text-secondary);">Rinnovo del CCNL del 25 Giugno 1998</p>
             <div class="conversion-note">
               <div class="conversion-note-title">Conversione Lire / Euro</div>
               <div class="conversion-note-text">
@@ -1882,7 +1882,7 @@
           '<button onclick="shareTableText(\'calcTable1\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable1\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable1\') save-sim-btn">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable1\')">&#128190; Salva</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable2">' +
           '<div class="calc-results-header">Calcolo retribuzione CCNL 2001 + Aumenti 2024 / 2025 \u2014 ' + grade.label + ' - ' + scatti + ' scatt' + (scatti===1?'o':'i') + ' di anzianit\u00e0</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1901,7 +1901,7 @@
           '<button onclick="shareTableText(\'calcTable2\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable2\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable2\') save-sim-btn">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable2\')">&#128190; Salva</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable3">' +
           '<div class="calc-results-header">Retribuzione con scatti reali \u2014 ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1919,7 +1919,7 @@
           '<button onclick="shareTableText(\'calcTable3\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable3\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable3\') save-sim-btn">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable3\')">&#128190; Salva</button></div>' +
         '<div class="calc-results" style="margin-top:24px" id="calcTable4">' +
           '<div class="calc-results-header">Retribuzione con 13° modificata — ' + grade.label + '</div>' +
           '<div class="calc-row"><span class="calc-row-label">Paga base mensile</span><span class="calc-row-value">' + fmtE(pagaBase) + '</span></div>' +
@@ -1937,7 +1937,7 @@
           '<button onclick="shareTableText(\'calcTable4\')">&#128221; WhatsApp Testo</button>' +
           '<button class="wa-img-btn" onclick="shareTableImage(\'calcTable4\')">&#128247; WhatsApp Immagine</button>' +
         '</div>' +
-        '<div class="calc-table-actions" style="margin-top:4px"><button onclick="saveCalcSim(\'calcTable4\') save-sim-btn">&#128190; Salva</button></div>' +
+        '<div class="calc-table-actions" style="margin-top:4px"><button class="save-sim-btn" onclick="saveCalcSim(\'calcTable4\')">&#128190; Salva</button></div>' +
         '<div class="calc-actions">' +
           '<button class="toolbar-btn" onclick="printCalc()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span>Stampa</span></button>' +
           '<button class="toolbar-btn" onclick="exportCalcPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Esporta PDF</span></button>' +
