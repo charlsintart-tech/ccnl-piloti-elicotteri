@@ -1847,8 +1847,10 @@
       const main = document.getElementById('mainContent');
       main.innerHTML = `
         <div class="calc-container fade-in">
-          <div class="calc-title">Calcolatore Retributivo</div>
-          <div class="calc-subtitle">Calcola la retribuzione annua in base al grado e all'anzianit\u00e0 - Valori CCNL convertiti in Euro</div>
+          <div class="article-sticky-header" style="margin-bottom:8px">
+            <div class="article-toolbar-title" style="font-size:16px;padding:10px 18px;width:100%;text-align:center;box-sizing:border-box"><strong>Calcolatore Retributivo</strong></div>
+            <div class="calc-subtitle" style="margin-top:8px">Calcola la retribuzione annua in base al grado e all'anzianit\u00e0 - Valori CCNL convertiti in Euro</div>
+          </div>
           <div class="calc-field">
             <label class="calc-label">Grado</label>
             <select class="calc-select" id="calcGrade" onchange="calculateSalary()">
