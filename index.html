@@ -427,6 +427,19 @@
       border-bottom: 2px solid var(--primary);
     }
 
+    @media screen and (orientation: landscape) {
+      html.rotation-locked {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        overflow-x: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+      }
+    }
+
     .article-body {
       font-size: 16px;
       line-height: 1.8;
@@ -1591,6 +1604,13 @@
         <div class="header-subtitle">Rinnovo del 19 luglio 2001</div>
       </div>
       <div class="zoom-toggle-wrap">
+        <span class="zoom-label">ROTAZIONE</span>
+        <label class="zoom-switch" title="Abilita/Disabilita rotazione">
+          <input type="checkbox" id="rotationToggle" checked onchange="toggleRotation(this.checked)">
+          <span class="zoom-slider"></span>
+        </label>
+      </div>
+      <div class="zoom-toggle-wrap">
         <span class="zoom-label">ZOOM</span>
         <label class="zoom-switch" title="Abilita/Disabilita zoom">
           <input type="checkbox" id="zoomToggle" onchange="toggleZoom(this.checked)">
@@ -1755,8 +1775,9 @@
       // Calculator (fixed) with sub-menus
       fixedHtml += `<div class="nav-divider"></div>`;
       fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator();toggleCalcSubmenu()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO <span class="nav-arrow" id="calcArrow">&#9654;</span></div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="toggleCalcSubmenu()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO <span class="nav-arrow" id="calcArrow">&#9654;</span></div>
         <div class="nav-submenu" id="calcSubmenu">
+          <a class="nav-submenu-item" data-id="calculator" onclick="showCalculator()" style="font-weight:600;color:rgba(255,255,255,0.9)">Calcolatore con selezione grado</a>
           <a class="nav-submenu-item" data-id="calc-cs" onclick="showCalculatorGrade('cs')">Comandante Superiore</a>
           <a class="nav-submenu-item" data-id="calc-pc" onclick="showCalculatorGrade('pc')">Primo Comandante</a>
           <a class="nav-submenu-item" data-id="calc-cmd" onclick="showCalculatorGrade('cmd')">Comandante</a>
@@ -3296,6 +3317,37 @@
         }
       }, 100);
     }
+
+    // ===== ROTATION TOGGLE =====
+    function toggleRotation(enabled) {
+      if (enabled) {
+        // Unlock orientation
+        if (screen.orientation && screen.orientation.unlock) {
+          screen.orientation.unlock();
+        }
+        document.documentElement.style.transform = '';
+        document.documentElement.style.width = '';
+        document.documentElement.style.height = '';
+        document.documentElement.style.overflow = '';
+        document.documentElement.classList.remove('rotation-locked');
+        localStorage.setItem('ccnl_rotation', '1');
+      } else {
+        // Lock to current orientation (portrait)
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('portrait').catch(function() {});
+        }
+        document.documentElement.classList.add('rotation-locked');
+        localStorage.setItem('ccnl_rotation', '0');
+      }
+    }
+    // Restore rotation setting
+    (function() {
+      var saved = localStorage.getItem('ccnl_rotation');
+      if (saved === '0') {
+        document.getElementById('rotationToggle').checked = false;
+        toggleRotation(false);
+      }
+    })();
 
     // ===== ZOOM TOGGLE =====
     var zoomBlocker = null;
