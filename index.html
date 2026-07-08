@@ -1220,6 +1220,18 @@
       border-color: #c4a67a;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     }
+    .calc-select.grade-fixed {
+      background: #e8a84c !important;
+      background-image: none !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+      border-color: #e8a84c !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      opacity: 1 !important;
+      cursor: default !important;
+    }
     .calc-results {
       margin-top: 28px;
       border: 1px solid var(--border);
@@ -3295,15 +3307,7 @@
         if (sel) {
           sel.value = gradeId;
           sel.disabled = true;
-          sel.style.opacity = '1';
-          sel.style.cursor = 'default';
-          sel.style.backgroundColor = '#e8a84c';
-          sel.style.color = '#fff';
-          sel.style.fontWeight = '600';
-          sel.style.appearance = 'none';
-          sel.style.webkitAppearance = 'none';
-          sel.style.MozAppearance = 'none';
-          sel.style.backgroundImage = 'none';
+          sel.classList.add('grade-fixed');
           // Update title to show fixed grade
           var titleEl = document.querySelector('.article-sticky-header .article-toolbar-title strong');
           if (titleEl) titleEl.textContent = 'Calcolatore Retributivo - ' + grade.label;
