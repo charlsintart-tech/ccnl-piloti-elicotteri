@@ -333,6 +333,44 @@
       border-radius: 4px;
     }
 
+    .nav-submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .nav-submenu.open {
+      max-height: 500px;
+    }
+    .nav-submenu-item {
+      display: block;
+      padding: 8px 16px 8px 36px;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+    }
+    .nav-submenu-item:hover {
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
+    .nav-submenu-item.active {
+      background: rgba(255,255,255,0.12);
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: 500;
+    }
+    .nav-section-title .nav-arrow {
+      display: inline-block;
+      transition: transform 0.3s;
+      margin-left: 4px;
+      font-size: 10px;
+    }
+    .nav-section-title .nav-arrow.open {
+      transform: rotate(90deg);
+    }
+
     .nav-item-number {
       display: inline-block;
       min-width: 28px;
@@ -1714,10 +1752,19 @@
         <div class="nav-section-title" style="cursor:pointer" onclick="showHome()" data-id="home">&#127968; HOME</div>
       </div>`;
 
-      // Calculator (fixed)
+      // Calculator (fixed) with sub-menus
       fixedHtml += `<div class="nav-divider"></div>`;
       fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO</div>
+        <div class="nav-section-title" style="cursor:pointer" onclick="showCalculator();toggleCalcSubmenu()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO <span class="nav-arrow" id="calcArrow">&#9654;</span></div>
+        <div class="nav-submenu" id="calcSubmenu">
+          <a class="nav-submenu-item" data-id="calc-cs" onclick="showCalculatorGrade('cs')">Comandante Superiore</a>
+          <a class="nav-submenu-item" data-id="calc-pc" onclick="showCalculatorGrade('pc')">Primo Comandante</a>
+          <a class="nav-submenu-item" data-id="calc-cmd" onclick="showCalculatorGrade('cmd')">Comandante</a>
+          <a class="nav-submenu-item" data-id="calc-uf" onclick="showCalculatorGrade('uf')">1\u00b0 Ufficiale</a>
+          <a class="nav-submenu-item" data-id="calc-p1" onclick="showCalculatorGrade('p1')">Pilota di 1\u00b0</a>
+          <a class="nav-submenu-item" data-id="calc-p2" onclick="showCalculatorGrade('p2')">Pilota di 2\u00b0</a>
+          <a class="nav-submenu-item" data-id="calc-si" onclick="showCalculatorGrade('si')">Salario di Ingresso</a>
+        </div>
       </div>`;
 
       // Comparator (fixed)
@@ -3008,9 +3055,13 @@
         );
       });
       document.querySelectorAll('.nav-section-title[data-id]').forEach(item => {
-        item.classList.toggle('active',
-          currentArticleId ? item.dataset.id === currentArticleId : item.dataset.id === 'home'
-        );
+        var isActive = currentArticleId ? item.dataset.id === currentArticleId : item.dataset.id === 'home';
+        // Also highlight calculator parent when a grade sub-page is active
+        if (item.dataset.id === 'calculator' && currentArticleId && currentArticleId.startsWith('calc-')) isActive = true;
+        item.classList.toggle('active', isActive);
+      });
+      document.querySelectorAll('.nav-submenu-item[data-id]').forEach(item => {
+        item.classList.toggle('active', currentArticleId === item.dataset.id);
       });
     }
 
@@ -3212,6 +3263,39 @@
     initArticles();
     buildSidebar();
     showHome();
+
+    // ===== CALC SUBMENU =====
+    function toggleCalcSubmenu() {
+      var sub = document.getElementById('calcSubmenu');
+      var arrow = document.getElementById('calcArrow');
+      if (sub) { sub.classList.toggle('open'); }
+      if (arrow) { arrow.classList.toggle('open'); }
+    }
+
+    function showCalculatorGrade(gradeId) {
+      var grade = CALC_DATA.grades.find(function(g) { return g.id === gradeId; });
+      if (!grade) return;
+      closeSidebar();
+      currentArticleId = 'calc-' + gradeId;
+      updateActiveNav();
+      // Show the normal calculator
+      showCalculator();
+      // After rendering, set grade and disable selector
+      setTimeout(function() {
+        var sel = document.getElementById('calcGrade');
+        if (sel) {
+          sel.value = gradeId;
+          sel.disabled = true;
+          sel.style.opacity = '0.8';
+          sel.style.cursor = 'default';
+          // Update title to show fixed grade
+          var titleEl = document.querySelector('.article-sticky-header .article-toolbar-title strong');
+          if (titleEl) titleEl.textContent = 'Calcolatore Retributivo - ' + grade.label;
+          // Trigger recalculation
+          sel.dispatchEvent(new Event('change'));
+        }
+      }, 100);
+    }
 
     // ===== ZOOM TOGGLE =====
     var zoomBlocker = null;
