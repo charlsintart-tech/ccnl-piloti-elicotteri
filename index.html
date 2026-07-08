@@ -1764,7 +1764,7 @@
       fixedHtml += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="toggleCalcSubmenu()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO <span class="nav-arrow" id="calcArrow">&#9654;</span></div>
         <div class="nav-submenu" id="calcSubmenu">
-          <a class="nav-submenu-item" data-id="calc-all" onclick="showCalculator()" style="font-weight:600;color:rgba(255,255,255,0.9)">Calcolatore con selezione grado</a>
+          <a class="nav-submenu-item" data-id="calc-all" onclick="showCalculator()">Calcolatore con selezione grado</a>
           <a class="nav-submenu-item" data-id="calc-cs" onclick="showCalculatorGrade('cs')">Comandante Superiore</a>
           <a class="nav-submenu-item" data-id="calc-pc" onclick="showCalculatorGrade('pc')">Primo Comandante</a>
           <a class="nav-submenu-item" data-id="calc-cmd" onclick="showCalculatorGrade('cmd')">Comandante</a>
@@ -3295,8 +3295,15 @@
         if (sel) {
           sel.value = gradeId;
           sel.disabled = true;
-          sel.style.opacity = '0.8';
+          sel.style.opacity = '1';
           sel.style.cursor = 'default';
+          sel.style.backgroundColor = '#e8a84c';
+          sel.style.color = '#fff';
+          sel.style.fontWeight = '600';
+          sel.style.appearance = 'none';
+          sel.style.webkitAppearance = 'none';
+          sel.style.MozAppearance = 'none';
+          sel.style.backgroundImage = 'none';
           // Update title to show fixed grade
           var titleEl = document.querySelector('.article-sticky-header .article-toolbar-title strong');
           if (titleEl) titleEl.textContent = 'Calcolatore Retributivo - ' + grade.label;
