@@ -427,19 +427,6 @@
       border-bottom: 2px solid var(--primary);
     }
 
-    @media screen and (orientation: landscape) {
-      html.rotation-locked {
-        transform: rotate(-90deg);
-        transform-origin: left top;
-        width: 100vh;
-        height: 100vw;
-        overflow-x: hidden;
-        position: absolute;
-        top: 100%;
-        left: 0;
-      }
-    }
-
     .article-body {
       font-size: 16px;
       line-height: 1.8;
@@ -1777,7 +1764,7 @@
       fixedHtml += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="toggleCalcSubmenu()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO <span class="nav-arrow" id="calcArrow">&#9654;</span></div>
         <div class="nav-submenu" id="calcSubmenu">
-          <a class="nav-submenu-item" data-id="calculator" onclick="showCalculator()" style="font-weight:600;color:rgba(255,255,255,0.9)">Calcolatore con selezione grado</a>
+          <a class="nav-submenu-item" data-id="calc-all" onclick="showCalculator()" style="font-weight:600;color:rgba(255,255,255,0.9)">Calcolatore con selezione grado</a>
           <a class="nav-submenu-item" data-id="calc-cs" onclick="showCalculatorGrade('cs')">Comandante Superiore</a>
           <a class="nav-submenu-item" data-id="calc-pc" onclick="showCalculatorGrade('pc')">Primo Comandante</a>
           <a class="nav-submenu-item" data-id="calc-cmd" onclick="showCalculatorGrade('cmd')">Comandante</a>
@@ -1991,7 +1978,7 @@
     };
 
     function showCalculator() {
-      currentArticleId = 'calculator';
+      currentArticleId = 'calc-all';
       currentKeyword = '';
       updateActiveNav();
       const main = document.getElementById('mainContent');
@@ -3078,7 +3065,7 @@
       document.querySelectorAll('.nav-section-title[data-id]').forEach(item => {
         var isActive = currentArticleId ? item.dataset.id === currentArticleId : item.dataset.id === 'home';
         // Also highlight calculator parent when a grade sub-page is active
-        if (item.dataset.id === 'calculator' && currentArticleId && currentArticleId.startsWith('calc-')) isActive = true;
+        if (item.dataset.id === 'calculator' && currentArticleId && currentArticleId.startsWith('calc-')) isActive = true; if (item.dataset.id === 'calculator' && currentArticleId === 'calc-all') isActive = true;
         item.classList.toggle('active', isActive);
       });
       document.querySelectorAll('.nav-submenu-item[data-id]').forEach(item => {
@@ -3297,10 +3284,11 @@
       var grade = CALC_DATA.grades.find(function(g) { return g.id === gradeId; });
       if (!grade) return;
       closeSidebar();
+      // Show the normal calculator (this sets calc-all)
+      showCalculator();
+      // Override to the specific grade id
       currentArticleId = 'calc-' + gradeId;
       updateActiveNav();
-      // Show the normal calculator
-      showCalculator();
       // After rendering, set grade and disable selector
       setTimeout(function() {
         var sel = document.getElementById('calcGrade');
@@ -3319,27 +3307,51 @@
     }
 
     // ===== ROTATION TOGGLE =====
+    var rotationLocked = false;
     function toggleRotation(enabled) {
+      rotationLocked = !enabled;
       if (enabled) {
-        // Unlock orientation
         if (screen.orientation && screen.orientation.unlock) {
-          screen.orientation.unlock();
+          try { screen.orientation.unlock(); } catch(e) {}
         }
-        document.documentElement.style.transform = '';
-        document.documentElement.style.width = '';
-        document.documentElement.style.height = '';
-        document.documentElement.style.overflow = '';
-        document.documentElement.classList.remove('rotation-locked');
         localStorage.setItem('ccnl_rotation', '1');
       } else {
-        // Lock to current orientation (portrait)
         if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock('portrait').catch(function() {});
+          screen.orientation.lock('portrait').catch(function() {
+            // API not available in browser, use orientationchange listener
+          });
         }
-        document.documentElement.classList.add('rotation-locked');
         localStorage.setItem('ccnl_rotation', '0');
       }
     }
+    // Listen for orientation changes and force back if locked
+    window.addEventListener('orientationchange', function() {
+      if (rotationLocked) {
+        // Force viewport to portrait-like behavior
+        var meta = document.getElementById('viewportMeta');
+        if (meta) {
+          var current = meta.getAttribute('content');
+          meta.setAttribute('content', current);
+        }
+      }
+    });
+    // Also use CSS approach: hide content in landscape when locked
+    var rotStyle = document.createElement('style');
+    rotStyle.id = 'rotationLockStyle';
+    document.head.appendChild(rotStyle);
+    function updateRotationCSS() {
+      var sheet = document.getElementById('rotationLockStyle');
+      if (rotationLocked) {
+        sheet.textContent = '@media screen and (orientation:landscape){body::before{content:"Ruota il dispositivo in verticale";position:fixed;top:0;left:0;right:0;bottom:0;background:var(--primary-dark,#0f2240);color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;z-index:99999;text-align:center;padding:20px}}';
+      } else {
+        sheet.textContent = '';
+      }
+    }
+    var origToggleRotation = toggleRotation;
+    toggleRotation = function(enabled) {
+      origToggleRotation(enabled);
+      updateRotationCSS();
+    };
     // Restore rotation setting
     (function() {
       var saved = localStorage.getItem('ccnl_rotation');
