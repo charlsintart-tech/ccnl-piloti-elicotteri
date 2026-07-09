@@ -1650,7 +1650,7 @@
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
             <circle cx="12" cy="12" r="3"/>
           </svg>
-          CCNL - ACCORDI 2 LIVELLO - AUMENTI 2024/25
+          Visualizza Riepilogo retributivo
         </a>
       </div>
     </aside>
@@ -1850,6 +1850,11 @@
       // Tabelle contrattuali
       html += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="showTabelleContrattuali()" data-id="tabelle-contrattuali">&#128202; TABELLE CONTRATTUALI</div>
+      </div>`;
+
+      // Riepilogo Retributivo
+      html += `<div class="nav-section">
+        <div class="nav-section-title" style="cursor:pointer" onclick="showRiepilogoRetributivo()" data-id="riepilogo-retributivo">&#128203; RIEPILOGO RETRIBUTIVO</div>
       </div>`;
 
       // Notes list
@@ -3071,6 +3076,450 @@
         }
       }).catch(function() {
         window.location.href = 'mailto:?subject=' + encodeURIComponent('CCNL Accordi 2 Livello - Aumenti 2024/25') + '&body=' + encodeURIComponent('CCNL Accordi di 2° Livello - Aumenti 2024/2025');
+      });
+    }
+
+    // ===== RIEPILOGO RETRIBUTIVO =====
+    function showRiepilogoRetributivo() {
+      document.getElementById('mainContent').style.overflow = '';
+      currentArticleId = 'riepilogo-retributivo';
+      currentKeyword = '';
+      updateActiveNav();
+      var main = document.getElementById('mainContent');
+
+      function mkTbl(id, title, headers, rows, note) {
+        var h = '<div id="' + id + '" style="margin-top:24px;scroll-margin-top:80px">' +
+          '<h4 style="background:var(--primary);color:white;padding:10px 16px;border-radius:8px 8px 0 0;margin:0;font-size:15px">' + title + '</h4>';
+        if (note) h += '<div style="padding:8px 16px;background:rgba(30,58,95,0.05);font-size:13px;color:var(--text-secondary);border:1px solid var(--border);border-top:none">' + note + '</div>';
+        h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px;border:1px solid var(--border)">';
+        h += '<thead><tr>';
+        for (var hi = 0; hi < headers.length; hi++) {
+          h += '<th style="padding:8px 12px;background:rgba(30,58,95,0.08);border:1px solid var(--border);text-align:' + (hi === 0 ? 'left' : 'right') + ';font-size:13px;white-space:nowrap">' + headers[hi] + '</th>';
+        }
+        h += '</tr></thead><tbody>';
+        for (var ri = 0; ri < rows.length; ri++) {
+          var row = rows[ri];
+          var isDiff = row[0].indexOf('Differenza') >= 0;
+          h += '<tr style="' + (isDiff ? 'background:rgba(255,193,7,0.08);font-style:italic;font-size:13px' : (ri % 2 === 0 ? '' : 'background:rgba(0,0,0,0.02)')) + '">';
+          for (var ci = 0; ci < row.length; ci++) {
+            h += '<td style="padding:7px 12px;border:1px solid var(--border);' + (ci === 0 ? 'font-weight:' + (isDiff ? 'normal' : '600') : 'text-align:right;white-space:nowrap') + '">' + row[ci] + '</td>';
+          }
+          h += '</tr>';
+        }
+        h += '</tbody></table></div>';
+        h += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;justify-content:center">';
+        h += '<button class="toolbar-btn" style="border:2px solid #f1c40f;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="printRiepTbl(\'' + id + '\')">🖨 Stampa</button>';
+        h += '<button class="toolbar-btn" style="border:2px solid #5a9a6e;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="waRiepText(\'' + id + '\')">📩 WA Testo</button>';
+        h += '<button class="toolbar-btn" style="border:2px solid #5a9a6e;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="waRiepImg(\'' + id + '\')">📷 WA Immagine</button>';
+        h += '<button class="toolbar-btn" style="border:2px solid #1e3a5f;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="mailRiepTbl(\'' + id + '\')">✉ Mail</button>';
+        h += '<button class="toolbar-btn" style="border:2px solid #e67e22;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="pdfRiepTbl(\'' + id + '\')">📄 Salva PDF</button>';
+        h += '</div></div>';
+        return h;
+      }
+
+      function mkSection(id, icon, title) {
+        return '<div id="' + id + '" style="margin-top:36px;scroll-margin-top:80px"><h3 style="color:var(--primary);border-bottom:3px solid var(--primary);padding-bottom:8px;font-size:18px">' + icon + ' ' + title + '</h3></div>';
+      }
+
+      var html = '<div class="article-container fade-in"><div class="calc-container">';
+      html += '<div class="article-sticky-header">';
+      html += '<div class="article-toolbar-title" style="font-size:16px;padding:10px 18px;width:100%;text-align:center;box-sizing:border-box"><strong>📋 Riepilogo Retributivo</strong></div>';
+      html += '<div class="calc-subtitle" style="text-align:center">CCNL Piloti di Elicottero - Accordi di 2° Livello - Aumenti 2024/2025</div>';
+      html += '</div>';
+
+      // INDICE
+      html += '<div style="margin-top:16px;padding:16px;background:rgba(30,58,95,0.05);border-radius:10px;border:1px solid var(--border)">';
+      html += '<div style="font-weight:700;margin-bottom:8px;color:var(--primary)">📑 Indice</div>';
+      var sez = [
+        ['sez-retrib','💰 Retribuzione Base'],
+        ['sez-volo','✈️ Indennità di Volo'],
+        ['sez-adeg','📈 Adeguamenti Contrattuali'],
+        ['sez-stip','💵 Stipendio e Tredicesima'],
+        ['sez-straord','⏰ Straordinari e Festività'],
+        ['sez-diarie','🧳 Diarie e Rimborsi'],
+        ['sez-ferie','🏖 Ferie e Congedi'],
+        ['sez-prev','🏛 Previdenza e Fiscale']
+      ];
+      for (var si = 0; si < sez.length; si++) {
+        html += '<a href="javascript:void(0)" onclick="document.getElementById(\'' + sez[si][0] + '\').scrollIntoView({behavior:\'smooth\'})" style="display:block;padding:4px 0;color:var(--primary);text-decoration:none;font-size:14px">' + (si+1) + '. ' + sez[si][1] + '</a>';
+      }
+      html += '</div>';
+
+      // ===== SEZIONE 1: RETRIBUZIONE BASE =====
+      html += mkSection('sez-retrib', '💰', 'Retribuzione Base');
+
+      html += mkTbl('rStipendi', 'Stipendi minimi contrattuali - Art. 16', ['Grado', 'Importo mensile'], [
+        ['Comandante Superiore', '€ 1.425,14'],
+        ['Differenza →', '€ 85,53'],
+        ['Primo Comandante', '€ 1.339,61'],
+        ['Differenza →', '€ 83,15'],
+        ['Comandante', '€ 1.256,46'],
+        ['Differenza →', '€ 160,62'],
+        ['1° Ufficiale', '€ 1.095,84'],
+        ['Differenza →', '€ 44,06'],
+        ['Pilota di 1°', '€ 1.051,78'],
+        ['Differenza →', '€ 51,72'],
+        ['Pilota di 2°', '€ 1.000,06'],
+        ['Differenza →', '€ 0,00'],
+        ['Salario di ingresso', '€ 1.000,06']
+      ]);
+
+      html += mkTbl('rScatti', 'Calcolo scatto di anzianità - Art. 20', ['Grado', 'Scatto'], [
+        ['Comandante Superiore', '€ 197,58'],
+        ['Primo Comandante', '€ 186,88'],
+        ['Comandante', '€ 137,30'],
+        ['1° Ufficiale', '€ 81,80']
+      ], 'Formula: (P. base ×13 + Ind. volo ×12 + Ind. Int. Volo) ÷ 13 = A → A × 5%');
+
+      // ===== SEZIONE 2: INDENNITÀ DI VOLO =====
+      html += mkSection('sez-volo', '✈️', 'Indennità di Volo');
+
+      html += mkTbl('rIndVolo', 'Indennità di volo - Art. 18', ['Grado', 'Mensile'], [
+        ['Comandante Superiore', '€ 567,00'],
+        ['Differenza →', '€ 54,60'],
+        ['Primo Comandante', '€ 512,40'],
+        ['Differenza →', '€ 54,60'],
+        ['Comandante', '€ 457,80'],
+        ['Differenza →', '€ 109,80'],
+        ['1° Ufficiale', '€ 348,00'],
+        ['Differenza →', '€ 56,40'],
+        ['Pilota di 1°', '€ 291,60'],
+        ['Differenza →', '€ 44,40'],
+        ['Pilota di 2°', '€ 247,20'],
+        ['Differenza →', '€ 97,20'],
+        ['Salario di ingresso', '€ 150,00']
+      ]);
+
+      html += mkTbl('rIntegrativa', 'Indennità integrativa di volo (200 ore) - Art. 19', ['Grado', 'Da Feb. 2024', 'Da Apr. 2025'], [
+        ['Comandante Superiore', '€ 4.262,74', '€ 4.714,74'],
+        ['Differenza →', '€ 127,53', '€ 151,53'],
+        ['Primo Comandante', '€ 4.135,21', '€ 4.563,21'],
+        ['Differenza →', '€ 130,95', '€ 158,95'],
+        ['Comandante', '€ 4.004,26', '€ 4.404,26'],
+        ['Differenza →', '€ 829,62', '€ 881,62'],
+        ['1° Ufficiale', '€ 3.174,64', '€ 3.522,64'],
+        ['Differenza →', '€ 260,66', '€ 272,66'],
+        ['Pilota di 1°', '€ 2.913,98', '€ 3.249,98'],
+        ['Differenza →', '€ 359,32', '€ 375,32'],
+        ['Pilota di 2°', '€ 2.554,66', '€ 2.874,66'],
+        ['Differenza →', '€ 730,20', '€ 838,20'],
+        ['Salario di ingresso', '€ 1.824,46', '€ 2.036,46']
+      ], 'Importo annuale per 200 ore di volo');
+
+      html += mkTbl('rNotturno', 'Indennità di volo notturno - Art. 21', ['Grado', 'x giorno', 'x turno (7 notti)'], [
+        ['Comandante Superiore', '€ 35,77', '€ 250,39'],
+        ['Differenza →', '€ 0,29', '€ 2,03'],
+        ['Primo Comandante', '€ 35,48', '€ 248,36'],
+        ['Differenza →', '€ 0,32', '€ 2,24'],
+        ['Comandante', '€ 35,16', '€ 246,12'],
+        ['Differenza →', '€ 9,07', '€ 63,49'],
+        ['1° Ufficiale', '€ 26,09', '€ 182,63'],
+        ['Differenza →', '€ 3,27', '€ 22,89'],
+        ['Pilota di 1°', '€ 22,82', '€ 159,74'],
+        ['Differenza →', '€ 4,67', '€ 32,69'],
+        ['Pilota di 2°', '€ 18,15', '€ 127,05'],
+        ['Differenza →', '€ 9,95', '€ 69,65'],
+        ['Salario di ingresso', '€ 8,20', '€ 57,40']
+      ], '16% della quota oraria');
+
+      // ===== SEZIONE 3: ADEGUAMENTI CONTRATTUALI =====
+      html += mkSection('sez-adeg', '📈', 'Adeguamenti Contrattuali');
+
+      html += mkTbl('rVacanza', 'Vacanza contrattuale', ['Grado', 'Importo mensile'], [
+        ['Comandante Superiore', '€ 150,00'],
+        ['Differenza →', '€ 0,00'],
+        ['Primo Comandante', '€ 150,00'],
+        ['Differenza →', '€ 0,00'],
+        ['Comandante', '€ 150,00'],
+        ['Differenza →', '€ 50,00'],
+        ['1° Ufficiale', '€ 100,00'],
+        ['Differenza →', '€ 0,00'],
+        ['Pilota di 1°', '€ 100,00'],
+        ['Differenza →', '€ 0,00'],
+        ['Pilota di 2°', '€ 100,00'],
+        ['Differenza →', '€ 0,00'],
+        ['Salario di ingresso', '€ 100,00']
+      ]);
+
+      html += mkTbl('rAdeguamento', 'Adeguamento 2024 / 2025', ['Grado', 'Adeg. 2024', 'Adeg. 2025', 'Totale'], [
+        ['Comandante Superiore', '€ 452,00', '€ 452,00', '€ 904,00'],
+        ['Differenza →', '€ 24,00', '€ 24,00', '€ 48,00'],
+        ['Primo Comandante', '€ 428,00', '€ 428,00', '€ 856,00'],
+        ['Differenza →', '€ 28,00', '€ 28,00', '€ 56,00'],
+        ['Comandante', '€ 400,00', '€ 400,00', '€ 800,00'],
+        ['Differenza →', '€ 52,00', '€ 52,00', '€ 104,00'],
+        ['1° Ufficiale', '€ 348,00', '€ 348,00', '€ 696,00'],
+        ['Differenza →', '€ 12,00', '€ 12,00', '€ 24,00'],
+        ['Pilota di 1°', '€ 336,00', '€ 336,00', '€ 672,00'],
+        ['Differenza →', '€ 16,00', '€ 16,00', '€ 32,00'],
+        ['Pilota di 2°', '€ 320,00', '€ 320,00', '€ 640,00'],
+        ['Differenza →', '€ 108,00', '€ 108,00', '€ 216,00'],
+        ['Salario di ingresso', '€ 212,00', '€ 212,00', '€ 424,00']
+      ]);
+
+      html += mkTbl('rQuotaOraria', 'Quota oraria e annuale - Ind. volo notturno', ['Grado', 'Quota oraria', 'Quota annuale (200h)'], [
+        ['Comandante Superiore', '€ 21,09', '€ 4.218,00'],
+        ['Differenza →', '€ 0,31', '€ 62,00'],
+        ['Primo Comandante', '€ 20,78', '€ 4.156,00'],
+        ['Differenza →', '€ 0,38', '€ 76,00'],
+        ['Comandante', '€ 20,40', '€ 4.080,00'],
+        ['Differenza →', '€ 1,23', '€ 246,00'],
+        ['1° Ufficiale', '€ 19,17', '€ 3.834,00'],
+        ['Differenza →', '€ 0,62', '€ 124,00'],
+        ['Pilota di 1°', '€ 18,55', '€ 3.710,00'],
+        ['Differenza →', '€ 2,55', '€ 510,00'],
+        ['Pilota di 2°', '€ 16,00', '€ 3.200,00'],
+        ['Differenza →', '€ 11,41', '€ 2.282,00'],
+        ['Salario di ingresso', '€ 4,59', '€ 918,00']
+      ]);
+
+      // ===== SEZIONE 4: STIPENDIO E TREDICESIMA =====
+      html += mkSection('sez-stip', '💵', 'Stipendio e Tredicesima');
+
+      html += mkTbl('rStipendioLordo', 'Stipendio mensile lordo (base) - zero scatti', ['Grado', 'Da Feb. 2024', 'Da Apr. 2025'], [
+        ['Comandante Superiore', '€ 2.142,14', '€ 2.594,14'],
+        ['Differenza →', '€ 85,53', '€ 109,53'],
+        ['Primo Comandante', '€ 2.056,61', '€ 2.484,61'],
+        ['Differenza →', '€ 83,15', '€ 111,15'],
+        ['Comandante', '€ 1.973,46', '€ 2.373,46'],
+        ['Differenza →', '€ 210,62', '€ 262,62'],
+        ['1° Ufficiale', '€ 1.762,84', '€ 2.110,84'],
+        ['Differenza →', '€ 44,06', '€ 56,06'],
+        ['Pilota di 1°', '€ 1.718,78', '€ 2.054,78'],
+        ['Differenza →', '€ 51,72', '€ 67,72'],
+        ['Pilota di 2°', '€ 1.667,06', '€ 1.987,06'],
+        ['Differenza →', '€ 0,00', '€ 0,00'],
+        ['Salario di ingresso', '€ 1.667,06', '€ 1.879,06']
+      ], 'Paga base + Indennità di volo + Vacanza contrattuale (+ Aumenti per Apr. 2025)');
+
+      html += mkTbl('rTredicesima', 'Tredicesima mensilità - Art. 27', ['Grado', 'Importo stimato'], [
+        ['Comandante Superiore', '€ 1.435,47'],
+        ['Primo Comandante', '€ 1.349,94'],
+        ['Comandante', '€ 1.266,79'],
+        ['1° Ufficiale', '€ 1.106,17'],
+        ['Pilota di 1°', '€ 1.062,11'],
+        ['Pilota di 2°', '€ 1.010,39'],
+        ['Salario di ingresso', '€ 1.010,39']
+      ], 'Paga base + Scatti + Superminimo (€ 10,33)');
+
+      // ===== SEZIONE 5: STRAORDINARI E FESTIVITÀ =====
+      html += mkSection('sez-straord', '⏰', 'Straordinari e Festività');
+
+      html += mkTbl('rStraordinario', 'Straordinario - Art. 26', ['Grado', '1/4 Giornata', '1/2 Giornata', '1 Giornata'], [
+        ['Comandante Superiore', '€ 0,00', '€ 67,50', '€ 135,00'],
+        ['Differenza →', 'N.a.', '€ 1,25', '€ 2,50'],
+        ['Primo Comandante', '€ 0,00', '€ 66,25', '€ 132,50'],
+        ['Differenza →', 'N.a.', '€ 2,50', '€ 5,00'],
+        ['Comandante', '€ 0,00', '€ 63,75', '€ 127,50'],
+        ['Differenza →', 'N.a.', '€ 12,50', '€ 25,00'],
+        ['1° Ufficiale', '€ 0,00', '€ 51,25', '€ 102,50'],
+        ['Differenza →', 'N.a.', '€ 3,75', '€ 7,50'],
+        ['Pilota di 1°', '€ 0,00', '€ 47,50', '€ 95,00'],
+        ['Differenza →', 'N.a.', '€ 6,25', '€ 12,50'],
+        ['Pilota di 2°', '€ 0,00', '€ 41,25', '€ 82,50'],
+        ['Differenza →', 'N.a.', '€ 13,75', '€ 27,50'],
+        ['Salario di ingresso', '€ 0,00', '€ 27,50', '€ 55,00']
+      ]);
+
+      html += mkTbl('rStraordTurno', 'Straordinario x turno - Art. 26', ['Grado', '1/2 Giornata', '1 Giornata'], [
+        ['Comandante Superiore', '€ 135,00', '€ 270,00'],
+        ['Primo Comandante', '€ 132,50', '€ 265,00'],
+        ['Comandante', '€ 127,50', '€ 255,00'],
+        ['1° Ufficiale', '€ 102,50', '€ 205,00'],
+        ['Pilota di 1°', '€ 95,00', '€ 190,00'],
+        ['Pilota di 2°', '€ 82,50', '€ 165,00'],
+        ['Salario di ingresso', '€ 55,00', '€ 110,00']
+      ]);
+
+      html += mkTbl('rFestivita', 'Giornate festive - Art. 25', ['Festività', ''], [
+        ['1 Gennaio', 'Capodanno'],
+        ['6 Gennaio', 'Epifania'],
+        ['Pasquetta', 'Lunedì dell\'Angelo'],
+        ['25 Aprile', 'Festa della Liberazione'],
+        ['1 Maggio', 'Festa del Lavoro'],
+        ['2 Giugno', 'Festa della Repubblica'],
+        ['15 Agosto', 'Ferragosto'],
+        ['1 Novembre', 'Ognissanti'],
+        ['8 Dicembre', 'Immacolata Concezione'],
+        ['25 Dicembre', 'Natale'],
+        ['26 Dicembre', 'Santo Stefano']
+      ]);
+
+      // ===== SEZIONE 6: DIARIE E RIMBORSI =====
+      html += mkSection('sez-diarie', '🧳', 'Diarie e Rimborsi');
+
+      html += mkTbl('rDiarie', 'Diarie', ['Tipo', 'Importo', 'Note'], [
+        ['Diaria Hotel', '€ 60,00', ''],
+        ['Diaria Residence', '€ 65,00', '€ 30,99 esentasse'],
+        ['Diaria estera', '€ 77,47', 'Esentasse'],
+        ['Mancato alloggio', '€ 95,00', '€ 46,48 esentasse'],
+        ['Piè di lista', 'Max € 70,00', 'Al giorno'],
+        ['Rimborso chilometrico', '€ 0,43/Km', 'Max 800 Km a/r']
+      ]);
+
+      html += mkTbl('rViaggio', 'Indennità di viaggio - Art. 24', ['Distanza', 'Importo'], [
+        ['Tra 0 Km e 200 Km', '€ 15,00'],
+        ['Tra 200 Km e 400 Km', '€ 25,00'],
+        ['Superiore a 400 Km', '€ 55,00']
+      ]);
+
+      // ===== SEZIONE 7: FERIE E CONGEDI =====
+      html += mkSection('sez-ferie', '🏖', 'Ferie e Congedi');
+
+      html += mkTbl('rFerie', 'Ferie - Art. 48', ['Voce', 'Dettaglio'], [
+        ['Giorni totali', '28 giorni'],
+        ['Di cui Azienda', '14 giorni'],
+        ['Di cui Pilota', '14 giorni'],
+        ['Pagamento', 'A trimestre (Apr, Lug, Ott, Gen)'],
+        ['Conguaglio', 'Febbraio']
+      ]);
+
+      html += mkTbl('rCongedo', 'Congedo matrimoniale - Art. 35', ['Voce', 'Dettaglio'], [
+        ['Durata', '15 giorni di calendario']
+      ]);
+
+      html += mkTbl('rMalattia', 'Malattia - Art. 37 (stima mensile 2024-2025)', ['Grado', 'Importo stimato'], [
+        ['Comandante Superiore', '€ 390 - € 420'],
+        ['Primo Comandante', '€ 375 - € 405'],
+        ['Comandante', '€ 360 - € 390'],
+        ['1° Ufficiale', '€ 295 - € 320'],
+        ['Pilota di 1°', '€ 275 - € 300'],
+        ['Pilota di 2°', '€ 250 - € 270'],
+        ['Salario di ingresso', '€ 200 - € 215']
+      ], 'Importi indicativi soggetti a variazione');
+
+      html += mkTbl('rAspettativa', 'Aspettativa - Art. 34 (stima 2024-2025)', ['Grado', 'Importo stimato'], [
+        ['Comandante Superiore', '€ 560 - € 620'],
+        ['Primo Comandante', '€ 550 - € 600'],
+        ['Comandante', '€ 530 - € 580'],
+        ['1° Ufficiale', '€ 420 - € 465'],
+        ['Pilota di 1°', '€ 385 - € 430'],
+        ['Pilota di 2°', '€ 340 - € 380'],
+        ['Salario di ingresso', '€ 250 - € 275']
+      ], 'Importi indicativi soggetti a variazione');
+
+      // ===== SEZIONE 8: PREVIDENZA E FISCALE =====
+      html += mkSection('sez-prev', '🏛', 'Previdenza e Fiscale');
+
+      html += mkTbl('rINPS', 'Contributi INPS', ['Voce', 'Dettaglio'], [
+        ['Aliquota lavoratore', '9,19% (fino a € 55.008)'],
+        ['Aliquota lavoratore', '10,19% (oltre € 55.008)'],
+        ['Aliquota azienda', '23,81%'],
+        ['Totale', '32,99% / 33,99%']
+      ]);
+
+      html += mkTbl('rFondaereo', 'FONDAEREO', ['Voce', 'Dettaglio'], [
+        ['TFR', '100% destinato'],
+        ['Contributo Azienda', '4,09%'],
+        ['Contributo Pilota', '3,03%'],
+        ['Quota pilota', 'Incrementabile volontariamente']
+      ]);
+
+      html += mkTbl('rAssicurazioni', 'Assicurazioni - Art. 43', ['Tipo', 'Comandante', '1° Uff. / Pilota 1°', 'Pilota 2°'], [
+        ['Caso morte', '€ 413.166', '€ 309.874', '€ 154.937'],
+        ['Invalidità permanente', '€ 516.457', '€ 413.166', '€ 206.583'],
+        ['Invalidità ≤ 5%', '€ 361.520', '€ 232.406', '€ 103.291']
+      ]);
+
+      html += mkTbl('rIRPEF', 'Aliquote IRPEF 2026', ['Scaglione', 'Aliquota'], [
+        ['Fino a € 28.000', '23%'],
+        ['Da € 28.000 a € 50.000', '33%'],
+        ['Oltre € 50.000', '43%']
+      ]);
+
+      html += '</div></div>';
+      main.innerHTML = html;
+      main.scrollTop = 0;
+      closeSidebar();
+    }
+
+    // Helper functions for Riepilogo table actions
+    function printRiepTbl(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var w = window.open('','','width=800,height=600');
+      w.document.write('<html><head><title>Stampa</title><style>table{width:100%;border-collapse:collapse}th,td{padding:6px 10px;border:1px solid #ccc;font-size:13px}th{background:#1e3a5f;color:white}h4{color:#1e3a5f}</style></head><body>');
+      w.document.write(el.querySelector('h4').outerHTML);
+      w.document.write(el.querySelector('table').outerHTML);
+      w.document.write('</body></html>');
+      w.document.close();
+      w.print();
+    }
+    function waRiepText(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var title = el.querySelector('h4').textContent;
+      var rows = el.querySelectorAll('tr');
+      var text = '*' + title + '*\n\n';
+      rows.forEach(function(r) {
+        var cells = r.querySelectorAll('th,td');
+        var line = '';
+        cells.forEach(function(c,i) { line += (i > 0 ? ' | ' : '') + c.textContent.trim(); });
+        text += line + '\n';
+      });
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }
+    function waRiepImg(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var tbl = el.querySelector('table');
+      var h4 = el.querySelector('h4');
+      if (typeof html2canvas === 'undefined') { waRiepText(id); return; }
+      var container = document.createElement('div');
+      container.style.cssText = 'position:absolute;left:-9999px;background:white;padding:16px';
+      container.appendChild(h4.cloneNode(true));
+      container.appendChild(tbl.cloneNode(true));
+      document.body.appendChild(container);
+      html2canvas(container, {scale:2}).then(function(canvas) {
+        document.body.removeChild(container);
+        canvas.toBlob(function(blob) {
+          var file = new File([blob], 'tabella.png', {type:'image/png'});
+          if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
+            navigator.share({files:[file]}).catch(function(){});
+          } else { waRiepText(id); }
+        });
+      });
+    }
+    function mailRiepTbl(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var title = el.querySelector('h4').textContent;
+      var rows = el.querySelectorAll('tr');
+      var text = title + '\n\n';
+      rows.forEach(function(r) {
+        var cells = r.querySelectorAll('th,td');
+        var line = '';
+        cells.forEach(function(c,i) { line += (i > 0 ? ' | ' : '') + c.textContent.trim(); });
+        text += line + '\n';
+      });
+      window.location.href = 'mailto:?subject=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(text);
+    }
+    function pdfRiepTbl(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var tbl = el.querySelector('table');
+      var h4 = el.querySelector('h4');
+      if (typeof html2canvas === 'undefined' || typeof jspdf === 'undefined') { printRiepTbl(id); return; }
+      var container = document.createElement('div');
+      container.style.cssText = 'position:absolute;left:-9999px;background:white;padding:16px;width:700px';
+      container.appendChild(h4.cloneNode(true));
+      container.appendChild(tbl.cloneNode(true));
+      document.body.appendChild(container);
+      html2canvas(container, {scale:2}).then(function(canvas) {
+        document.body.removeChild(container);
+        var imgData = canvas.toDataURL('image/png');
+        var pdf = new jspdf.jsPDF({orientation: canvas.width > canvas.height ? 'l' : 'p', unit: 'px', format: [canvas.width/2, canvas.height/2]});
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width/2, canvas.height/2);
+        var blob = pdf.output('blob');
+        var file = new File([blob], 'tabella.pdf', {type: 'application/pdf'});
+        if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
+          navigator.share({files:[file]}).catch(function(){});
+        } else {
+          var link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = h4.textContent.replace(/[^a-zA-Z0-9]/g,'_') + '.pdf';
+          link.click();
+        }
       });
     }
 
