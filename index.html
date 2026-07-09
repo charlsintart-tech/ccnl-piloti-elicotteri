@@ -1744,6 +1744,33 @@
       let html = '';
       const favs = getFavorites();
 
+      // Home (fixed)
+      fixedHtml += `<div class="nav-divider"></div>`;
+      fixedHtml += `<div class="nav-section">
+        <div class="nav-section-title" style="cursor:pointer" onclick="showHome()" data-id="home">&#127968; HOME</div>
+      </div>`;
+
+      // Calculator (fixed) with sub-menus
+      fixedHtml += `<div class="nav-divider"></div>`;
+      fixedHtml += `<div class="nav-section">
+        <div class="nav-section-title" style="cursor:pointer" onclick="toggleCalcSubmenu()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO <span class="nav-arrow" id="calcArrow">&#9654;</span></div>
+        <div class="nav-submenu" id="calcSubmenu">
+          <a class="nav-submenu-item" data-id="calc-all" onclick="showCalculator()">Calcolatore con selezione grado</a>
+          <a class="nav-submenu-item" data-id="calc-cs" onclick="showCalculatorGrade('cs')">Comandante Superiore</a>
+          <a class="nav-submenu-item" data-id="calc-pc" onclick="showCalculatorGrade('pc')">Primo Comandante</a>
+          <a class="nav-submenu-item" data-id="calc-cmd" onclick="showCalculatorGrade('cmd')">Comandante</a>
+          <a class="nav-submenu-item" data-id="calc-uf" onclick="showCalculatorGrade('uf')">1\u00b0 Ufficiale</a>
+          <a class="nav-submenu-item" data-id="calc-p1" onclick="showCalculatorGrade('p1')">Pilota di 1\u00b0</a>
+          <a class="nav-submenu-item" data-id="calc-p2" onclick="showCalculatorGrade('p2')">Pilota di 2\u00b0</a>
+          <a class="nav-submenu-item" data-id="calc-si" onclick="showCalculatorGrade('si')">Salario di Ingresso</a>
+        </div>
+      </div>`;
+
+      // Comparator (fixed)
+      fixedHtml += `<div class="nav-divider"></div>`;
+      fixedHtml += `<div class="nav-section">
+        <div class="nav-section-title" style="cursor:pointer" onclick="showComparator()" data-id="comparator">&#129518; COMPARATORE RETRIBUTIVO</div>
+      </div>`;
       // CERCA (fixed, collapsible)
       fixedHtml += `<div class="nav-divider"></div>`;
       fixedHtml += `<div class="nav-section">
@@ -1780,33 +1807,6 @@
         </div>
       </div>`;
 
-      // Home (fixed)
-      fixedHtml += `<div class="nav-divider"></div>`;
-      fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showHome()" data-id="home">&#127968; HOME</div>
-      </div>`;
-
-      // Calculator (fixed) with sub-menus
-      fixedHtml += `<div class="nav-divider"></div>`;
-      fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="toggleCalcSubmenu()" data-id="calculator">&#129518; CALCOLATORE RETRIBUTIVO <span class="nav-arrow" id="calcArrow">&#9654;</span></div>
-        <div class="nav-submenu" id="calcSubmenu">
-          <a class="nav-submenu-item" data-id="calc-all" onclick="showCalculator()">Calcolatore con selezione grado</a>
-          <a class="nav-submenu-item" data-id="calc-cs" onclick="showCalculatorGrade('cs')">Comandante Superiore</a>
-          <a class="nav-submenu-item" data-id="calc-pc" onclick="showCalculatorGrade('pc')">Primo Comandante</a>
-          <a class="nav-submenu-item" data-id="calc-cmd" onclick="showCalculatorGrade('cmd')">Comandante</a>
-          <a class="nav-submenu-item" data-id="calc-uf" onclick="showCalculatorGrade('uf')">1\u00b0 Ufficiale</a>
-          <a class="nav-submenu-item" data-id="calc-p1" onclick="showCalculatorGrade('p1')">Pilota di 1\u00b0</a>
-          <a class="nav-submenu-item" data-id="calc-p2" onclick="showCalculatorGrade('p2')">Pilota di 2\u00b0</a>
-          <a class="nav-submenu-item" data-id="calc-si" onclick="showCalculatorGrade('si')">Salario di Ingresso</a>
-        </div>
-      </div>`;
-
-      // Comparator (fixed)
-      fixedHtml += `<div class="nav-divider"></div>`;
-      fixedHtml += `<div class="nav-section">
-        <div class="nav-section-title" style="cursor:pointer" onclick="showComparator()" data-id="comparator">&#129518; COMPARATORE RETRIBUTIVO</div>
-      </div>`;
       fixedDiv.innerHTML = fixedHtml;
 
       // Favorites section
