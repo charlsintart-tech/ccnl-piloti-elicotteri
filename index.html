@@ -1782,14 +1782,14 @@
                 <circle cx="11" cy="11" r="8"/>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
-              <input type="text" class="search-input" id="searchInput" placeholder="Cerca articolo..." oninput="filterArticles(this.value)">
+              <input type="text" class="search-input" id="searchInput" placeholder="Cerca articolo..." oninput="filterArticles(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();searchEnterArticle()}">
               <button class="search-clear" onclick="document.getElementById('searchInput').value='';filterArticles('')" title="Cancella">&#128465;</button>
             </div>
             <div class="search-wrapper" style="margin-top:8px">
               <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M4 6h16M4 12h10M4 18h6"/>
               </svg>
-              <input type="text" class="search-input" id="keywordInput" placeholder="Cerca per parola chiave..." oninput="searchByKeyword(this.value)">
+              <input type="text" class="search-input" id="keywordInput" placeholder="Cerca per parola chiave..." oninput="searchByKeyword(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();searchEnterKeyword()}">
               <button class="search-clear" onclick="document.getElementById('keywordInput').value='';searchByKeyword('')" title="Cancella">&#128465;</button>
             </div>
             <div class="search-wrapper" style="margin-top:8px">
@@ -1910,6 +1910,10 @@
       const articleIndex = allArticles.findIndex(a => a.id === articleId);
       const article = allArticles[articleIndex];
       if (!article) return;
+
+      var savedKeyword = currentKeyword;
+      closeSidebar();
+      currentKeyword = savedKeyword;
 
       updateActiveNav();
 
@@ -3246,6 +3250,48 @@
     function closeSidebar() {
       document.getElementById('sidebar').classList.remove('open');
       document.getElementById('sidebarOverlay').classList.remove('open');
+      resetSearchFilters();
+    }
+    function resetSearchFilters() {
+      var si = document.getElementById('searchInput');
+      var ki = document.getElementById('keywordInput');
+      var ai = document.getElementById('advancedSearchInput');
+      if (si) si.value = '';
+      if (ki) ki.value = '';
+      if (ai) ai.value = '';
+      currentKeyword = '';
+      var items = document.querySelectorAll('.nav-item[data-id]');
+      items.forEach(function(item) { item.style.display = ''; });
+      var sections = document.querySelectorAll('.nav-section');
+      sections.forEach(function(s) { s.style.display = ''; });
+      document.querySelectorAll('.keyword-badge').forEach(function(b) { b.remove(); });
+    }
+
+    function searchEnterArticle() {
+      var visibleItems = document.querySelectorAll('.nav-item[data-id]');
+      for (var i = 0; i < visibleItems.length; i++) {
+        if (visibleItems[i].style.display !== 'none' && visibleItems[i].dataset.id && visibleItems[i].dataset.id !== 'home' && visibleItems[i].dataset.id !== 'calculator' && visibleItems[i].dataset.id !== 'notes-list') {
+          var aid = visibleItems[i].dataset.id;
+          closeSidebar();
+          showArticle(aid);
+          return;
+        }
+      }
+    }
+
+    function searchEnterKeyword() {
+      var visibleItems = document.querySelectorAll('.nav-item[data-id]');
+      var kw = document.getElementById('keywordInput').value.trim();
+      for (var i = 0; i < visibleItems.length; i++) {
+        if (visibleItems[i].style.display !== 'none' && visibleItems[i].dataset.id && visibleItems[i].dataset.id !== 'home' && visibleItems[i].dataset.id !== 'calculator' && visibleItems[i].dataset.id !== 'notes-list') {
+          var aid = visibleItems[i].dataset.id;
+          currentKeyword = kw;
+          closeSidebar();
+          currentKeyword = kw;
+          showArticle(aid);
+          return;
+        }
+      }
     }
 
     // ===== KEYBOARD NAV =====
