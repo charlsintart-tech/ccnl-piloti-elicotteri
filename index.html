@@ -1866,6 +1866,7 @@
       currentKeyword = '';
       updateActiveNav();
       const main = document.getElementById('mainContent');
+      main.style.overflow = '';
       main.innerHTML = `
         <div class="article-container fade-in">
           <div class="welcome">
@@ -1906,6 +1907,7 @@
 
     // ===== SHOW ARTICLE =====
     function showArticle(articleId) {
+      document.getElementById('mainContent').style.overflow = '';
       currentArticleId = articleId;
       const articleIndex = allArticles.findIndex(a => a.id === articleId);
       const article = allArticles[articleIndex];
@@ -2009,6 +2011,7 @@
     };
 
     function showCalculator() {
+      document.getElementById('mainContent').style.overflow = '';
       currentArticleId = 'calc-all';
       currentKeyword = '';
       updateActiveNav();
@@ -2428,6 +2431,7 @@
 
     // ===== COMPARATORE RETRIBUTIVO =====
     function showComparator() {
+      document.getElementById('mainContent').style.overflow = '';
       currentArticleId = 'comparator';
       currentKeyword = '';
       updateActiveNav();
@@ -2700,6 +2704,7 @@
     }
 
     function showSavedCalc() {
+      document.getElementById('mainContent').style.overflow = '';
       currentArticleId = 'saved-calc';
       currentKeyword = '';
       updateActiveNav();
@@ -2734,6 +2739,7 @@
     }
 
     function showSavedComp() {
+      document.getElementById('mainContent').style.overflow = '';
       currentArticleId = 'saved-comp';
       currentKeyword = '';
       updateActiveNav();
@@ -2985,6 +2991,7 @@
 
     // ===== TABELLE CONTRATTUALI =====
     function showTabelleContrattuali() {
+      document.getElementById('mainContent').style.overflow = '';
       currentArticleId = 'tabelle-contrattuali';
       currentKeyword = '';
       updateActiveNav();
@@ -3057,6 +3064,7 @@
 
     // ===== NOTES LIST =====
     function showNotesList() {
+      document.getElementById('mainContent').style.overflow = '';
       currentArticleId = 'notes-list';
       currentKeyword = '';
       updateActiveNav();
@@ -3121,6 +3129,7 @@
       });
 
       var main = document.getElementById('mainContent');
+      main.style.overflow = 'hidden';
       var html = '<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">' +
         '<div style="flex-shrink:0;padding:16px 24px 12px;background:var(--bg);border-bottom:2px solid var(--primary)">' +
         '<div style="max-width:800px;margin:0 auto">' +
@@ -3193,6 +3202,7 @@
       results.sort(function(a, b) { return b.count - a.count; });
 
       var main = document.getElementById('mainContent');
+      main.style.overflow = 'hidden';
       var html = '<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">' +
         '<div style="flex-shrink:0;padding:16px 24px 12px;background:var(--bg);border-bottom:2px solid var(--primary)">' +
         '<div style="max-width:800px;margin:0 auto">' +
@@ -3231,6 +3241,7 @@
 
     function goBackFromSearch() {
       currentKeyword = '';
+      document.getElementById('mainContent').style.overflow = '';
       toggleSidebar();
     }
 
@@ -3380,6 +3391,7 @@
     }
 
     function showCalculatorGrade(gradeId) {
+      document.getElementById('mainContent').style.overflow = '';
       var grade = CALC_DATA.grades.find(function(g) { return g.id === gradeId; });
       if (!grade) return;
       closeSidebar();
@@ -3551,6 +3563,7 @@
       results.sort(function(a, b) { return b.score - a.score; });
 
       var main = document.getElementById('mainContent');
+      main.style.overflow = 'hidden';
       var html = '<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">' +
         '<div style="flex-shrink:0;padding:16px 24px 12px;background:var(--bg);border-bottom:2px solid var(--primary)">' +
         '<div style="max-width:800px;margin:0 auto">' +
