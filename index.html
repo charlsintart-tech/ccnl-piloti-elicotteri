@@ -1868,6 +1868,9 @@
       html += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="showSavedComp()" data-id="saved-comp">SIM. SALVATE Comparatore retributivo</div>
       </div>`;
+      html += `<div class="nav-section" style="margin-top:12px;text-align:center">
+        <button style="border:2px solid var(--primary);border-radius:8px;padding:8px 18px;cursor:pointer;font-size:13px;background:var(--bg-card);color:var(--primary);font-weight:600;width:90%" onclick="document.querySelector('.sidebar-nav').scrollTop=0">⬆ Torna all\\'inizio</button>
+      </div>`;
 
       nav.innerHTML = html;
     }
@@ -3113,7 +3116,9 @@
         h += '<button class="toolbar-btn" style="border:2px solid #5a9a6e;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="waRiepImg(\'' + id + '\')">📷 WA Immagine</button>';
         h += '<button class="toolbar-btn" style="border:2px solid #1e3a5f;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="mailRiepTbl(\'' + id + '\')">✉ Mail</button>';
         h += '<button class="toolbar-btn" style="border:2px solid #e67e22;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card)" onclick="pdfRiepTbl(\'' + id + '\')">📄 Salva PDF</button>';
-        h += '</div></div>';
+        h += '</div>';
+        h += '<div style="text-align:center;margin-top:8px"><button class="toolbar-btn" style="border:2px solid #c47f17;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card);color:#c47f17;font-weight:600" onclick="document.getElementById(\'riepilogo-indice\').scrollIntoView({behavior:\'smooth\'})">⬆ Torna su</button></div>';
+        h += '</div>';
         return h;
       }
 
@@ -3128,8 +3133,8 @@
       html += '</div>';
 
       // INDICE
-      html += '<div style="margin-top:16px;padding:16px;background:rgba(30,58,95,0.05);border-radius:10px;border:1px solid var(--border)">';
-      html += '<div style="font-weight:700;margin-bottom:8px;color:var(--primary)">📑 Indice</div>';
+      html += '<div id="riepilogo-indice" style="margin-top:16px;padding:16px;background:rgba(230,160,50,0.15);border-radius:10px;border:1px solid #e6a030">';
+      html += '<div style="font-weight:700;margin-bottom:8px;color:#c47f17">📑 Indice</div>';
       var sez = [
         ['sez-retrib','💰 Retribuzione Base'],
         ['sez-volo','✈️ Indennità di Volo'],
@@ -3138,7 +3143,7 @@
         ['sez-viaggio','🚁 Indennità di Viaggio e Straordinari'],
         ['sez-diarie','🧳 Diarie e Rimborsi'],
         ['sez-ferie','🏖 Ferie, Congedi e Info'],
-        ['sez-prev','🏛 Previdenza e Fiscale']
+        ['sez-prev','🏛 Previdenza']
       ];
       for (var si = 0; si < sez.length; si++) {
         html += '<a href="javascript:void(0)" onclick="document.getElementById(\'' + sez[si][0] + '\').scrollIntoView({behavior:\'smooth\'})" style="display:block;padding:4px 0;color:var(--primary);text-decoration:none;font-size:14px">' + (si+1) + '. ' + sez[si][1] + '</a>';
@@ -3371,7 +3376,7 @@
       ]);
 
       // ===== SEZIONE 8: PREVIDENZA E FISCALE =====
-      html += mkSection('sez-prev', '🏛', 'Previdenza e Fiscale');
+      html += mkSection('sez-prev', '🏛', 'Previdenza');
 
       html += mkTbl('rINPS', 'Contributi INPS - Stima versamento minimo mensile (zero scatti)', ['Grado', 'Stima 2024 - 2025'], [
         ['Comandante Superiore', '€ 390 - € 420'],
@@ -3534,6 +3539,7 @@
           '<button style="border:2px solid #1e3a5f" onclick="mailSim(\'' + id + '\')">\u2709 Mail</button>' +
           '<button style="border:2px solid #e67e22" onclick="pdfSim(\'' + id + '\')">\ud83d\udcc4 Salva in PDF</button>' +
           '</div>';
+        h += '<div style="text-align:center;margin-top:8px"><button class="toolbar-btn" style="border:2px solid var(--primary);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;background:var(--bg-card);color:var(--primary);font-weight:600" onclick="document.getElementById(\'mainContent\').scrollTop=0">⬆ Torna su</button></div>';
         return h;
       }
 
