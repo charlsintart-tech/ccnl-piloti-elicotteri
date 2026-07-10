@@ -605,7 +605,8 @@
 
     /* Download button in sidebar */
     .sidebar-download {
-      padding: 12px 16px 8px;
+      padding: 12px 16px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px) / 2);
       border-top: 1px solid rgba(255,255,255,0.1);
       background: var(--primary-dark);
       flex-shrink: 0;
