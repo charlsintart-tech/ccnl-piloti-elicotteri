@@ -40,7 +40,6 @@
       line-height: 1.6;
       overflow: hidden;
       height: 100vh;
-      height: 100svh;
     }
 
     /* Header */
@@ -248,7 +247,6 @@
     .app-layout {
       display: flex;
       height: 100vh;
-      height: 100svh;
       padding-top: calc(var(--header-height) + var(--safe-top));
     }
 
@@ -389,7 +387,6 @@
       flex: 1;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: env(safe-area-inset-bottom, 20px);
     }
 
     .article-container {
@@ -608,8 +605,7 @@
 
     /* Download button in sidebar */
     .sidebar-download {
-      padding: 12px 16px;
-      padding-bottom: calc(12px + env(safe-area-inset-bottom, 20px));
+      padding: 12px 16px 8px;
       border-top: 1px solid rgba(255,255,255,0.1);
       background: var(--primary-dark);
       flex-shrink: 0;
