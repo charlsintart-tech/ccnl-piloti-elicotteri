@@ -1868,8 +1868,8 @@
       html += `<div class="nav-section">
         <div class="nav-section-title" style="cursor:pointer" onclick="showSavedComp()" data-id="saved-comp">SIM. SALVATE Comparatore retributivo</div>
       </div>`;
-      html += `<div class="nav-section" style="margin-top:12px;text-align:center">
-        <div class="theme-switcher" style="justify-content:center"><div class="theme-label" style="border-radius:8px;cursor:pointer" onclick="document.querySelector('.sidebar-nav').scrollTop=0">⬆ Torna su</div></div>
+      html += `<div class="nav-section" style="margin-top:12px;text-align:center;padding-bottom:12px;background:var(--primary-dark)">
+        <div style="display:inline-block;background:#e6a030;color:#000;font-size:12px;font-weight:700;padding:8px 24px;border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.8px" onclick="document.querySelector('.sidebar-nav').scrollTop=0">⬆ Torna su</div>
       </div>`;
 
       nav.innerHTML = html;
@@ -3179,7 +3179,7 @@
         ['Salario di ingresso', '€ 81,80']
       ], '(P. base (x13) + Ind. di volo (x12) + Ind. Int. Volo) ÷ 13 = A → A × 5%');
 
-      html += mkTbl('rInfoVarie', 'Altre voci', ['Voce', 'Importo / Dettaglio'], [
+      html += mkTbl('rInfoVarie', 'Ind. di chiamata - Rimb. Km - Piè di lista', ['Voce', 'Importo / Dettaglio'], [
         ['Indennità di chiamata', '€ 150,00 al giorno'],
         ['Rimborso Chilometrico', '€ 0,43/Km - Max 800 Km a/r'],
         ['Piè di lista', 'Max € 70,00 al giorno']
