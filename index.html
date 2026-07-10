@@ -2297,13 +2297,22 @@
       doc.documentElement.removeAttribute('data-theme');
       var els = doc.querySelectorAll('*');
       for (var i = 0; i < els.length; i++) {
-        var cs = window.getComputedStyle(els[i]);
-        if (cs.color) els[i].style.color = '#1a1a1a';
+        var el = els[i];
+        var bg = window.getComputedStyle(el).backgroundColor;
+        var isDark = false;
+        if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+          var m = bg.match(/\d+/g);
+          if (m && m.length >= 3) {
+            var r = parseInt(m[0]), g = parseInt(m[1]), b = parseInt(m[2]);
+            isDark = (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+          }
+        }
+        if (isDark) {
+          el.style.color = '#ffffff';
+        } else {
+          el.style.color = '#1a1a1a';
+        }
       }
-      var ths = doc.querySelectorAll('th');
-      for (var j = 0; j < ths.length; j++) { ths[j].style.color = '#fff'; }
-      var titles = doc.querySelectorAll('.calc-title, .article-toolbar-title');
-      for (var k = 0; k < titles.length; k++) { titles[k].style.color = '#fff'; }
     }
 
     function exportCalcPDF() {
