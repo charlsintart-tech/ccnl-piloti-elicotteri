@@ -2293,12 +2293,25 @@
       setTimeout(function() { iframe.contentWindow.focus(); iframe.contentWindow.print(); setTimeout(function() { document.body.removeChild(iframe); }, 2000); }, 500);
     }
 
+    function h2cFixColors(doc) {
+      doc.documentElement.removeAttribute('data-theme');
+      var els = doc.querySelectorAll('*');
+      for (var i = 0; i < els.length; i++) {
+        var cs = window.getComputedStyle(els[i]);
+        if (cs.color) els[i].style.color = '#1a1a1a';
+      }
+      var ths = doc.querySelectorAll('th');
+      for (var j = 0; j < ths.length; j++) { ths[j].style.color = '#fff'; }
+      var titles = doc.querySelectorAll('.calc-title, .article-toolbar-title');
+      for (var k = 0; k < titles.length; k++) { titles[k].style.color = '#fff'; }
+    }
+
     function exportCalcPDF() {
       var el = document.getElementById('calcResults');
       if (!el) return;
       var btns = el.querySelectorAll('.calc-actions, .calc-table-actions');
       btns.forEach(function(b) { b.style.display = 'none'; });
-      html2canvas(el, { backgroundColor: '#ffffff', scale: 2, onclone: function(doc) { doc.documentElement.removeAttribute('data-theme'); } }).then(function(canvas) {
+      html2canvas(el, { backgroundColor: '#ffffff', scale: 2, onclone: h2cFixColors }).then(function(canvas) {
         btns.forEach(function(b) { b.style.display = ''; });
         var imgData = canvas.toDataURL('image/png');
         var pdf = new window.jspdf.jsPDF({ orientation: canvas.width > canvas.height ? 'l' : 'p', unit: 'mm', format: 'a4' });
@@ -2346,8 +2359,7 @@
       html2canvas(el, {
         backgroundColor: '#f5f7fa',
         scale: 2,
-        onclone: function(doc) { doc.documentElement.removeAttribute('data-theme'); }
-      }).then(function(canvas) {
+        onclone: h2cFixColors      }).then(function(canvas) {
         btns.forEach(function(b) { b.style.display = ''; });
         canvas.toBlob(function(blob) {
           var file = new File([blob], 'calcolatore-retributivo.png', {type: 'image/png'});
@@ -2397,8 +2409,7 @@
       html2canvas(el, {
         backgroundColor: '#f5f7fa',
         scale: 2,
-        onclone: function(doc) { doc.documentElement.removeAttribute('data-theme'); }
-      }).then(function(canvas) {
+        onclone: h2cFixColors      }).then(function(canvas) {
         canvas.toBlob(function(blob) {
           var file = new File([blob], tableId + '.png', {type: 'image/png'});
           if (navigator.share && navigator.canShare && navigator.canShare({files: [file]})) {
@@ -2430,8 +2441,7 @@
       html2canvas(el, {
         backgroundColor: '#f5f7fa',
         scale: 2,
-        onclone: function(doc) { doc.documentElement.removeAttribute('data-theme'); }
-      }).then(function(canvas) {
+        onclone: h2cFixColors      }).then(function(canvas) {
         btns.forEach(function(b) { b.style.display = ''; });
         canvas.toBlob(function(blob) {
           var file = new File([blob], 'calcolatore-completo.png', {type: 'image/png'});
@@ -2849,7 +2859,7 @@
       var el = document.getElementById(id);
       if (!el) return;
       if (typeof html2canvas === 'undefined') { shareSimText(id); return; }
-      html2canvas(el, { backgroundColor: '#fff', scale: 2 }).then(function(canvas) {
+      html2canvas(el, { backgroundColor: '#fff', scale: 2, onclone: h2cFixColors }).then(function(canvas) {
         canvas.toBlob(function(blob) {
           var file = new File([blob], 'simulazione.png', { type: 'image/png' });
           if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -2878,7 +2888,7 @@
         }
       });
       if (typeof html2canvas !== 'undefined') {
-        html2canvas(el, { backgroundColor: '#fff', scale: 2 }).then(function(canvas) {
+        html2canvas(el, { backgroundColor: '#fff', scale: 2, onclone: h2cFixColors }).then(function(canvas) {
           canvas.toBlob(function(blob) {
             var file = new File([blob], 'tabella.png', { type: 'image/png' });
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -2902,7 +2912,7 @@
       wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;padding:16px;';
       wrapper.appendChild(clone);
       document.body.appendChild(wrapper);
-      html2canvas(wrapper, { backgroundColor: '#ffffff', scale: 2 }).then(function(canvas) {
+      html2canvas(wrapper, { backgroundColor: '#ffffff', scale: 2, onclone: h2cFixColors }).then(function(canvas) {
         document.body.removeChild(wrapper);
         var imgData = canvas.toDataURL('image/png');
         var pdf = new window.jspdf.jsPDF({ orientation: canvas.width > canvas.height ? 'l' : 'p', unit: 'mm', format: 'a4' });
@@ -3622,7 +3632,7 @@
       container.appendChild(h4.cloneNode(true));
       container.appendChild(tbl.cloneNode(true));
       document.body.appendChild(container);
-      html2canvas(container, {scale:2}).then(function(canvas) {
+      html2canvas(container, {scale:2, backgroundColor:'#ffffff', onclone: h2cFixColors}).then(function(canvas) {
         document.body.removeChild(container);
         canvas.toBlob(function(blob) {
           var file = new File([blob], 'tabella.png', {type:'image/png'});
@@ -3657,7 +3667,7 @@
       container.appendChild(h4.cloneNode(true));
       container.appendChild(tbl.cloneNode(true));
       document.body.appendChild(container);
-      html2canvas(container, {scale:2}).then(function(canvas) {
+      html2canvas(container, {scale:2, backgroundColor:'#ffffff', onclone: h2cFixColors}).then(function(canvas) {
         document.body.removeChild(container);
         var imgData = canvas.toDataURL('image/png');
         var pdf = new jspdf.jsPDF({orientation: canvas.width > canvas.height ? 'l' : 'p', unit: 'px', format: [canvas.width/2, canvas.height/2]});
