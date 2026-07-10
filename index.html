@@ -2295,22 +2295,28 @@
 
     function h2cFixColors(doc) {
       doc.documentElement.removeAttribute('data-theme');
+      function getEffectiveBg(el) {
+        var node = el;
+        while (node && node.nodeType === 1) {
+          var bg = window.getComputedStyle(node).backgroundColor;
+          if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+            var m = bg.match(/\d+/g);
+            if (m && m.length >= 3) {
+              var r = parseInt(m[0]), g = parseInt(m[1]), b = parseInt(m[2]);
+              var a = m.length >= 4 ? parseFloat(m[3]) : 1;
+              if (a > 0.1) return (r * 0.299 + g * 0.587 + b * 0.114) < 128;
+            }
+          }
+          node = node.parentElement;
+        }
+        return false;
+      }
       var els = doc.querySelectorAll('*');
       for (var i = 0; i < els.length; i++) {
-        var el = els[i];
-        var bg = window.getComputedStyle(el).backgroundColor;
-        var isDark = false;
-        if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
-          var m = bg.match(/\d+/g);
-          if (m && m.length >= 3) {
-            var r = parseInt(m[0]), g = parseInt(m[1]), b = parseInt(m[2]);
-            isDark = (r * 0.299 + g * 0.587 + b * 0.114) < 128;
-          }
-        }
-        if (isDark) {
-          el.style.color = '#ffffff';
+        if (getEffectiveBg(els[i])) {
+          els[i].style.color = '#ffffff';
         } else {
-          el.style.color = '#1a1a1a';
+          els[i].style.color = '#1a1a1a';
         }
       }
     }
