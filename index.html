@@ -3134,10 +3134,10 @@
         ['sez-retrib','💰 Retribuzione Base'],
         ['sez-volo','✈️ Indennità di Volo'],
         ['sez-adeg','📈 Adeguamenti Contrattuali'],
-        ['sez-stip','💵 Stipendio e Tredicesima'],
-        ['sez-straord','⏰ Straordinari e Festività'],
+        ['sez-stip','💵 Stipendio Mensile Lordo'],
+        ['sez-viaggio','🚁 Indennità di Viaggio e Straordinari'],
         ['sez-diarie','🧳 Diarie e Rimborsi'],
-        ['sez-ferie','🏖 Ferie e Congedi'],
+        ['sez-ferie','🏖 Ferie, Congedi e Info'],
         ['sez-prev','🏛 Previdenza e Fiscale']
       ];
       for (var si = 0; si < sez.length; si++) {
@@ -3166,45 +3166,54 @@
 
       html += mkTbl('rScatti', 'Calcolo scatto di anzianità - Art. 20', ['Grado', 'Scatto'], [
         ['Comandante Superiore', '€ 197,58'],
-        ['Primo Comandante', '€ 186,88'],
-        ['Comandante', '€ 137,30'],
-        ['1° Ufficiale', '€ 81,80']
-      ], 'Formula: (P. base ×13 + Ind. volo ×12 + Ind. Int. Volo) ÷ 13 = A → A × 5%');
+        ['Primo Comandante', '€ 192,24'],
+        ['Comandante', '€ 186,88'],
+        ['1° Ufficiale', '€ 149,42'],
+        ['Pilota di 1°', '€ 137,30'],
+        ['Pilota di 2°', '€ 119,29'],
+        ['Salario di ingresso', '€ 81,80']
+      ], '(P. base (x13) + Ind. di volo (x12) + Ind. Int. Volo) ÷ 13 = A → A × 5%');
+
+      html += mkTbl('rInfoVarie', 'Altre voci', ['Voce', 'Importo / Dettaglio'], [
+        ['Indennità di chiamata', '€ 150,00 al giorno'],
+        ['Rimborso Chilometrico', '€ 0,43/Km - Max 800 Km a/r'],
+        ['Piè di lista', 'Max € 70,00 al giorno']
+      ]);
 
       // ===== SEZIONE 2: INDENNITÀ DI VOLO =====
       html += mkSection('sez-volo', '✈️', 'Indennità di Volo');
 
-      html += mkTbl('rIndVolo', 'Indennità di volo - Art. 18', ['Grado', 'Mensile'], [
-        ['Comandante Superiore', '€ 567,00'],
-        ['Differenza →', '€ 54,60'],
-        ['Primo Comandante', '€ 512,40'],
-        ['Differenza →', '€ 54,60'],
-        ['Comandante', '€ 457,80'],
-        ['Differenza →', '€ 109,80'],
-        ['1° Ufficiale', '€ 348,00'],
-        ['Differenza →', '€ 56,40'],
-        ['Pilota di 1°', '€ 291,60'],
-        ['Differenza →', '€ 44,40'],
-        ['Pilota di 2°', '€ 247,20'],
-        ['Differenza →', '€ 97,20'],
-        ['Salario di ingresso', '€ 150,00']
+      html += mkTbl('rIndVolo', 'Indennità di volo - Art. 18', ['Grado', 'Oraria', 'Mensile'], [
+        ['Comandante Superiore', '€ 37,26', '€ 2.235,60'],
+        ['Differenza →', '€ 0,30', '€ 18,00'],
+        ['Primo Comandante', '€ 36,96', '€ 2.217,60'],
+        ['Differenza →', '€ 0,33', '€ 19,80'],
+        ['Comandante', '€ 36,63', '€ 2.197,80'],
+        ['Differenza →', '€ 9,45', '€ 567,00'],
+        ['1° Ufficiale', '€ 27,18', '€ 1.630,80'],
+        ['Differenza →', '€ 3,41', '€ 204,60'],
+        ['Pilota di 1°', '€ 23,77', '€ 1.426,20'],
+        ['Differenza →', '€ 4,86', '€ 291,60'],
+        ['Pilota di 2°', '€ 18,91', '€ 1.134,60'],
+        ['Differenza →', '€ 10,37', '€ 622,20'],
+        ['Salario di ingresso', '€ 8,54', '€ 512,40']
       ]);
 
-      html += mkTbl('rIntegrativa', 'Indennità integrativa di volo (200 ore) - Art. 19', ['Grado', 'Da Feb. 2024', 'Da Apr. 2025'], [
-        ['Comandante Superiore', '€ 4.262,74', '€ 4.714,74'],
-        ['Differenza →', '€ 127,53', '€ 151,53'],
-        ['Primo Comandante', '€ 4.135,21', '€ 4.563,21'],
-        ['Differenza →', '€ 130,95', '€ 158,95'],
-        ['Comandante', '€ 4.004,26', '€ 4.404,26'],
-        ['Differenza →', '€ 829,62', '€ 881,62'],
-        ['1° Ufficiale', '€ 3.174,64', '€ 3.522,64'],
-        ['Differenza →', '€ 260,66', '€ 272,66'],
-        ['Pilota di 1°', '€ 2.913,98', '€ 3.249,98'],
-        ['Differenza →', '€ 359,32', '€ 375,32'],
-        ['Pilota di 2°', '€ 2.554,66', '€ 2.874,66'],
-        ['Differenza →', '€ 730,20', '€ 838,20'],
-        ['Salario di ingresso', '€ 1.824,46', '€ 2.036,46']
-      ], 'Importo annuale per 200 ore di volo');
+      html += mkTbl('rIntegrativa', 'Indennità integrativa di volo (200 ore) - Art. 19', ['Grado', 'Oraria', 'Annuale'], [
+        ['Comandante Superiore', '€ 21,09', '€ 4.218,00'],
+        ['Differenza →', '€ 0,31', '€ 62,00'],
+        ['Primo Comandante', '€ 20,78', '€ 4.156,00'],
+        ['Differenza →', '€ 0,38', '€ 76,00'],
+        ['Comandante', '€ 20,40', '€ 4.080,00'],
+        ['Differenza →', '€ 1,23', '€ 246,00'],
+        ['1° Ufficiale', '€ 19,17', '€ 3.834,00'],
+        ['Differenza →', '€ 0,62', '€ 124,00'],
+        ['Pilota di 1°', '€ 18,55', '€ 3.710,00'],
+        ['Differenza →', '€ 2,55', '€ 510,00'],
+        ['Pilota di 2°', '€ 16,00', '€ 3.200,00'],
+        ['Differenza →', '€ 11,41', '€ 2.282,00'],
+        ['Salario di ingresso', '€ 4,59', '€ 918,00']
+      ], '100 ore Dic. - 100 ore Mar.');
 
       html += mkTbl('rNotturno', 'Indennità di volo notturno - Art. 21', ['Grado', 'x giorno', 'x turno (7 notti)'], [
         ['Comandante Superiore', '€ 35,77', '€ 250,39'],
@@ -3241,144 +3250,130 @@
         ['Salario di ingresso', '€ 100,00']
       ]);
 
-      html += mkTbl('rAdeguamento', 'Adeguamento 2024 / 2025', ['Grado', 'Adeg. 2024', 'Adeg. 2025', 'Totale'], [
-        ['Comandante Superiore', '€ 452,00', '€ 452,00', '€ 904,00'],
-        ['Differenza →', '€ 24,00', '€ 24,00', '€ 48,00'],
-        ['Primo Comandante', '€ 428,00', '€ 428,00', '€ 856,00'],
-        ['Differenza →', '€ 28,00', '€ 28,00', '€ 56,00'],
-        ['Comandante', '€ 400,00', '€ 400,00', '€ 800,00'],
-        ['Differenza →', '€ 52,00', '€ 52,00', '€ 104,00'],
-        ['1° Ufficiale', '€ 348,00', '€ 348,00', '€ 696,00'],
-        ['Differenza →', '€ 12,00', '€ 12,00', '€ 24,00'],
-        ['Pilota di 1°', '€ 336,00', '€ 336,00', '€ 672,00'],
-        ['Differenza →', '€ 16,00', '€ 16,00', '€ 32,00'],
-        ['Pilota di 2°', '€ 320,00', '€ 320,00', '€ 640,00'],
-        ['Differenza →', '€ 108,00', '€ 108,00', '€ 216,00'],
-        ['Salario di ingresso', '€ 212,00', '€ 212,00', '€ 424,00']
+      html += mkTbl('rAdeguamento', 'Adeguamento 2024 / 2025', ['Grado', 'Da Febbraio 2024', 'Da Aprile 2025'], [
+        ['Comandante Superiore', '€ 452,00', '€ 452,00'],
+        ['Differenza →', '€ 24,00', '€ 24,00'],
+        ['Primo Comandante', '€ 428,00', '€ 428,00'],
+        ['Differenza →', '€ 28,00', '€ 28,00'],
+        ['Comandante', '€ 400,00', '€ 400,00'],
+        ['Differenza →', '€ 52,00', '€ 52,00'],
+        ['1° Ufficiale', '€ 348,00', '€ 348,00'],
+        ['Differenza →', '€ 12,00', '€ 12,00'],
+        ['Pilota di 1°', '€ 336,00', '€ 336,00'],
+        ['Differenza →', '€ 16,00', '€ 16,00'],
+        ['Pilota di 2°', '€ 320,00', '€ 320,00'],
+        ['Differenza →', '€ 108,00', '€ 108,00'],
+        ['Salario di ingresso', '€ 212,00', '€ 212,00']
       ]);
 
-      html += mkTbl('rQuotaOraria', 'Quota oraria e annuale - Ind. volo notturno', ['Grado', 'Quota oraria', 'Quota annuale (200h)'], [
-        ['Comandante Superiore', '€ 21,09', '€ 4.218,00'],
-        ['Differenza →', '€ 0,31', '€ 62,00'],
-        ['Primo Comandante', '€ 20,78', '€ 4.156,00'],
-        ['Differenza →', '€ 0,38', '€ 76,00'],
-        ['Comandante', '€ 20,40', '€ 4.080,00'],
-        ['Differenza →', '€ 1,23', '€ 246,00'],
-        ['1° Ufficiale', '€ 19,17', '€ 3.834,00'],
-        ['Differenza →', '€ 0,62', '€ 124,00'],
-        ['Pilota di 1°', '€ 18,55', '€ 3.710,00'],
-        ['Differenza →', '€ 2,55', '€ 510,00'],
-        ['Pilota di 2°', '€ 16,00', '€ 3.200,00'],
-        ['Differenza →', '€ 11,41', '€ 2.282,00'],
-        ['Salario di ingresso', '€ 4,59', '€ 918,00']
+      // ===== SEZIONE 4: STIPENDIO MENSILE LORDO =====
+      html += mkSection('sez-stip', '💵', 'Stipendio Mensile Lordo');
+
+      html += mkTbl('rStipendioLordo', 'Stipendio mensile lordo (base) - zero scatti', ['Grado', 'Da Febbraio 2024', 'Da Aprile 2025'], [
+        ['Comandante Superiore', '€ 4.262,74', '€ 4.714,74'],
+        ['Differenza →', '€ 127,53', '€ 151,53'],
+        ['Primo Comandante', '€ 4.135,21', '€ 4.563,21'],
+        ['Differenza →', '€ 130,95', '€ 158,95'],
+        ['Comandante', '€ 4.004,26', '€ 4.404,26'],
+        ['Differenza →', '€ 829,62', '€ 881,62'],
+        ['1° Ufficiale', '€ 3.174,64', '€ 3.522,64'],
+        ['Differenza →', '€ 260,66', '€ 272,66'],
+        ['Pilota di 1°', '€ 2.913,98', '€ 3.249,98'],
+        ['Differenza →', '€ 359,32', '€ 375,32'],
+        ['Pilota di 2°', '€ 2.554,66', '€ 2.874,66'],
+        ['Differenza →', '€ 730,20', '€ 838,20'],
+        ['Salario di ingresso', '€ 1.824,46', '€ 2.036,46']
       ]);
 
-      // ===== SEZIONE 4: STIPENDIO E TREDICESIMA =====
-      html += mkSection('sez-stip', '💵', 'Stipendio e Tredicesima');
+      // ===== SEZIONE 5: INDENNITÀ DI VIAGGIO E STRAORDINARI =====
+      html += mkSection('sez-viaggio', '🚁', 'Indennità di Viaggio e Straordinari');
 
-      html += mkTbl('rStipendioLordo', 'Stipendio mensile lordo (base) - zero scatti', ['Grado', 'Da Feb. 2024', 'Da Apr. 2025'], [
-        ['Comandante Superiore', '€ 2.142,14', '€ 2.594,14'],
-        ['Differenza →', '€ 85,53', '€ 109,53'],
-        ['Primo Comandante', '€ 2.056,61', '€ 2.484,61'],
-        ['Differenza →', '€ 83,15', '€ 111,15'],
-        ['Comandante', '€ 1.973,46', '€ 2.373,46'],
-        ['Differenza →', '€ 210,62', '€ 262,62'],
-        ['1° Ufficiale', '€ 1.762,84', '€ 2.110,84'],
-        ['Differenza →', '€ 44,06', '€ 56,06'],
-        ['Pilota di 1°', '€ 1.718,78', '€ 2.054,78'],
-        ['Differenza →', '€ 51,72', '€ 67,72'],
-        ['Pilota di 2°', '€ 1.667,06', '€ 1.987,06'],
-        ['Differenza →', '€ 0,00', '€ 0,00'],
-        ['Salario di ingresso', '€ 1.667,06', '€ 1.879,06']
-      ], 'Paga base + Indennità di volo + Vacanza contrattuale (+ Aumenti per Apr. 2025)');
+      html += mkTbl('rViaggio', 'Indennità di viaggio - Art. 24 (Hems diurno / notturno / Off Shore)', ['Grado', '0-200 Km<br>x giorno', '0-200 Km<br>x turno', '200-400 Km<br>x giorno', '200-400 Km<br>x turno', '>400 Km<br>x giorno', '>400 Km<br>x turno'], [
+        ['Comandante Superiore', '€ 0,00', '€ 0,00', '€ 67,50', '€ 135,00', '€ 135,00', '€ 270,00'],
+        ['Differenza →', 'N.a.', 'N.a.', '€ 1,25', '€ 2,50', '€ 2,50', '€ 5,00'],
+        ['Primo Comandante', '€ 0,00', '€ 0,00', '€ 66,25', '€ 132,50', '€ 132,50', '€ 265,00'],
+        ['Differenza →', 'N.a.', 'N.a.', '€ 2,50', '€ 5,00', '€ 5,00', '€ 10,00'],
+        ['Comandante', '€ 0,00', '€ 0,00', '€ 63,75', '€ 127,50', '€ 127,50', '€ 255,00'],
+        ['Differenza →', 'N.a.', 'N.a.', '€ 12,50', '€ 25,00', '€ 25,00', '€ 50,00'],
+        ['1° Ufficiale', '€ 0,00', '€ 0,00', '€ 51,25', '€ 102,50', '€ 102,50', '€ 205,00'],
+        ['Differenza →', 'N.a.', 'N.a.', '€ 3,75', '€ 7,50', '€ 7,50', '€ 15,00'],
+        ['Pilota di 1°', '€ 0,00', '€ 0,00', '€ 47,50', '€ 95,00', '€ 95,00', '€ 190,00'],
+        ['Differenza →', 'N.a.', 'N.a.', '€ 6,25', '€ 12,50', '€ 12,50', '€ 25,00'],
+        ['Pilota di 2°', '€ 0,00', '€ 0,00', '€ 41,25', '€ 82,50', '€ 82,50', '€ 165,00'],
+        ['Differenza →', 'N.a.', 'N.a.', '€ 13,75', '€ 27,50', '€ 27,50', '€ 55,00'],
+        ['Salario di ingresso', '€ 0,00', '€ 0,00', '€ 27,50', '€ 55,00', '€ 55,00', '€ 110,00']
+      ], '0-200 Km: Non prevista | 200-400 Km: 1/4 Giornata / 1/2 Giornata | >400 Km: 1/2 Giornata / 1 Giornata');
 
-      html += mkTbl('rTredicesima', 'Tredicesima mensilità - Art. 27', ['Grado', 'Importo stimato'], [
-        ['Comandante Superiore', '€ 1.435,47'],
-        ['Primo Comandante', '€ 1.349,94'],
-        ['Comandante', '€ 1.266,79'],
-        ['1° Ufficiale', '€ 1.106,17'],
-        ['Pilota di 1°', '€ 1.062,11'],
-        ['Pilota di 2°', '€ 1.010,39'],
-        ['Salario di ingresso', '€ 1.010,39']
-      ], 'Paga base + Scatti + Superminimo (€ 10,33)');
-
-      // ===== SEZIONE 5: STRAORDINARI E FESTIVITÀ =====
-      html += mkSection('sez-straord', '⏰', 'Straordinari e Festività');
-
-      html += mkTbl('rStraordinario', 'Straordinario - Art. 26', ['Grado', '1/4 Giornata', '1/2 Giornata', '1 Giornata'], [
-        ['Comandante Superiore', '€ 0,00', '€ 67,50', '€ 135,00'],
-        ['Differenza →', 'N.a.', '€ 1,25', '€ 2,50'],
-        ['Primo Comandante', '€ 0,00', '€ 66,25', '€ 132,50'],
-        ['Differenza →', 'N.a.', '€ 2,50', '€ 5,00'],
-        ['Comandante', '€ 0,00', '€ 63,75', '€ 127,50'],
-        ['Differenza →', 'N.a.', '€ 12,50', '€ 25,00'],
-        ['1° Ufficiale', '€ 0,00', '€ 51,25', '€ 102,50'],
-        ['Differenza →', 'N.a.', '€ 3,75', '€ 7,50'],
-        ['Pilota di 1°', '€ 0,00', '€ 47,50', '€ 95,00'],
-        ['Differenza →', 'N.a.', '€ 6,25', '€ 12,50'],
-        ['Pilota di 2°', '€ 0,00', '€ 41,25', '€ 82,50'],
-        ['Differenza →', 'N.a.', '€ 13,75', '€ 27,50'],
-        ['Salario di ingresso', '€ 0,00', '€ 27,50', '€ 55,00']
+      html += mkTbl('rStraordinario', 'Straordinario Art. 26 / Festività Art. 25 (zero scatti)', ['Grado', '1 giornata<br>Straordinario', '1 giornata<br>Fest. non goduta'], [
+        ['Comandante Superiore', '€ 421,08', '€ 56,14'],
+        ['Differenza →', '€ 11,39', '€ 1,52'],
+        ['Primo Comandante', '€ 409,69', '€ 54,63'],
+        ['Differenza →', '€ 11,43', '€ 1,52'],
+        ['Comandante', '€ 398,26', '€ 53,10'],
+        ['Differenza →', '€ 79,82', '€ 10,64'],
+        ['1° Ufficiale', '€ 318,44', '€ 42,46'],
+        ['Differenza →', '€ 25,84', '€ 3,44'],
+        ['Pilota di 1°', '€ 292,60', '€ 39,01'],
+        ['Differenza →', '€ 38,37', '€ 5,12'],
+        ['Pilota di 2°', '€ 254,23', '€ 33,90'],
+        ['Differenza →', '€ 79,90', '€ 10,65'],
+        ['Salario di ingresso', '€ 174,32', '€ 23,24']
       ]);
 
-      html += mkTbl('rStraordTurno', 'Straordinario x turno - Art. 26', ['Grado', '1/2 Giornata', '1 Giornata'], [
-        ['Comandante Superiore', '€ 135,00', '€ 270,00'],
-        ['Primo Comandante', '€ 132,50', '€ 265,00'],
-        ['Comandante', '€ 127,50', '€ 255,00'],
-        ['1° Ufficiale', '€ 102,50', '€ 205,00'],
-        ['Pilota di 1°', '€ 95,00', '€ 190,00'],
-        ['Pilota di 2°', '€ 82,50', '€ 165,00'],
-        ['Salario di ingresso', '€ 55,00', '€ 110,00']
-      ]);
-
-      html += mkTbl('rFestivita', 'Giornate festive - Art. 25', ['Festività', ''], [
-        ['1 Gennaio', 'Capodanno'],
-        ['6 Gennaio', 'Epifania'],
-        ['Pasquetta', 'Lunedì dell\'Angelo'],
-        ['25 Aprile', 'Festa della Liberazione'],
-        ['1 Maggio', 'Festa del Lavoro'],
-        ['2 Giugno', 'Festa della Repubblica'],
-        ['15 Agosto', 'Ferragosto'],
-        ['1 Novembre', 'Ognissanti'],
-        ['8 Dicembre', 'Immacolata Concezione'],
-        ['25 Dicembre', 'Natale'],
-        ['26 Dicembre', 'Santo Stefano']
+      html += mkTbl('rTrimestri', 'Straordinari - Trimestri Art. 26', ['Trimestre', 'GG Standard', 'Pagamento'], [
+        ['Gen. - Feb. - Mar.', '45,75 GG', 'Aprile'],
+        ['Apr. - Mag. - Giu.', '45,75 GG', 'Luglio'],
+        ['Lug. - Ago. - Set.', '45,75 GG', 'Ottobre'],
+        ['Ott. - Nov. - Dic.', '45,75 GG', 'Gennaio'],
+        ['Conguaglio GG anno prec.', '', 'Febbraio']
       ]);
 
       // ===== SEZIONE 6: DIARIE E RIMBORSI =====
       html += mkSection('sez-diarie', '🧳', 'Diarie e Rimborsi');
 
       html += mkTbl('rDiarie', 'Diarie', ['Tipo', 'Importo', 'Note'], [
-        ['Diaria Hotel', '€ 60,00', ''],
+        ['Diaria Hotel', '€ 60,00', '€ 30,99 esentasse'],
         ['Diaria Residence', '€ 65,00', '€ 30,99 esentasse'],
-        ['Diaria estera', '€ 77,47', 'Esentasse'],
         ['Mancato alloggio', '€ 95,00', '€ 46,48 esentasse'],
-        ['Piè di lista', 'Max € 70,00', 'Al giorno'],
-        ['Rimborso chilometrico', '€ 0,43/Km', 'Max 800 Km a/r']
+        ['Diaria estera', '€ 77,47', 'Esentasse']
       ]);
 
-      html += mkTbl('rViaggio', 'Indennità di viaggio - Art. 24', ['Distanza', 'Importo'], [
-        ['Tra 0 Km e 200 Km', '€ 15,00'],
-        ['Tra 200 Km e 400 Km', '€ 25,00'],
-        ['Superiore a 400 Km', '€ 55,00']
-      ]);
-
-      // ===== SEZIONE 7: FERIE E CONGEDI =====
-      html += mkSection('sez-ferie', '🏖', 'Ferie e Congedi');
+      // ===== SEZIONE 7: FERIE, CONGEDI E INFO =====
+      html += mkSection('sez-ferie', '🏖', 'Ferie, Congedi e Info');
 
       html += mkTbl('rFerie', 'Ferie - Art. 48', ['Voce', 'Dettaglio'], [
         ['Giorni totali', '28 giorni'],
         ['Di cui Azienda', '14 giorni'],
-        ['Di cui Pilota', '14 giorni'],
-        ['Pagamento', 'A trimestre (Apr, Lug, Ott, Gen)'],
-        ['Conguaglio', 'Febbraio']
+        ['Di cui Pilota', '14 giorni']
+      ]);
+
+      html += mkTbl('rFestivita', 'Giornate festive - Art. 25', ['Festività', ''], [
+        ['1 Gennaio', ''],
+        ['6 Gennaio', ''],
+        ['25 Aprile', ''],
+        ['Pasquetta', ''],
+        ['1 Maggio', ''],
+        ['15 Agosto', ''],
+        ['1 Novembre', ''],
+        ['8 Dicembre', ''],
+        ['25 Dicembre', ''],
+        ['26 Dicembre', '']
       ]);
 
       html += mkTbl('rCongedo', 'Congedo matrimoniale - Art. 35', ['Voce', 'Dettaglio'], [
-        ['Durata', '15 giorni di calendario']
+        ['Congedo matrimoniale', 'Art. 35']
       ]);
 
-      html += mkTbl('rMalattia', 'Malattia - Art. 37 (stima mensile 2024-2025)', ['Grado', 'Importo stimato'], [
+      html += mkTbl('rMalattia', 'Riferimenti contrattuali', ['Voce', 'Articolo'], [
+        ['Malattia', 'Art. 37'],
+        ['Aspettativa', 'Art. 34'],
+        ['Tredicesima', 'Art. 27']
+      ]);
+
+      // ===== SEZIONE 8: PREVIDENZA E FISCALE =====
+      html += mkSection('sez-prev', '🏛', 'Previdenza e Fiscale');
+
+      html += mkTbl('rINPS', 'Contributi INPS - Stima versamento minimo mensile (zero scatti)', ['Grado', 'Stima 2024 - 2025'], [
         ['Comandante Superiore', '€ 390 - € 420'],
         ['Primo Comandante', '€ 375 - € 405'],
         ['Comandante', '€ 360 - € 390'],
@@ -3386,9 +3381,9 @@
         ['Pilota di 1°', '€ 275 - € 300'],
         ['Pilota di 2°', '€ 250 - € 270'],
         ['Salario di ingresso', '€ 200 - € 215']
-      ], 'Importi indicativi soggetti a variazione');
+      ]);
 
-      html += mkTbl('rAspettativa', 'Aspettativa - Art. 34 (stima 2024-2025)', ['Grado', 'Importo stimato'], [
+      html += mkTbl('rFondaereo', 'FONDAEREO - Stima versamento minimo medio mensile (zero scatti)', ['Grado', 'Stima 2024 - 2025'], [
         ['Comandante Superiore', '€ 560 - € 620'],
         ['Primo Comandante', '€ 550 - € 600'],
         ['Comandante', '€ 530 - € 580'],
@@ -3396,29 +3391,12 @@
         ['Pilota di 1°', '€ 385 - € 430'],
         ['Pilota di 2°', '€ 340 - € 380'],
         ['Salario di ingresso', '€ 250 - € 275']
-      ], 'Importi indicativi soggetti a variazione');
-
-      // ===== SEZIONE 8: PREVIDENZA E FISCALE =====
-      html += mkSection('sez-prev', '🏛', 'Previdenza e Fiscale');
-
-      html += mkTbl('rINPS', 'Contributi INPS', ['Voce', 'Dettaglio'], [
-        ['Aliquota lavoratore', '9,19% (fino a € 55.008)'],
-        ['Aliquota lavoratore', '10,19% (oltre € 55.008)'],
-        ['Aliquota azienda', '23,81%'],
-        ['Totale', '32,99% / 33,99%']
-      ]);
-
-      html += mkTbl('rFondaereo', 'FONDAEREO', ['Voce', 'Dettaglio'], [
-        ['TFR', '100% destinato'],
-        ['Contributo Azienda', '4,09%'],
-        ['Contributo Pilota', '3,03%'],
-        ['Quota pilota', 'Incrementabile volontariamente']
-      ]);
+      ], '100% TFR + 4,09% Azienda + 3,03% Pilota - Quota pilota incrementabile');
 
       html += mkTbl('rAssicurazioni', 'Assicurazioni - Art. 43', ['Tipo', 'Comandante', '1° Uff. / Pilota 1°', 'Pilota 2°'], [
-        ['Caso morte', '€ 413.166', '€ 309.874', '€ 154.937'],
-        ['Invalidità permanente', '€ 516.457', '€ 413.166', '€ 206.583'],
-        ['Invalidità ≤ 5%', '€ 361.520', '€ 232.406', '€ 103.291']
+        ['Caso morte', '€ 413.166,00', '€ 309.874,00', '€ 154.937,00'],
+        ['Invalidità permanente', '€ 516.457,00', '€ 413.166,00', '€ 206.583,00'],
+        ['Invalidità ≤ 5%', '€ 361.520,00', '€ 232.406,00', '€ 103.291,00']
       ]);
 
       html += mkTbl('rIRPEF', 'Aliquote IRPEF 2026', ['Scaglione', 'Aliquota'], [
