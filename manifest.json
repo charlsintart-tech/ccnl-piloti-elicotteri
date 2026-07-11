@@ -4,8 +4,8 @@
   "description": "Contratto Collettivo Nazionale di Lavoro per i Piloti dipendenti da Imprese Elicotteristiche",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#3a9d8f",
-  "theme_color": "#3a9d8f",
+  "background_color": "#4a8c6f",
+  "theme_color": "#4a8c6f",
   "orientation": "any",
   "icons": [
     {
